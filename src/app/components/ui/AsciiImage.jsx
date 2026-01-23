@@ -42,7 +42,16 @@ function VideoPlane({ src, width, height }) {
   );
 }
 
-function Scene({ src, width, height, cellSize, enableColor, densePreset }) {
+function Scene({
+  src,
+  width,
+  height,
+  cellSize,
+  enableColor,
+  densePreset,
+  monochrome,
+  color,
+}) {
   const isVideo = src.endsWith(".mp4") || src.endsWith(".webm");
 
   return (
@@ -65,9 +74,10 @@ function Scene({ src, width, height, cellSize, enableColor, densePreset }) {
           <AsciiEffect
             style={densePreset ? "dense" : "standard"}
             cellSize={cellSize}
-            color={enableColor}
             invert={false}
             resolution={new Vector2(width, height)}
+            monochrome={monochrome}
+            color={color}
             postfx={{
               colorPalette: 0,
             }}
@@ -86,6 +96,8 @@ export function AsciiImage({
   enableColor = true,
   densePreset = true,
   className = "",
+  monochrome = false,
+  color = "#ffffff",
 }) {
   return (
     <div
@@ -105,6 +117,8 @@ export function AsciiImage({
         cellSize={cellSize}
         enableColor={enableColor}
         densePreset={densePreset}
+        monochrome={monochrome}
+        color={color}
       />
     </div>
   );

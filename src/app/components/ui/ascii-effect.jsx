@@ -2,7 +2,7 @@
 
 import { forwardRef, useMemo, useRef } from "react";
 import { Effect, BlendFunction } from "postprocessing";
-import { Uniform, Vector2 } from "three";
+import { Uniform, Vector2, Color } from "three";
 
 const fragmentShader = `
 // Basic uniforms
@@ -10,6 +10,8 @@ uniform float cellSize;
 uniform bool invert;
 uniform bool colorMode;
 uniform int asciiStyle;
+uniform bool useMonochromeColor;
+uniform vec3 monochromeColor;
 
 // PostFX uniforms
 uniform float time;
@@ -213,7 +215,9 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
   float charValue = getChar(brightness, localUV, asciiStyle);
 
   vec3 finalColor;
-  if (colorMode) {
+  if (useMonochromeColor) {
+    finalColor = monochromeColor * charValue; // TINT with SINGLE COLOR
+  } else if (colorMode) {
     finalColor = cellColor.rgb * charValue;
   } else {
     finalColor = vec3(brightness * charValue);
@@ -256,6 +260,8 @@ let _colorMode = true;
 let _asciiStyle = 0;
 let _resolution = new Vector2(1920, 1080);
 let _mousePos = new Vector2(0, 0);
+let _useMonochromeColor = false;
+let _monochromeColor = new Color(0xffffff);
 
 class AsciiEffectImpl extends Effect {
   constructor(options) {
@@ -266,6 +272,8 @@ class AsciiEffectImpl extends Effect {
       style = 0,
       resolution = new Vector2(1920, 1080),
       mousePos = new Vector2(0, 0),
+      useMonochromeColor = false,
+      monochromeColor = "#ffffff",
       postfx = {},
     } = options;
 
@@ -302,6 +310,8 @@ class AsciiEffectImpl extends Effect {
         ["glitchFrequency", new Uniform(postfx.glitchFrequency || 0)],
         ["brightnessAdjust", new Uniform(postfx.brightnessAdjust || 0)],
         ["contrastAdjust", new Uniform(postfx.contrastAdjust || 1)],
+        ["useMonochromeColor", new Uniform(useMonochromeColor)],
+        ["monochromeColor", new Uniform(new Color(monochromeColor))],
       ]),
     });
 
@@ -311,6 +321,8 @@ class AsciiEffectImpl extends Effect {
     _asciiStyle = style;
     _resolution = resolution;
     _mousePos = mousePos;
+    _useMonochromeColor = useMonochromeColor;
+    _monochromeColor.set(monochromeColor);
   }
 
   update(renderer, inputBuffer, deltaTime) {
@@ -334,6 +346,8 @@ class AsciiEffectImpl extends Effect {
     this.uniforms.get("asciiStyle").value = _asciiStyle;
     this.uniforms.get("resolution").value = _resolution;
     this.uniforms.get("mousePos").value = _mousePos;
+    this.uniforms.get("useMonochromeColor").value = _useMonochromeColor;
+    this.uniforms.get("monochromeColor").value = _monochromeColor;
   }
 }
 
@@ -346,6 +360,8 @@ export const AsciiEffect = forwardRef((props, ref) => {
     postfx = {},
     resolution = new Vector2(1920, 1080),
     mousePos = new Vector2(0, 0),
+    monochrome = false,
+    color: monoColorHex = "#ffffff",
   } = props;
 
   const styleMap = { standard: 0, dense: 1, minimal: 2, blocks: 3 };
@@ -357,6 +373,8 @@ export const AsciiEffect = forwardRef((props, ref) => {
   _asciiStyle = styleNum;
   _resolution = resolution;
   _mousePos = mousePos;
+  _useMonochromeColor = monochrome;
+  _monochromeColor.set(monoColorHex);
 
   const effect = useMemo(
     () =>
@@ -368,8 +386,20 @@ export const AsciiEffect = forwardRef((props, ref) => {
         postfx,
         resolution,
         mousePos,
+        useMonochromeColor: monochrome,
+        monochromeColor: monoColorHex,
       }),
-    [],
+    [
+      cellSize,
+      invert,
+      color,
+      styleNum,
+      postfx,
+      resolution,
+      mousePos,
+      monochrome,
+      monoColorHex,
+    ],
   );
 
   return <primitive ref={ref} object={effect} dispose={null} />;
