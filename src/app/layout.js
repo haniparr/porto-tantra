@@ -41,28 +41,11 @@ export default function RootLayout({ children }) {
 
         <Navbar />
 
-        <GradualBlur
-          position="top"
-          height="100px"
-          strength={2}
-          divCount={6}
-          zIndex={40} // Pastikan zIndex di bawah Navbar/Modal tapi di atas konten
-        />
-
-        <GradualBlur
-          position="bottom"
-          height="100px"
-          strength={2}
-          divCount={6}
-          zIndex={40}
-        />
-
         <div
           id="main-wrapper"
           style={{
             position: "relative",
             zIndex: 1,
-            backgroundColor: "#fff",
             minHeight: "100vh",
             boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
           }}

@@ -1,14 +1,14 @@
 import { getProjects } from "@/app/lib/api";
 import ProjectGrid from "@/app/components/sections/ProjectGrid";
 import GradientWrapper from "@/app/components/ui/GradientWrapper";
-import AnimatedHeading from "@/app/components/ui/AnimatedHeading";
+import AnimatedHeading from "../components/ui/AnimatedHeading";
 
 export const metadata = {
   title: "Selected Work - Tantra Hariastama",
   description: "A curated selection of projects.",
 };
 
-// --- DATA FALLBACK ---
+// --- FALLBACK DATA (sama seperti di main.js Vite) ---
 function getFallbackProjects() {
   return [
     {
@@ -28,7 +28,7 @@ function getFallbackProjects() {
         logo: {
           data: {
             attributes: {
-              url: "https://via.placeholder.com/60x60/1a1a1a/ffffff?text=F",
+              url: "https://placehold.co/40x40/333/fff?text=B",
             },
           },
         },
@@ -57,81 +57,79 @@ function getFallbackProjects() {
         },
       },
     },
+    {
+      id: "fb-3",
+      attributes: {
+        slug: "datasystems",
+        client: "DataSystems",
+        year: "2023",
+        services: "SaaS Dashboard",
+        thumbnail: {
+          data: {
+            attributes: {
+              url: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
+            },
+          },
+        },
+        logo: {
+          data: {
+            attributes: {
+              url: "https://via.placeholder.com/60x60/1a1a1a/ffffff?text=D",
+            },
+          },
+        },
+      },
+    },
   ];
 }
 
 export default async function WorkPage() {
   let projects = [];
 
-  // 1. Fetch Data
+  // ✅ LOGIC SAMA DENGAN VITE: Try API first, fallback to hardcoded
   try {
     const response = await getProjects();
-    if (response && response.data) {
+    if (response && response.data && response.data.length > 0) {
       projects = response.data;
+      console.log("✅ Using Strapi data for Work Page");
+    } else {
+      projects = getFallbackProjects();
+      console.log("⚠️ Using fallback data for Work Page (no Strapi data)");
     }
   } catch (error) {
-    console.warn("API Error (Work Page):", error.message);
-  }
-
-  // 2. Fallback
-  if (projects.length === 0) {
+    console.warn("API Error in Work Page, using fallback data:", error.message);
     projects = getFallbackProjects();
   }
 
   return (
-    // Gunakan inline style untuk layout agar tidak perlu file CSS baru
     <div
-      style={{
-        minHeight: "100vh",
-        width: "100%",
-        paddingTop: "160px" /* PENTING: Jarak agar tidak ketutup Navbar */,
-        paddingBottom: "100px",
-        backgroundColor: "var(--color-bg)" /* Mengambil dari main.css */,
-      }}
+      id="main-wrapper"
+      style={{ position: "relative", zIndex: 1, minHeight: "100vh" }}
     >
-      <GradientWrapper>
+      <div className="gradient-container">
         <div
-          style={{
-            maxWidth: "1400px",
-            margin: "0 auto",
-            padding: "0 2rem",
-            marginBottom: "4rem",
-          }}
+          className="work-page"
+          style={{ paddingTop: "120px", minHeight: "100vh" }}
         >
-          {/* Header Section */}
-          <div style={{ maxWidth: "800px" }}>
+          <div
+            style={{
+              maxWidth: "1440px",
+              margin: "0 auto",
+              padding: "0 var(--spacing-md)",
+            }}
+          >
             <h1
               style={{
-                fontFamily: "var(--font-headline)",
-                fontSize:
-                  "clamp(2.5rem, 5vw, 4.5rem)" /* Responsif tanpa media query CSS */,
-                fontWeight: "700",
-                marginBottom: "1rem",
-                lineHeight: "1.1",
-                color: "var(--color-text)",
+                fontSize: "clamp(3rem, 6vw, 5rem)",
+                marginBottom: "var(--spacing-lg)",
               }}
             >
               Selected Work
             </h1>
-            <p
-              style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "1.25rem",
-                opacity: 0.7,
-                lineHeight: "1.6",
-                maxWidth: "600px",
-                color: "var(--color-text)",
-              }}
-            >
-              A selection of projects that define my journey in visual design.
-            </p>
           </div>
+          <ProjectGrid projects={projects} />
         </div>
-
-        {/* Grid Project */}
-        {/* Style grid ini sudah ada di grid.css yang diimport di ProjectGrid.jsx */}
-        <ProjectGrid projects={projects} />
-      </GradientWrapper>
+      </div>
     </div>
   );
 }

@@ -161,7 +161,7 @@ export default function Footer() {
                Pastikan file footer-logo.svg ada di folder public/ 
             */}
             <Image
-              src="/assets/footer-logo.svg"
+              src="/footer-logo.svg"
               alt="Creative Strategist"
               className="footer-logo-img"
               width={800}

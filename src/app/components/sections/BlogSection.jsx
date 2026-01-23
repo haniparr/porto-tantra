@@ -6,10 +6,133 @@ import { getStrapiMedia } from "@/app/lib/utils";
 // Import CSS khusus blog jika belum ada di layout
 import "@/app/styles/blog.css";
 
+// ✅ HARDCODED FALLBACK DATA (sama seperti Vite)
+function getDefaultBlogs() {
+  return [
+    {
+      id: "01",
+      attributes: {
+        slug: "majestic-creatures",
+        title: "Majestic Creatures of the African Savanna",
+        excerpt:
+          "Capturing the Exquisite Patterns and Dynamic Energy of Africa's Most Iconic Big Cat",
+        category: "News",
+        featuredImage: {
+          data: {
+            attributes: {
+              url: "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80",
+            },
+          },
+        },
+      },
+    },
+    {
+      id: "02",
+      attributes: {
+        slug: "temple-silhouette",
+        title: "A Temple's Serene Silhouette",
+        excerpt:
+          "Exploring the spiritual architecture and peaceful atmosphere of ancient eastern temples.",
+        category: "News",
+        featuredImage: {
+          data: {
+            attributes: {
+              url: "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=800&q=80",
+            },
+          },
+        },
+      },
+    },
+    {
+      id: "03",
+      attributes: {
+        slug: "moments-framed",
+        title: "Moments Framed in Portraits",
+        excerpt:
+          "A deep dive into the art of capturing human emotion and storytelling through portraiture.",
+        category: "News",
+        featuredImage: {
+          data: {
+            attributes: {
+              url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
+            },
+          },
+        },
+      },
+    },
+    {
+      id: "04",
+      attributes: {
+        slug: "urban-solitude",
+        title: "Urban Solitude",
+        excerpt:
+          "Finding stillness in the chaos of city life through the lens of architectural minimalism.",
+        category: "News",
+        featuredImage: {
+          data: {
+            attributes: {
+              url: "https://images.unsplash.com/photo-1480796927426-f609979314bd?auto=format&fit=crop&w=800&q=80",
+            },
+          },
+        },
+      },
+    },
+  ];
+}
+
 export default async function BlogSection() {
-  // Fetch Featured Blogs
-  const response = await getBlogPosts(true);
-  const blogs = response.data || [];
+  let blogs = [];
+
+  try {
+    // ✅ FIXED: Remove 'true' parameter - fetch ALL blogs like Vite
+    const response = await getBlogPosts();
+    console.log("Blog Posts API Response:", response);
+
+    if (response && response.data && Array.isArray(response.data)) {
+      // ✅ SAFETY CHECKS like Vite
+      const formattedBlogs = response.data
+        .map((item) => {
+          try {
+            // Safety check: ensure item and attributes exist
+            if (!item || !item.attributes) {
+              console.warn("Blog item missing attributes:", item);
+              return null;
+            }
+
+            const attrs = item.attributes;
+
+            // Safety check: ensure required fields exist
+            if (!attrs.title || !attrs.slug) {
+              console.warn("Blog item missing required fields:", attrs);
+              return null;
+            }
+
+            return item; // Return valid item
+          } catch (itemError) {
+            console.error("Error processing blog item:", itemError, item);
+            return null;
+          }
+        })
+        .filter((blog) => blog !== null); // Remove null entries
+
+      blogs = formattedBlogs;
+      console.log(
+        "✅ Using Strapi data for Blog Section:",
+        blogs.length,
+        "posts",
+      );
+    }
+
+    // ✅ FALLBACK LOGIC like Vite
+    if (blogs.length === 0) {
+      blogs = getDefaultBlogs();
+      console.log("⚠️ Using hardcoded data for Blog Section (no Strapi data)");
+    }
+  } catch (error) {
+    console.error("Error fetching blog posts:", error);
+    blogs = getDefaultBlogs();
+    console.log("⚠️ Using hardcoded data for Blog Section (API error)");
+  }
 
   return (
     <section className="blog-section">
@@ -21,7 +144,13 @@ export default async function BlogSection() {
       </div>
 
       <div className="blog-grid">
-        {blogs.slice(0, 3).map((item) => {
+        {/* ✅ FIXED: Show ALL blogs, not just 3 */}
+        {blogs.map((item) => {
+          // ✅ SAFETY CHECK: Handle both API and hardcoded data structure
+          if (!item || !item.attributes) {
+            return null;
+          }
+
           const attrs = item.attributes;
           const imageUrl =
             getStrapiMedia(attrs.featuredImage) ||
@@ -45,6 +174,7 @@ export default async function BlogSection() {
                 <h3 className="blog-title">{attrs.title}</h3>
                 <p className="blog-desc">{attrs.excerpt || "No description"}</p>
 
+                {/* ✅ Use Link instead of button for better Next.js routing */}
                 <Link href={`/blog/${attrs.slug}`} className="blog-btn">
                   MORE DETAILS
                   <svg

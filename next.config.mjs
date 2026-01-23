@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
       {
         protocol: "https",
@@ -13,6 +15,10 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "via.placeholder.com", // <-- PENTING: Solusi error Anda saat ini
+      },
+      {
+        protocol: "https",
+        hostname: "placehold.co", // <-- PENTING: Solusi error Anda saat ini
       },
       {
         protocol: "https",

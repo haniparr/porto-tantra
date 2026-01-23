@@ -21,14 +21,20 @@ async function fetchAPI(path, urlParamsObject = {}, options = {}) {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.error?.message || "Failed to fetch API");
+      console.error("API Error Details:", {
+        status: response.status,
+        statusText: response.statusText,
+        data: data,
+        path: path,
+      });
+      throw new Error(
+        data.error?.message || `Failed to fetch API: ${response.status}`,
+      );
     }
 
     return data;
   } catch (error) {
     console.error("Fetch API Error:", error);
-    // Lempar error agar bisa ditangani di komponen jika perlu,
-    // atau return null di fungsi spesifik di bawah
     throw error;
   }
 }
@@ -49,6 +55,7 @@ export async function getBlogPosts(featured = false) {
     );
     return data;
   } catch (error) {
+    console.warn("getBlogPosts error:", error.message);
     return { data: [] };
   }
 }
@@ -66,6 +73,7 @@ export async function getBlogPost(slug) {
     );
     return data.data[0] || null;
   } catch (error) {
+    console.warn("getBlogPost error:", error.message);
     return null;
   }
 }
@@ -74,7 +82,9 @@ export async function getBlogPost(slug) {
 
 export async function getProjects(featured = false) {
   const filters = featured ? "&filters[featured][$eq]=true" : "";
-  const path = `/projects?${filters}&populate[thumbnail][fields][0]=url&populate[thumbnail][fields][1]=formats&populate[logo][fields][0]=url&populate[logo][fields][1]=formats&populate[gallery][fields][0]=url&populate[gallery][fields][1]=formats&populate[testimonial][populate]=*&sort[0]=year:desc`;
+
+  // Fixed: Populate sections with nested images
+  const path = `/projects?${filters}&populate[thumbnail][fields][0]=url&populate[thumbnail][fields][1]=formats&populate[logo][fields][0]=url&populate[logo][fields][1]=formats&populate[sections][populate][images][fields][0]=url&populate[sections][populate][images][fields][1]=formats&populate[credits]=*&populate[testimonial][populate]=*&sort[0]=year:desc`;
 
   try {
     const data = await fetchAPI(
@@ -86,12 +96,14 @@ export async function getProjects(featured = false) {
     );
     return data;
   } catch (error) {
+    console.warn("getProjects error:", error.message);
     return { data: [] };
   }
 }
 
 export async function getProject(slug) {
-  const path = `/projects?filters[slug][$eq]=${slug}&populate[thumbnail][fields][0]=url&populate[thumbnail][fields][1]=formats&populate[logo][fields][0]=url&populate[logo][fields][1]=formats&populate[gallery][fields][0]=url&populate[gallery][fields][1]=formats&populate[testimonial][populate]=*`;
+  // Fixed: Populate sections with nested images
+  const path = `/projects?filters[slug][$eq]=${slug}&populate[thumbnail][fields][0]=url&populate[thumbnail][fields][1]=formats&populate[logo][fields][0]=url&populate[logo][fields][1]=formats&populate[sections][populate][images][fields][0]=url&populate[sections][populate][images][fields][1]=formats&populate[credits]=*&populate[testimonial][populate]=*`;
 
   try {
     const data = await fetchAPI(
@@ -103,6 +115,7 @@ export async function getProject(slug) {
     );
     return data.data[0] || null;
   } catch (error) {
+    console.warn("getProject error:", error.message);
     return null;
   }
 }
@@ -122,6 +135,7 @@ export async function getTestimonials() {
     );
     return data;
   } catch (error) {
+    console.warn("getTestimonials error:", error.message);
     return { data: [] };
   }
 }
