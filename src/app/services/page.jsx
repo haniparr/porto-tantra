@@ -1,5 +1,5 @@
 import Image from "next/image";
-import "@/src/styles/services.css"; // Import CSS Services
+import "@/app/styles/services.css"; // Import CSS Services
 
 // Import Client Components
 import WorkExperience from "@/app/components/sections/WorkExperience";
