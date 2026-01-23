@@ -1,0 +1,67 @@
+/* Skill Ticker */
+.skill-ticker-section {
+    padding: var(--spacing-md) 0;
+    overflow: hidden;
+    /* Background is handled by the parent gradient-container */
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ticker-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.ticker-track {
+    display: flex;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.ticker-content {
+    display: flex;
+    display: flex;
+    animation: tickerScroll 60s linear infinite;
+    will-change: transform;
+}
+
+.ticker-track.reverse .ticker-content {
+    animation-direction: reverse;
+}
+
+.ticker-item {
+    font-family: var(--font-headline);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    color: #FFFFFF;
+    padding: 0 var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    /* Space between placeholder and text */
+    opacity: 0.8;
+}
+
+.ticker-placeholder {
+    width: clamp(2rem, 4vw, 3.5rem);
+    /* Match font size roughly */
+    height: clamp(2rem, 4vw, 3.5rem);
+    background-color: #999;
+    /* Grey placeholder as requested */
+    display: inline-block;
+}
+
+@keyframes tickerScroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Hover Pause */
+.skill-ticker-section:hover .ticker-content {
+    animation-play-state: paused;
+}

@@ -1,0 +1,22 @@
+/* Typography */
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;600&display=swap');
+
+:root {
+  --font-headline: 'Geist', sans-serif;
+  --font-body: 'Geist', sans-serif;
+}
+
+/* Standardized Heading Class */
+/* Standardized Heading Class */
+.display-heading {
+  font-family: var(--font-headline);
+  font-size: clamp(4rem, 10vw, 9rem);
+  line-height: 0.9;
+  font-weight: 400;
+  letter-spacing: normal;
+  word-spacing: 1rem;
+  /* Force visible spacing */
+  font-variant-ligatures: none;
+  /* Disable ligatures that might merge characters */
+  color: #FFFFFF;
+}

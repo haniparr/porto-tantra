@@ -1,0 +1,641 @@
+/* Services Page Styles */
+.services-page {
+    padding-top: 120px;
+    /* Space for fixed navbar */
+    min-height: 100vh;
+    color: #FFFFFF;
+}
+
+/* Intro Section */
+/* Shared Layout for Sections */
+/* Shared Layout for Sections */
+.section-layout {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: var(--spacing-md);
+    width: 100%;
+    /* Removed max-width to allow full width like About section */
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+.section-label {
+    padding-top: 1rem;
+}
+
+.section-label span {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 400;
+    white-space: nowrap;
+}
+
+/* Intro Section */
+.services-intro {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: var(--spacing-xl) 0;
+}
+
+.intro-content {
+    width: 100%;
+}
+
+.intro-image-box {
+    width: 150px;
+    height: 150px;
+    border: 2px solid #ff7e33;
+    margin-bottom: var(--spacing-lg);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.intro-placeholder-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.8;
+}
+
+.intro-headline {
+    font-family: var(--font-headline);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1;
+    margin-bottom: var(--spacing-md);
+    font-weight: 400;
+    max-width: 1100px;
+    letter-spacing: -0.02em;
+}
+
+.intro-headline .text-muted {
+    color: rgba(255, 255, 255, 0.5);
+    /* Improved visibility on dark bg */
+}
+
+.intro-subheadline {
+    font-family: var(--font-headline);
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    line-height: 1.3;
+    max-width: 800px;
+    margin-bottom: var(--spacing-xxl);
+}
+
+.intro-divider {
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.2);
+    /* Lighter divider for dark bg */
+    width: 100%;
+    margin-bottom: var(--spacing-xl);
+}
+
+.intro-features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-xl);
+}
+
+.intro-features-grid .service-card {
+    background-color: rgba(255, 255, 255, 0.03);
+    /* Subtle dark card background */
+    border-radius: 24px;
+    padding: calc(var(--spacing-lg) * 0.4) calc(var(--spacing-lg) * 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 320px;
+    /* Ensure consistent height */
+    position: relative;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.intro-features-grid .service-card:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    transform: translateY(-5px);
+}
+
+.intro-features-grid .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--spacing-md);
+}
+
+.intro-features-grid .service-number {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-family: var(--font-body);
+}
+
+
+
+.intro-features-grid .card-content {
+    margin-top: auto;
+}
+
+/* Typography adjustments */
+.intro-features-grid .service-title {
+    margin-bottom: var(--spacing-sm);
+    /* Increase space between heading and body */
+    font-size: clamp(2rem, 3vw, 2.5rem);
+    /* Increased size for bold impact */
+    line-height: 1.1;
+}
+
+.intro-features-grid .service-description {
+    color: #FFFFFF;
+    font-size: 22px;
+    /* Explicitly set as per request */
+    margin-top: 0;
+}
+
+/* Other sections adjustments */
+/* Other sections adjustments - Testimonials & Clients Enforce 100vh */
+.clients-section,
+.testimonials-section {
+    min-height: 100vh;
+    height: 100vh;
+    /* Enforce 100vh */
+    display: flex;
+    align-items: center;
+    /* Vertically center content */
+    width: 100%;
+    padding: 0;
+    /* Remove default padding to allow exact 100vh fit */
+    position: relative;
+    overflow: hidden;
+    /* Prevent spillover */
+}
+
+/* FAQ Section - Allow growth */
+.faq-section {
+    min-height: 100vh;
+    height: auto;
+    /* Allow expanding */
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: var(--spacing-xl) 0;
+    /* Restore padding */
+    position: relative;
+    overflow: visible;
+    /* Allow toggles to show */
+}
+
+/* Specific adjustment for layouts inside 100vh sections */
+.testimonials-section .section-layout,
+.clients-section .section-layout {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    /* Or grid depending on layout, but flex column is safer for full height centering if needed */
+    /* Let's keep the grid layout for Section Layout but ensure it takes height */
+    display: grid;
+    align-content: center;
+    /* Center grid content vertically */
+}
+
+.faq-section .section-layout {
+    /* Normal layout for FAQ */
+    height: auto;
+    display: grid;
+    align-content: start;
+}
+
+.faq-container {
+    width: 100%;
+}
+
+.faq-header {
+    margin-bottom: var(--spacing-lg);
+}
+
+.clients-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 3rem;
+    /* 60% reduction from 8rem */
+}
+
+.client-logo-item {
+    background-color: transparent;
+    /* Remove white background */
+    aspect-ratio: 3/2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    padding: var(--spacing-md);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    /* Optional: very subtle border to define area, or remove if preferred. Keeping subtle for structure. */
+}
+
+.client-logo-item:hover {
+    background-color: rgba(255, 255, 255, 0.02);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.client-logo-item img {
+    max-width: 60%;
+    /* Reduced from 80% (25% smaller) */
+    max-height: 45%;
+    /* Reduced from 60% */
+    object-fit: contain;
+    filter: grayscale(100%) brightness(0) invert(1) opacity(0.5);
+    /* Make logo grey (white with opacity) */
+    transition: all 0.3s ease;
+}
+
+.client-logo-item:hover img {
+    filter: grayscale(0%) opacity(1);
+    opacity: 1;
+}
+
+.client-text {
+    font-family: var(--font-headline);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.5);
+    /* Grey text */
+    transition: color 0.3s ease;
+}
+
+.client-logo-item:hover .client-text {
+    color: #FFFFFF;
+}
+
+/* Traits Section (kept simple) */
+.traits-section {
+    padding: var(--spacing-xl) var(--spacing-md);
+    border-top: 1px solid #e0e0e0;
+}
+
+.traits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+.trait-card {
+    padding: var(--spacing-lg);
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.trait-card:hover {
+    background-color: white;
+}
+
+.trait-number {
+    display: block;
+    font-family: var(--font-headline);
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-md);
+    color: #999;
+}
+
+.trait-card h3 {
+    font-family: var(--font-headline);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.trait-card p {
+    font-family: var(--font-body);
+    color: #666;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .intro-features-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+    }
+
+    .features-label {
+        margin-bottom: var(--spacing-md);
+    }
+}
+
+/* Override global FAQ styles from about.css to fix alignment on Services Page */
+.services-page .faq-section {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: 100%;
+}
+
+/* Work Experience Section - Vertical Parallax */
+/* Work Experience Section - Horizontal Columns */
+.work-experience-section {
+    width: 100%;
+    height: 100vh;
+    padding: 0;
+    position: relative;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    /* Hide scroll */
+}
+
+/* Ensure layout container takes full size for this section override */
+.work-experience-section .section-layout {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    /* Remove default padding */
+    display: flex;
+    flex-direction: column;
+    /* Label on top (if kept) or removed? User image showed no label but "Summary" small text. */
+    /* Let's keep label for consistency but make it absolute or small? 
+       Actually, the reference replaces the whole structure. 
+       Let's allow the entries to take full space. */
+    grid-template-columns: 1fr;
+    /* Reset grid */
+    display: block;
+    /* Content flow */
+}
+
+/* Hide default label for this specific full-screen design if needed, or style it minimal */
+.work-experience-section .section-label {
+    position: absolute;
+    top: var(--spacing-md);
+    left: var(--spacing-md);
+    z-index: 10;
+    /* mix-blend-mode: difference; Optional for visibility */
+}
+
+/* Experience Entries Container - The Grid */
+.experience-entries {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100vh;
+    gap: 0;
+    padding-bottom: 0;
+}
+
+/* Individual Column */
+.experience-entry {
+    flex: 1;
+    /* Equal width */
+    height: 100%;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    background: transparent;
+    /* Use section background */
+    padding: 120px var(--spacing-md) var(--spacing-xl);
+    /* Top padding for label space */
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    position: relative;
+    transition: all 0.4s ease;
+    cursor: pointer;
+    overflow: hidden;
+
+    /* Reset sticky/card styles */
+    min-height: auto;
+    width: auto;
+    margin: 0;
+    top: auto;
+    box-shadow: none;
+    border-radius: 0;
+    border: none;
+    /* Reset full border */
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    transform: none !important;
+    /* Force reset */
+    opacity: 1 !important;
+}
+
+.experience-entry:last-child {
+    border-right: none;
+}
+
+.experience-entry:hover {
+    flex: 1.5;
+    /* Expand on hover */
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* Content Styling */
+.entry-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+/* Logo Box */
+.entry-logo-box {
+    width: 128px;
+    /* Square box 128px */
+    height: 128px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: var(--spacing-md);
+    transition: all 0.3s ease;
+}
+
+.experience-entry:hover .entry-logo-box {
+    border-color: #fff;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Company Title - Horizontal 0deg */
+.entry-title {
+    font-family: var(--font-headline);
+    font-size: 2.5rem;
+    /* Large */
+    font-weight: 600;
+    line-height: 1.1;
+    color: #FFFFFF;
+    margin-top: var(--spacing-md);
+
+    /* Reset rotation */
+    writing-mode: horizontal-tb;
+    transform: none;
+    text-orientation: initial;
+    align-self: flex-start;
+    max-width: 100%;
+    word-wrap: break-word;
+    /* Ensure wrapping in column */
+}
+
+/* Footer & Meta */
+.entry-footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.entry-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.entry-role {
+    display: block;
+    font-size: 1.5rem;
+    /* Increased size */
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 0.25rem;
+}
+
+.entry-year {
+    display: block;
+    font-size: 1.25rem;
+    /* Increased size */
+    font-family: var(--font-body);
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Achievements Reveal */
+.entry-achievements-wrapper {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.5s ease, margin-top 0.5s ease, opacity 0.5s ease;
+    opacity: 0;
+    margin-top: 0;
+}
+
+.entry-achievements {
+    overflow: hidden;
+    font-size: 22px;
+    /* User requested 22px */
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.8);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 0;
+}
+
+/* Hover State for Reveal */
+.experience-entry:hover .entry-achievements-wrapper {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    margin-top: var(--spacing-md);
+}
+
+.experience-entry:hover .entry-achievements {
+    padding-top: var(--spacing-md);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .experience-entries {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .experience-entry {
+        height: 300px;
+        /* Fixed height for mobile cards */
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: var(--spacing-lg);
+        flex: none;
+    }
+
+    .entry-title {
+        writing-mode: horizontal-tb;
+        transform: none;
+        max-height: none;
+        font-size: 2rem;
+        margin-top: 0;
+    }
+}
+
+/* Cleaned up old styles */
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+
+    /* Intro & Testimonials Grid */
+    .intro-features-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+    }
+
+    .features-label {
+        margin-bottom: var(--spacing-md);
+    }
+
+    /* Work Experience Mobile */
+    .work-progress-nav {
+        display: none;
+    }
+
+    .entry-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+    }
+
+    .entry-number {
+        font-size: 4rem;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    /* Clients Grid */
+    .clients-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-md);
+    }
+}
+
+/* Testimonial Navigation */
+.nav-arrow-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: transparent;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-arrow-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: white;
+    transform: scale(1.1);
+}
+
+.testimonial-slider .service-card {
+    min-width: 350px;
+    /* Minimum width for cards in slider */
+    margin-right: 0;
+}
+
+/* Hide scrollbar */
+.testimonial-slider::-webkit-scrollbar {
+    display: none;
+}
+
+.testimonial-slider {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}

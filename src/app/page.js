@@ -1,66 +1,42 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import ParallaxIntro from "@/app/components/sections/ParallaxIntro";
+import Hero from "@/app/components/sections/Hero";
+import SkillTicker from "@/app/components/sections/SkillTicker";
+import FeaturedWork from "@/app/components/sections/FeaturedWork";
+import About from "@/app/components/sections/About";
+import BlogSection from "@/app/components/sections/BlogSection";
+import GradientWrapper from "@/app/components/ui/GradientWrapper"; // Wrapper mouse effect
+
+export const metadata = {
+  title: "Tantra Hariastama - Graphic Designer",
+  description:
+    "Portfolio of Tantra Hariastama, a Graphic Designer specializing in visual identity and digital design.",
+};
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.js file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <div className="homepage-content">
+      {/* Sesuai main.js: <div class="gradient-container">...</div> 
+        GradientWrapper akan menangani efek mouse movement background.
+      */}
+      <GradientWrapper className="min-h-screen">
+        {/* 1. Intro Section */}
+        <ParallaxIntro />
+
+        {/* 2. Hero Section */}
+        <Hero />
+
+        {/* 3. About Me */}
+        <About />
+
+        {/* 4. Skills Marquee */}
+        <SkillTicker />
+
+        {/* 5. Selected Projects */}
+        <FeaturedWork />
+
+        {/* 6. Latest Thoughts (Blog) - Server Component fetching data */}
+        <BlogSection />
+      </GradientWrapper>
     </div>
   );
 }

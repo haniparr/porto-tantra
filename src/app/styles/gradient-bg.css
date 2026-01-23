@@ -1,0 +1,79 @@
+/* Interactive Gradient Background */
+/* Color Palette - Unified dark gradient matching featured work/case study */
+
+:root {
+    --color-gradient-start: #0a0a0a;
+    --color-gradient-mid: #1a1a2e;
+    --color-gradient-end: #0a0a0a;
+}
+
+.gradient-container {
+    position: relative;
+    background-color: #0a0a0a;
+    /* Fallback */
+    background: linear-gradient(135deg,
+            var(--color-gradient-start) 0%,
+            var(--color-gradient-mid) 50%,
+            var(--color-gradient-end) 100%);
+    transition: background 0.5s ease;
+    min-height: 100vh;
+    overflow: hidden;
+    z-index: 1;
+}
+
+/* Dynamic contrast text - uses mix-blend-mode for negative/inversion effect */
+.gradient-container .contrast-text,
+.gradient-container h1,
+.gradient-container h2,
+.gradient-container h3,
+.gradient-container h4,
+.gradient-container h5,
+.gradient-container h6,
+.gradient-container p,
+.gradient-container span,
+.gradient-container a {
+    color: #FFFFFF;
+    mix-blend-mode: exclusion;
+}
+
+/* Fix for elements that shouldn't have blend mode (like images) */
+.gradient-container img,
+.gradient-container video,
+.gradient-container button,
+.gradient-container .no-blend {
+    mix-blend-mode: normal;
+}
+
+/* Button text should remain readable */
+.gradient-container .btn-primary {
+    mix-blend-mode: normal;
+    color: #FFFFFF;
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(20px);
+}
+
+.gradient-container .btn-primary:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.gradient-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle 800px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            rgba(255, 255, 255, 0.15),
+            rgba(255, 255, 255, 0.08) 40%,
+            rgba(43, 57, 109, 0.1) 60%,
+            transparent 100%);
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.gradient-container.active::before {
+    opacity: 1;
+}

@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_project_sections",
+  "info": {
+    "displayName": "Project Section",
+    "description": "A customizable section for project case study"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}

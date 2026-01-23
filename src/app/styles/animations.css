@@ -1,0 +1,13 @@
+/* Scroll Animations */
+.fade-up-element {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.fade-up-element.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger delays if needed, can be added via inline style or nth-child */

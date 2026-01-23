@@ -1,0 +1,267 @@
+/* Case Study - Sticky Scroll Layout */
+.case-study {
+    background: #050505;
+    min-height: 100vh;
+    color: #FFFFFF;
+}
+
+.cs-container {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    min-height: 100vh;
+    position: relative;
+    width: 100%;
+    margin: 0;
+}
+
+/* Left Sidebar - Sticky Navigation */
+.cs-sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+    padding-top: var(--spacing-sm);
+    padding-bottom: var(--spacing-sm);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+}
+
+.cs-sidebar-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding-top: 80px;
+    gap: var(--spacing-md);
+    justify-content: space-between;
+    /* Ensures credits go to bottom */
+}
+
+.cs-header-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+/* Header Section in Sidebar */
+.cs-header {
+    margin-bottom: var(--spacing-md);
+}
+
+.cs-main-title {
+    font-family: var(--font-headline);
+    font-size: clamp(3rem, 5vw, 6rem);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    margin-bottom: var(--spacing-xs);
+    color: #fff;
+}
+
+.cs-subtitle {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-left: 5px;
+}
+
+/* Navigation Items */
+.cs-nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.cs-nav-item {
+    cursor: pointer;
+    opacity: 0.3;
+    transition: opacity 0.4s ease;
+}
+
+.cs-nav-item:hover {
+    opacity: 0.6;
+}
+
+.cs-nav-item.active {
+    opacity: 1;
+}
+
+.cs-nav-title {
+    font-size: 2.5rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+    color: #fff;
+    letter-spacing: -0.01em;
+}
+
+.cs-nav-desc-wrapper {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cs-nav-item.active .cs-nav-desc-wrapper {
+    grid-template-rows: 1fr;
+}
+
+.cs-nav-desc {
+    font-size: 22px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+    max-width: 90%;
+}
+
+/* Credits Section */
+.cs-credits {
+    margin-top: auto;
+    padding-top: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    animation: fadeIn 0.8s ease-out 0.2s backwards;
+}
+
+.cs-credits-title {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 0.75rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.cs-credits-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.cs-credit-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.25rem 0;
+}
+
+.cs-credit-name {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+}
+
+.cs-credit-role {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+    text-align: right;
+}
+
+/* Right Content */
+.cs-content {
+    padding-right: var(--spacing-md);
+    padding-left: var(--spacing-lg);
+    padding-top: calc(10vh + var(--spacing-md));
+    padding-bottom: var(--spacing-md);
+}
+
+.cs-section {
+    margin-bottom: 20vh;
+    min-height: 90vh;
+}
+
+.cs-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.cs-image-wrapper {
+    width: 100%;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #111;
+}
+
+.cs-image-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.cs-footer-spacer {
+    height: 20vh;
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+    .cs-container {
+        grid-template-columns: 350px 1fr;
+    }
+
+    .cs-sidebar {
+        padding: var(--spacing-lg);
+    }
+
+    .cs-main-title {
+        font-size: 4rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .cs-container {
+        grid-template-columns: 1fr;
+    }
+
+    .cs-sidebar {
+        position: relative;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding-bottom: var(--spacing-xl);
+        padding: var(--spacing-lg);
+    }
+
+    .cs-sidebar-content {
+        padding-top: 100px;
+        gap: var(--spacing-lg);
+    }
+
+    .cs-nav-desc-wrapper {
+        grid-template-rows: 1fr;
+    }
+
+    .cs-nav-item {
+        opacity: 1;
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .cs-section {
+        margin-bottom: var(--spacing-xxl);
+        min-height: auto;
+    }
+
+    .cs-content {
+        padding: var(--spacing-lg);
+    }
+
+    .cs-main-title {
+        font-size: 3rem;
+    }
+
+    .cs-credits {
+        margin-top: var(--spacing-lg);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -1,0 +1,103 @@
+@import './typography.css';
+
+:root {
+    /* Colors */
+    --color-bg: #0a0a0a;
+    --color-bg-dark: #000000;
+    --color-text: #FFFFFF;
+    --color-text-inverse: #000000;
+    --color-accent: #0055FF;
+    --color-accent-secondary: #FF4500;
+
+    /* Spacing - Increased by 50% from reduced state (approx 75% of original) */
+    --spacing-xs: 0.75rem;
+    --spacing-sm: 1.5rem;
+    --spacing-md: 3rem;
+    --spacing-lg: 6rem;
+    --spacing-xl: 12rem;
+
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-smooth: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Dark Mode Removed */
+
+/* Reset & Base */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-headline);
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img,
+video {
+    max-width: 100%;
+    display: block;
+}
+
+button {
+    font-family: inherit;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+/* Button Hover Effect */
+/* Button Styles */
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000000;
+    color: #FFFFFF;
+    padding: 14px 32px;
+    border-radius: 100px;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.btn-primary:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}

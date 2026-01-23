@@ -1,0 +1,128 @@
+.contact-page {
+    background-color: #0a0a0a;
+    /* Dark background */
+    color: #ffffff;
+    min-height: 100vh;
+    padding-top: 120px;
+    /* Space for navbar */
+    padding-bottom: 80px;
+    font-family: var(--font-body, sans-serif);
+}
+
+.contact-container {
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: 120px;
+    /* Large vertical spacing */
+}
+
+/* Hero Headline */
+.contact-headline {
+    font-family: var(--font-headline, sans-serif);
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1.1;
+    font-weight: 400;
+    max-width: 1100px;
+}
+
+/* Links Section */
+.contact-links-section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.contact-link-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    /* Match Work page grid */
+    align-items: center;
+    padding: var(--spacing-md) 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    /* Ensure no underline on row */
+}
+
+.contact-link-row:hover {
+    opacity: 1;
+}
+
+.contact-links-section:hover .contact-link-row:not(:hover) {
+    opacity: 0.3;
+    /* Spotlight effect */
+}
+
+/* Label (Left side) */
+.link-label {
+    font-family: var(--font-headline, sans-serif);
+    font-size: clamp(2rem, 5vw, 4rem);
+    /* Large font */
+    color: #e0e0e0;
+    font-weight: 400;
+    transition: color 0.3s ease;
+}
+
+.contact-link-row:hover .link-label {
+    color: #ffffff;
+}
+
+/* Link URL (Right side) */
+.link-url {
+    color: #666;
+    text-decoration: none;
+    font-family: var(--font-body, sans-serif);
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+    text-align: right;
+    border-bottom: none;
+    /* Remove previous style */
+}
+
+.contact-link-row:hover .link-url {
+    color: #ffffff;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .contact-link-row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+
+    .link-url {
+        text-align: left;
+        font-size: 1rem;
+    }
+}
+
+/* Bottom CTA */
+.contact-footer-cta {
+    margin-top: auto;
+    padding-top: 40px;
+}
+
+.cta-text {
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: #666;
+    margin-bottom: 1rem;
+    font-family: var(--font-headline);
+}
+
+.cta-email {
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: #fff;
+    text-decoration: none;
+    font-family: var(--font-headline);
+    display: block;
+    transition: opacity 0.3s ease;
+}
+
+.cta-email:hover {
+    opacity: 0.8;
+}

@@ -1,0 +1,192 @@
+.parallax-intro {
+    position: relative;
+    min-height: 180vh;
+    /* Increased height for more spacing */
+    width: 100%;
+    overflow: hidden;
+    background-color: transparent;
+    /* Transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    /* Align to top to allow scrolling through */
+    padding-top: 40vh;
+    /* Push content down */
+    z-index: 10;
+}
+
+.parallax-content {
+    text-align: center;
+    z-index: 2;
+    position: sticky;
+    /* Keep title visible for a bit? No, let it scroll */
+    position: relative;
+    margin-top: 0;
+}
+
+.parallax-title {
+    font-family: var(--font-headline);
+    font-size: clamp(4rem, 10vw, 10rem);
+    line-height: 0.9;
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    letter-spacing: 0.05em;
+}
+
+.parallax-year {
+    font-family: var(--font-headline);
+    font-size: 2.5rem;
+    margin-top: 2rem;
+    color: #FFFFFF;
+}
+
+.parallax-images {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.parallax-img-wrapper {
+    position: absolute;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+    transition: transform 0.1s linear, filter 0.1s linear;
+}
+
+.parallax-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Scattered Layout Positions - Larger Images */
+.img-1 {
+    top: 5%;
+    left: 5%;
+    width: 350px;
+    height: 450px;
+}
+
+.img-2 {
+    top: 10%;
+    right: 5%;
+    width: 400px;
+    height: 500px;
+}
+
+.img-3 {
+    top: 40%;
+    left: 10%;
+    width: 300px;
+    height: 350px;
+}
+
+.img-4 {
+    top: 35%;
+    right: 15%;
+    width: 380px;
+    height: 280px;
+}
+
+.img-5 {
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 250px;
+    height: 300px;
+    z-index: 0;
+    opacity: 0.6;
+}
+
+/* New Images */
+.img-6 {
+    top: 70%;
+    left: 5%;
+    width: 400px;
+    height: 300px;
+}
+
+.img-7 {
+    top: 75%;
+    right: 5%;
+    width: 350px;
+    height: 450px;
+}
+
+.img-8 {
+    top: 85%;
+    left: 20%;
+    width: 300px;
+    height: 400px;
+}
+
+.img-9 {
+    top: 90%;
+    right: 25%;
+    width: 320px;
+    height: 250px;
+}
+
+.img-10 {
+    top: 20%;
+    left: 40%;
+    width: 200px;
+    height: 200px;
+    z-index: 0;
+    opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+    .parallax-intro {
+        min-height: 120vh;
+        padding-top: 30vh;
+    }
+
+    .parallax-title {
+        font-size: 12vw;
+        /* Ensure it fits width */
+    }
+
+    .parallax-img-wrapper {
+        opacity: 0.4;
+        /* Fade images on mobile */
+    }
+
+    /* Reduce sizes for mobile */
+    .img-1 {
+        width: 150px;
+        height: 200px;
+    }
+
+    .img-2 {
+        width: 180px;
+        height: 220px;
+    }
+
+    .img-3 {
+        width: 140px;
+        height: 160px;
+    }
+
+    .img-4 {
+        width: 160px;
+        height: 120px;
+    }
+
+    /* Hide some images on mobile to reduce clutter */
+    .img-5,
+    .img-6,
+    .img-7,
+    .img-8,
+    .img-9,
+    .img-10 {
+        display: none;
+    }
+}
