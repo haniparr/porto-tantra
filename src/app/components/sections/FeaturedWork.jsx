@@ -105,9 +105,15 @@ export default async function FeaturedWork() {
 
   try {
     const response = await getProjects(true); // featured = true
+    console.log(
+      "📊 FeaturedWork API Response:",
+      JSON.stringify(response, null, 2),
+    );
+
     if (response && response.data && response.data.length > 0) {
       works = response.data;
       console.log("✅ Using Strapi data for FeaturedWork");
+      console.log("📝 First work item:", JSON.stringify(works[0], null, 2));
     } else {
       works = getHardcodedWorks();
       console.log("⚠️ Using hardcoded data for FeaturedWork (no Strapi data)");
@@ -176,9 +182,11 @@ export default async function FeaturedWork() {
               </div>
 
               <div className="work-card-content">
-                <span className="work-card-title">{attrs.title}</span>
+                <span className="work-card-title">
+                  {attrs.title || attrs.client || "Untitled Project"}
+                </span>
                 <h3 className="work-card-tagline">
-                  {attrs.tagline || attrs.client || "Project Tagline"}
+                  {attrs.tagline || attrs.client || "Project description"}
                 </h3>
               </div>
             </Link>
