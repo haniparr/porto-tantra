@@ -3,19 +3,20 @@ import Image from "next/image";
 import { getProjects } from "@/app/lib/api";
 import { getStrapiMedia } from "@/app/lib/utils";
 
-// ✅ HARDCODED FALLBACK DATA (sama seperti Vite)
+// ✅ HARDCODED FALLBACK DATA
 function getHardcodedWorks() {
   return [
     {
       id: "hardcoded-1",
       attributes: {
         slug: "beermut",
+        client: "Beermut",
         title: "Beermut",
         tagline: "Bringing fun to gatherings.",
         thumbnail: {
           data: {
             attributes: {
-              url: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=800&q=80",
+              url: "https://images.unsplash.com/photo-1481487484168-9b930d5b7d25?auto=format&fit=crop&w=800&q=80",
             },
           },
         },
@@ -25,6 +26,7 @@ function getHardcodedWorks() {
       id: "hardcoded-2",
       attributes: {
         slug: "body-om",
+        client: "Body Ōm",
         title: "Body Ōm",
         tagline: "To elevate mood and awaken the senses.",
         thumbnail: {
@@ -40,6 +42,7 @@ function getHardcodedWorks() {
       id: "hardcoded-3",
       attributes: {
         slug: "fapro",
+        client: "Fapro",
         title: "Fapro",
         tagline: "Every piece of data, a business opportunity.",
         thumbnail: {
@@ -55,6 +58,7 @@ function getHardcodedWorks() {
       id: "hardcoded-4",
       attributes: {
         slug: "el-guarango",
+        client: "El Guarango",
         title: "El Guarango",
         tagline: "This vermouth will bring you knowledge.",
         thumbnail: {
@@ -70,6 +74,7 @@ function getHardcodedWorks() {
       id: "hardcoded-5",
       attributes: {
         slug: "salta",
+        client: "Salta",
         title: "Salta",
         tagline: "A gourmet snack for breaking routine.",
         thumbnail: {
@@ -85,6 +90,7 @@ function getHardcodedWorks() {
       id: "hardcoded-6",
       attributes: {
         slug: "pocho",
+        client: "Pocho",
         title: "Pocho",
         tagline: "Clothing to play and explore.",
         thumbnail: {
@@ -100,17 +106,42 @@ function getHardcodedWorks() {
 }
 
 export default async function FeaturedWork() {
-  // ✅ LOGIC SAMA DENGAN VITE: Try API first, fallback to hardcoded
   let works = [];
 
   try {
     const response = await getProjects(true); // featured = true
+
     if (response && response.data && response.data.length > 0) {
-      works = response.data;
-      console.log("✅ Using Strapi data for FeaturedWork");
-    } else {
+      // ✅ FILTER & VALIDATE: Hanya ambil project dengan thumbnail valid
+      works = response.data
+        .filter((work) => {
+          const attrs = work?.attributes;
+          if (!attrs) return false;
+
+          // Cek apakah thumbnail ada dan valid
+          const hasThumbnail =
+            attrs.thumbnail?.data?.attributes?.url ||
+            attrs.thumbnail?.url ||
+            attrs.image?.data?.attributes?.url ||
+            attrs.image?.url;
+
+          return hasThumbnail && attrs.slug;
+        })
+        .slice(0, 6); // Ambil max 6 projects
+
+      console.log(
+        "✅ Using Strapi data for FeaturedWork:",
+        works.length,
+        "projects",
+      );
+    }
+
+    // ✅ FALLBACK jika tidak ada data valid
+    if (works.length === 0) {
       works = getHardcodedWorks();
-      console.log("⚠️ Using hardcoded data for FeaturedWork (no Strapi data)");
+      console.log(
+        "⚠️ Using hardcoded data for FeaturedWork (no valid Strapi data)",
+      );
     }
   } catch (error) {
     console.warn(
@@ -127,7 +158,6 @@ export default async function FeaturedWork() {
           <span>[ WORK ]</span>
         </div>
         <div className="featured-center">
-          {/* ✅ REMOVED AnimatedHeading - plain H1 like Vite */}
           <h1 className="featured-headline">
             Navigating through the noise to uncover and design the essential
             narrative.
@@ -143,22 +173,37 @@ export default async function FeaturedWork() {
       <div className="work-grid">
         {works.map((work, index) => {
           const attrs = work.attributes;
+
+          // ✅ SAFE IMAGE EXTRACTION dengan multiple fallbacks
           const imageUrl =
             getStrapiMedia(attrs.thumbnail) ||
             getStrapiMedia(attrs.image) ||
-            "https://images.unsplash.com/photo-1481487484168-9b930d5b7d25";
+            attrs.thumbnail?.data?.attributes?.url ||
+            attrs.thumbnail?.url ||
+            attrs.image?.data?.attributes?.url ||
+            attrs.image?.url ||
+            "https://images.unsplash.com/photo-1481487484168-9b930d5b7d25?auto=format&fit=crop&w=800&q=80";
+
+          // ✅ SAFE TEXT EXTRACTION
+          const title = attrs.client || attrs.title || "Untitled Project";
+          const tagline =
+            attrs.tagline ||
+            attrs.services ||
+            attrs.subtitle ||
+            "Project Description";
+          const slug = attrs.slug || `project-${index}`;
 
           return (
             <Link
-              href={`/work/${attrs.slug}`}
-              key={work.id}
+              href={`/work/${slug}`}
+              key={work.id || index}
               className="work-card"
               data-index={index}
             >
               <div className="work-card-image" style={{ position: "relative" }}>
                 <Image
                   src={imageUrl}
-                  alt={attrs.title}
+                  alt={title}
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
                   style={{ objectFit: "cover" }}
@@ -168,10 +213,8 @@ export default async function FeaturedWork() {
               </div>
 
               <div className="work-card-content">
-                <span className="work-card-title">{attrs.title}</span>
-                <h3 className="work-card-tagline">
-                  {attrs.tagline || attrs.client || "Project Tagline"}
-                </h3>
+                <span className="work-card-title">{title}</span>
+                <h3 className="work-card-tagline">{tagline}</h3>
               </div>
             </Link>
           );
