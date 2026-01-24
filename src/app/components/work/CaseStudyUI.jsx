@@ -2,6 +2,8 @@
 
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import ReactMarkdown from "react-markdown";
 import { getStrapiMedia } from "@/app/lib/utils";
 import "@/app/styles/case-study.css"; // Import CSS spesifik
 
@@ -60,27 +62,7 @@ export default function CaseStudyUI({ project }) {
 
   if (!project) return <div className="error-state">Project not found</div>;
 
-  // Helper simple markdown parser
-  const renderMarkdown = (text) => {
-    if (!text) return "";
-
-    // Escape HTML to prevent XSS (basic)
-    let safeText = text
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
-
-    // Replace **text** with <strong>text</strong>
-    safeText = safeText.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-
-    // Replace *text* with <em>text</em>
-    safeText = safeText.replace(/\*(.*?)\*/g, "<em>$1</em>");
-
-    // Replace newlines with <br>
-    safeText = safeText.replace(/\n/g, "<br />");
-
-    return <span dangerouslySetInnerHTML={{ __html: safeText }} />;
-  };
+  // Removed custom renderMarkdown helper
 
   return (
     <article className="case-study">
@@ -104,9 +86,9 @@ export default function CaseStudyUI({ project }) {
                   >
                     <h3 className="cs-nav-title">{section.title}</h3>
                     <div className="cs-nav-desc-wrapper">
-                      <p className="cs-nav-desc">
-                        {renderMarkdown(section.description)}
-                      </p>
+                      <div className="cs-nav-desc markdown-content">
+                        <ReactMarkdown>{section.description}</ReactMarkdown>
+                      </div>
                     </div>
                   </div>
                 ))}

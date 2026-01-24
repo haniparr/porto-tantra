@@ -247,8 +247,7 @@ export default async function ProjectDetailPage({ params }) {
           return {
             id: section.title.toLowerCase().replace(/\s+/g, "-"),
             title: `${String(index + 1).padStart(2, "0")} ${section.title}`,
-            description:
-              stripHtmlTags(section.description) || "No content available.",
+            description: section.description || "No content available.",
             images:
               sectionImages.length > 0
                 ? sectionImages
