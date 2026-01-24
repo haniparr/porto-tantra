@@ -92,12 +92,24 @@ export default async function WorkPage() {
     if (response && response.data && response.data.length > 0) {
       projects = response.data;
       console.log("✅ Using Strapi data for Work Page");
+      console.log(`📊 Loaded ${projects.length} projects from Strapi`);
     } else {
       projects = getFallbackProjects();
       console.log("⚠️ Using fallback data for Work Page (no Strapi data)");
+      console.log(`📊 Loaded ${projects.length} fallback projects`);
     }
   } catch (error) {
-    console.warn("API Error in Work Page, using fallback data:", error.message);
+    console.warn("⚠️ API Error in Work Page, using fallback data");
+    console.warn("Error details:", error.message);
+    projects = getFallbackProjects();
+    console.log(`📊 Loaded ${projects.length} fallback projects after error`);
+  }
+
+  // ✅ Ensure we always have projects (safety check)
+  if (!projects || projects.length === 0) {
+    console.error(
+      "❌ CRITICAL: No projects available, using emergency fallback",
+    );
     projects = getFallbackProjects();
   }
 

@@ -113,16 +113,23 @@ export default async function FeaturedWork() {
     if (response && response.data && response.data.length > 0) {
       works = response.data;
       console.log("✅ Using Strapi data for FeaturedWork");
+      console.log(`📊 Loaded ${works.length} featured works from Strapi`);
       console.log("📝 First work item:", JSON.stringify(works[0], null, 2));
     } else {
       works = getHardcodedWorks();
       console.log("⚠️ Using hardcoded data for FeaturedWork (no Strapi data)");
+      console.log(`📊 Loaded ${works.length} hardcoded works`);
     }
   } catch (error) {
-    console.warn(
-      "API Error in FeaturedWork, using hardcoded data:",
-      error.message,
-    );
+    console.warn("⚠️ API Error in FeaturedWork, using hardcoded data");
+    console.warn("Error details:", error.message);
+    works = getHardcodedWorks();
+    console.log(`📊 Loaded ${works.length} hardcoded works after error`);
+  }
+
+  // ✅ Ensure we always have works (safety check)
+  if (!works || works.length === 0) {
+    console.error("❌ CRITICAL: No works available, using emergency fallback");
     works = getHardcodedWorks();
   }
 

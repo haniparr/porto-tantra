@@ -1,14 +1,19 @@
 import { getStrapiURL } from "./utils";
 
-// Helper Fetcher Standar
+// Helper Fetcher with Timeout
 async function fetchAPI(path, urlParamsObject = {}, options = {}) {
+  // Create AbortController for timeout
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
   try {
-    // Merge options
+    // Merge options with abort signal
     const mergedOptions = {
       headers: {
         "Content-Type": "application/json",
       },
       ...options,
+      signal: controller.signal,
     };
 
     // Construct URL
@@ -16,8 +21,10 @@ async function fetchAPI(path, urlParamsObject = {}, options = {}) {
       ? path
       : `${getStrapiURL("/api")}${path}`;
 
-    // Fetch
+    // Fetch with timeout
     const response = await fetch(requestUrl, mergedOptions);
+    clearTimeout(timeoutId); // Clear timeout if request succeeds
+
     const data = await response.json();
 
     if (!response.ok) {
@@ -34,6 +41,14 @@ async function fetchAPI(path, urlParamsObject = {}, options = {}) {
 
     return data;
   } catch (error) {
+    clearTimeout(timeoutId); // Clear timeout on error
+
+    // Handle timeout specifically
+    if (error.name === "AbortError") {
+      console.warn(`API request timeout after 5s: ${path}`);
+      throw new Error("API request timeout");
+    }
+
     console.error("Fetch API Error:", error);
     throw error;
   }
