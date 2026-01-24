@@ -7,11 +7,11 @@ import { getStrapiMedia } from "@/app/lib/utils";
 function getHardcodedWorks() {
   return [
     {
-      id: "hardcoded-1",
+      id: "hardcoded-2",
       attributes: {
-        slug: "beermut",
-        title: "Beermut",
-        tagline: "Bringing fun to gatherings.",
+        slug: "body-om",
+        title: "Body Ōm",
+        tagline: "To elevate mood and awaken the senses.",
         thumbnail: {
           data: {
             attributes: {
@@ -22,11 +22,11 @@ function getHardcodedWorks() {
       },
     },
     {
-      id: "hardcoded-2",
+      id: "hardcoded-1",
       attributes: {
-        slug: "body-om",
-        title: "Body Ōm",
-        tagline: "To elevate mood and awaken the senses.",
+        slug: "beermut",
+        title: "Beermut",
+        tagline: "Bringing fun to gatherings.",
         thumbnail: {
           data: {
             attributes: {
