@@ -44,7 +44,7 @@ function getFallbackProjects() {
         thumbnail: {
           data: {
             attributes: {
-              url: "https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?auto=format&fit=crop&w=800&q=80",
+              url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
             },
           },
         },
