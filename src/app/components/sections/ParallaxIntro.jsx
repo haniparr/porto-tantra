@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { AsciiImage } from "./../ui/AsciiImage";
 import AnimatedHeading from "./../ui/AnimatedHeading"; // Import AnimatedHeading
 
@@ -81,27 +81,6 @@ const imageConfig = [
 export default function ParallaxIntro() {
   const sectionRef = useRef(null);
   const imagesRef = useRef([]);
-  const [asciiColor, setAsciiColor] = useState("#1a1a1e"); // Default to Accent Blue (Dark Mode)
-
-  useEffect(() => {
-    // Handle Theme Detection (Dark vs Light Mode)
-    const updateTheme = () => {
-      const isDarkMode = window.matchMedia(
-        "(prefers-color-scheme: dark)",
-      ).matches;
-      // Dark Mode -> Website Accent (#1a1a1e)
-      // Light Mode -> White Text (#ffffff)
-      setAsciiColor(isDarkMode ? "#1a1a1e" : "#ffffff");
-    };
-
-    // Initial check
-    updateTheme();
-
-    // Listen for changes
-    const matcher = window.matchMedia("(prefers-color-scheme: dark)");
-    matcher.addEventListener("change", updateTheme);
-    return () => matcher.removeEventListener("change", updateTheme);
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -146,10 +125,8 @@ export default function ParallaxIntro() {
                 src={img.src}
                 width={img.width}
                 height={img.height}
-                enableColor={true}
+                enableColor={false}
                 cellSize={4}
-                monochrome={true}
-                color={asciiColor}
               />
             </div>
           </div>

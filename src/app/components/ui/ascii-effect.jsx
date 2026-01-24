@@ -12,6 +12,8 @@ uniform bool colorMode;
 uniform int asciiStyle;
 uniform bool useMonochromeColor;
 uniform vec3 monochromeColor;
+uniform vec3 customDarkColor;
+uniform vec3 customLightColor;
 
 // PostFX uniforms
 uniform float time;
@@ -220,7 +222,8 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
   } else if (colorMode) {
     finalColor = cellColor.rgb * charValue;
   } else {
-    finalColor = vec3(brightness * charValue);
+    // Custom black & white palette
+    finalColor = mix(customDarkColor, customLightColor, brightness * charValue);
   }
 
   // POST-PROCESSING (Tier 1)
@@ -262,6 +265,8 @@ let _resolution = new Vector2(1920, 1080);
 let _mousePos = new Vector2(0, 0);
 let _useMonochromeColor = false;
 let _monochromeColor = new Color(0xffffff);
+let _customDarkColor = new Color(0x1a1a1e);
+let _customLightColor = new Color(0xffffff);
 
 class AsciiEffectImpl extends Effect {
   constructor(options) {
@@ -274,6 +279,8 @@ class AsciiEffectImpl extends Effect {
       mousePos = new Vector2(0, 0),
       useMonochromeColor = false,
       monochromeColor = "#ffffff",
+      customDarkColor = "#1a1a1e",
+      customLightColor = "#ffffff",
       postfx = {},
     } = options;
 
@@ -312,6 +319,8 @@ class AsciiEffectImpl extends Effect {
         ["contrastAdjust", new Uniform(postfx.contrastAdjust || 1)],
         ["useMonochromeColor", new Uniform(useMonochromeColor)],
         ["monochromeColor", new Uniform(new Color(monochromeColor))],
+        ["customDarkColor", new Uniform(new Color(customDarkColor))],
+        ["customLightColor", new Uniform(new Color(customLightColor))],
       ]),
     });
 
@@ -323,6 +332,8 @@ class AsciiEffectImpl extends Effect {
     _mousePos = mousePos;
     _useMonochromeColor = useMonochromeColor;
     _monochromeColor.set(monochromeColor);
+    _customDarkColor.set(customDarkColor);
+    _customLightColor.set(customLightColor);
   }
 
   update(renderer, inputBuffer, deltaTime) {
@@ -348,6 +359,8 @@ class AsciiEffectImpl extends Effect {
     this.uniforms.get("mousePos").value = _mousePos;
     this.uniforms.get("useMonochromeColor").value = _useMonochromeColor;
     this.uniforms.get("monochromeColor").value = _monochromeColor;
+    this.uniforms.get("customDarkColor").value = _customDarkColor;
+    this.uniforms.get("customLightColor").value = _customLightColor;
   }
 }
 
@@ -362,6 +375,8 @@ export const AsciiEffect = forwardRef((props, ref) => {
     mousePos = new Vector2(0, 0),
     monochrome = false,
     color: monoColorHex = "#ffffff",
+    darkColor = "#1a1a1e",
+    lightColor = "#ffffff",
   } = props;
 
   const styleMap = { standard: 0, dense: 1, minimal: 2, blocks: 3 };
@@ -375,6 +390,8 @@ export const AsciiEffect = forwardRef((props, ref) => {
   _mousePos = mousePos;
   _useMonochromeColor = monochrome;
   _monochromeColor.set(monoColorHex);
+  _customDarkColor.set(darkColor);
+  _customLightColor.set(lightColor);
 
   const effect = useMemo(
     () =>
@@ -388,6 +405,8 @@ export const AsciiEffect = forwardRef((props, ref) => {
         mousePos,
         useMonochromeColor: monochrome,
         monochromeColor: monoColorHex,
+        customDarkColor: darkColor,
+        customLightColor: lightColor,
       }),
     [
       cellSize,
@@ -399,6 +418,8 @@ export const AsciiEffect = forwardRef((props, ref) => {
       mousePos,
       monochrome,
       monoColorHex,
+      darkColor,
+      lightColor,
     ],
   );
 
