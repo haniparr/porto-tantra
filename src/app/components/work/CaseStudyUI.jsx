@@ -12,10 +12,71 @@ export default function CaseStudyUI({ project }) {
   const [activeSection, setActiveSection] = useState(
     project.sections[0]?.id || "",
   );
+  const activeSectionRef = useRef(activeSection);
+  const containerRef = useRef(null);
+  const sidebarRef = useRef(null);
   const observerRef = useRef(null);
 
   // Handle Credits: Pastikan selalu array
   const credits = Array.isArray(project.credits) ? project.credits : [];
+
+  // Sync state for event listeners
+  useEffect(() => {
+    activeSectionRef.current = activeSection;
+  }, [activeSection]);
+
+  // --- LOGIC: SYNC SCROLL SIDEBAR ---
+  useEffect(() => {
+    const handleSyncScroll = () => {
+      if (!containerRef.current || !sidebarRef.current) return;
+
+      const container = containerRef.current;
+      const sidebar = sidebarRef.current;
+
+      const { top, height } = container.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const scrollY = window.scrollY; // Absolute scroll Y
+      const containerTop = scrollY + top; // Absolute top position of container
+
+      // Hitung progress scroll relative terhadap container case study
+      // Berapa jauh kita sudah scroll MELEWATI bagian atas container?
+      const scrolledDistance = scrollY; // Asumsi start dari 0 atau sesuaikan offset jika ada header
+
+      // Total jarak yang bisa discroll di main content (kanan)
+      // = Tinggi Container - Tinggi Viewport (karena sticky berhenti saat container habis)
+      const maxScrollMain = height - viewportHeight;
+
+      // Total jarak yang bisa discroll di sidebar (kiri)
+      // = Tinggi Isi Sidebar (scrollHeight) - Tinggi Viewport (clientHeight)
+      const maxScrollSidebar = sidebar.scrollHeight - sidebar.clientHeight;
+
+      if (maxScrollMain <= 0 || maxScrollSidebar <= 0) return;
+
+      // Hitung persentase progress (0 sampai 1)
+      // Gunakan Math.max/min untuk menjaga range 0-1
+      // Logic: (Current Scroll Position - Start Offset) / Scrollable Distance
+      // Start Offset disini anggap 0 atau container.offsetTop
+      // Kita pakai pendekatan simple: seberapa jauh container bagian atas sudah naik ke atas layar?
+      // top adalah negative value ketika discroll ke bawah.
+      // -top adalah pixel yang sudah terlewat.
+
+      let progress = -top / maxScrollMain;
+      progress = Math.max(0, Math.min(1, progress));
+
+      // Apply ke sidebar
+      sidebar.scrollTop = progress * maxScrollSidebar;
+    };
+
+    window.addEventListener("scroll", handleSyncScroll);
+    // Trigger sekali saat mount/resize untuk initial positioning
+    handleSyncScroll();
+    window.addEventListener("resize", handleSyncScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleSyncScroll);
+      window.removeEventListener("resize", handleSyncScroll);
+    };
+  }, []);
 
   // --- LOGIC: SCROLL SPY ---
   useEffect(() => {
@@ -67,9 +128,9 @@ export default function CaseStudyUI({ project }) {
 
   return (
     <article className="case-study">
-      <div className="cs-container">
+      <div className="cs-container" ref={containerRef}>
         {/* LEFT SIDE - STICKY SIDEBAR */}
-        <aside className="cs-sidebar">
+        <aside className="cs-sidebar" ref={sidebarRef}>
           <div className="cs-sidebar-content">
             <div className="cs-header-group">
               <div className="cs-header">
