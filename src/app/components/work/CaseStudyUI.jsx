@@ -87,7 +87,13 @@ export default function CaseStudyUI({ project }) {
                     <h3 className="cs-nav-title">{section.title}</h3>
                     <div className="cs-nav-desc-wrapper">
                       <div className="cs-nav-desc markdown-content">
-                        <ReactMarkdown>{section.description}</ReactMarkdown>
+                        <ReactMarkdown
+                          components={{
+                            p: ({ node, ...props }) => <span {...props} />, // Render p as span to maintain layout
+                          }}
+                        >
+                          {section.description}
+                        </ReactMarkdown>
                       </div>
                     </div>
                   </div>

@@ -5,8 +5,11 @@
   line-height: 1.6;
 }
 
-.markdown-content p {
-  margin-bottom: 1rem;
+/* Reset default margins for layout preservation */
+.markdown-content p,
+.markdown-content span {
+  margin-bottom: 0;
+  display: inline-block; /* Or block depending on preference, inline-block acts safer for nav descriptions */
 }
 
 .markdown-content strong {
