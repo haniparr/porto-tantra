@@ -149,10 +149,11 @@ export async function generateMetadata({ params }) {
   const { slug } = await params;
 
   try {
-    const response = await getProjects();
-    const project = response.data?.find((p) => p.attributes.slug === slug);
+    console.log("🔍 Generating metadata for slug:", slug);
+    const project = await getProject(slug); // ✅ Use getProject API
 
-    if (!project) {
+    if (!project || !project.attributes) {
+      console.warn("⚠️ Project not found for metadata, using fallback");
       const defaultProject = getDefaultProjectData(slug);
       return {
         title: `${defaultProject.title} - Case Study`,
@@ -161,13 +162,20 @@ export async function generateMetadata({ params }) {
     }
 
     const attrs = project.attributes;
+    console.log("✅ Metadata generated from Strapi:", attrs.client);
+
     return {
-      title: `${attrs.client || attrs.title} - Case Study`,
+      title: `${attrs.client || attrs.title} - Case Study | Tantra Hariastama`,
       description:
         attrs.services || attrs.subtitle || "Project portfolio case study.",
+      openGraph: {
+        title: `${attrs.client || attrs.title} - Case Study`,
+        description: attrs.services || attrs.subtitle,
+        images: attrs.thumbnail ? [getStrapiMedia(attrs.thumbnail)] : [],
+      },
     };
   } catch (error) {
-    console.error("Error generating metadata:", error);
+    console.error("❌ Error generating metadata:", error);
     const defaultProject = getDefaultProjectData(slug);
     return {
       title: `${defaultProject.title} - Case Study`,
