@@ -182,59 +182,80 @@ export default async function ProjectDetailPage({ params }) {
   let projectData = null;
   let isUsingFallback = false;
 
-  // ✅ TRY-CATCH ERROR HANDLING (sama seperti Vite)
   try {
     console.log("Fetching project with slug:", slug);
     const response = await getProjects();
 
-    // Cari project yang cocok dengan slug
     const projectItem = response.data?.find((p) => {
       const pSlug = p.attributes?.slug || p.slug;
       return pSlug === slug;
     });
 
     if (projectItem) {
-      // ✅ Handle both nested (.attributes) and flattened data structures
       const attrs = projectItem.attributes || projectItem;
       console.log("✅ Project found in Strapi:", attrs.client);
 
-      // Get image URL helper
+      // ✅ ADD: Debug raw credits
+      console.log("Raw credits from Strapi:", attrs.credits);
+
       const getImageUrl = (media) => {
         const url = getStrapiMedia(media);
         if (url) return url;
-        // Fallback to default
         return "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80";
       };
 
-      // ✅ Transform credits (support both old and new structure)
+      // ✅ FIXED: Transform credits with better handling
       let credits = [];
-      if (
-        attrs.credits &&
-        Array.isArray(attrs.credits) &&
-        attrs.credits.length > 0
-      ) {
-        // New structure: component with name + role
-        credits = attrs.credits.map((credit) => ({
-          name: credit.name || "Unknown",
-          role: credit.role || "Contributor",
-        }));
+      if (attrs.credits) {
+        console.log("Credits data type:", typeof attrs.credits);
+        console.log("Credits is array?", Array.isArray(attrs.credits));
+
+        // Case 1: Credits is array of objects with name & role
+        if (Array.isArray(attrs.credits)) {
+          credits = attrs.credits
+            .filter((credit) => credit && (credit.name || credit.role)) // Filter out empty items
+            .map((credit) => ({
+              name: credit.name || credit.Name || "Unknown",
+              role: credit.role || credit.Role || "Contributor",
+            }));
+        }
+        // Case 2: Credits might be nested in data property
+        else if (attrs.credits.data && Array.isArray(attrs.credits.data)) {
+          credits = attrs.credits.data
+            .filter((item) => item.attributes)
+            .map((item) => ({
+              name: item.attributes.name || item.attributes.Name || "Unknown",
+              role:
+                item.attributes.role || item.attributes.Role || "Contributor",
+            }));
+        }
+        // Case 3: Credits is a single object
+        else if (typeof attrs.credits === "object" && attrs.credits.name) {
+          credits = [
+            {
+              name: attrs.credits.name || "Unknown",
+              role: attrs.credits.role || "Contributor",
+            },
+          ];
+        }
       }
 
-      // ✅ Transform sections
+      console.log("Transformed credits:", credits);
+      console.log("Credits count:", credits.length);
+
+      // ✅ Transform sections (existing code)
       let sections = [];
       if (
         attrs.sections &&
         Array.isArray(attrs.sections) &&
         attrs.sections.length > 0
       ) {
-        // Use new dynamic sections from Strapi
         sections = attrs.sections.map((section, index) => {
           const sectionImages =
             section.images?.data
               ?.map((img) => getStrapiMedia(img))
               .filter((url) => url !== null) || [];
 
-          // Handle if images is array directly (flattened)
           if (!section.images?.data && Array.isArray(section.images)) {
             const flattenedImages = section.images
               .map((img) => getStrapiMedia(img))
@@ -264,11 +285,12 @@ export default async function ProjectDetailPage({ params }) {
         title: attrs.client || attrs.title || "Untitled Project",
         subtitle: attrs.services || attrs.subtitle || "Design Project",
         year: attrs.year || "2024",
-        credits: credits,
+        credits: credits, // ✅ Use transformed credits
         sections:
           sections.length > 0 ? sections : getDefaultProjectData(slug).sections,
       };
 
+      console.log("✅ Final projectData.credits:", projectData.credits);
       console.log("✅ Using Strapi project data");
     } else {
       console.warn("⚠️ Project not found in Strapi, using fallback");
@@ -282,14 +304,12 @@ export default async function ProjectDetailPage({ params }) {
     console.log("⚠️ Using fallback project data due to error");
   }
 
-  // ✅ FINAL FALLBACK (jika masih null)
   if (!projectData) {
     console.warn("⚠️ No project data available, using generic fallback");
     projectData = getDefaultProjectData(slug);
     isUsingFallback = true;
   }
 
-  // ✅ VALIDATION: Ensure required fields
   if (!projectData.sections || projectData.sections.length === 0) {
     console.warn("⚠️ Project has no sections, adding default sections");
     projectData.sections = getDefaultProjectData(slug).sections;

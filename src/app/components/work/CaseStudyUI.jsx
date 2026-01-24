@@ -13,6 +13,15 @@ export default function CaseStudyUI({ project }) {
     project.sections[0]?.id || "",
   );
   const observerRef = useRef(null);
+  useEffect(() => {
+    console.log("=== DEBUG CREDITS ===");
+    console.log("Raw project.credits:", project.credits);
+    console.log("Is array?", Array.isArray(project.credits));
+    console.log("Length:", project.credits?.length);
+    if (project.credits) {
+      console.log("First item:", project.credits[0]);
+    }
+  }, [project.credits]);
 
   // Handle Credits: Pastikan selalu array
   const credits = Array.isArray(project.credits) ? project.credits : [];

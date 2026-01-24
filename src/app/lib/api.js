@@ -117,8 +117,8 @@ export async function getProjects(featured = false) {
 }
 
 export async function getProject(slug) {
-  // Fixed: Populate sections with nested images
-  const path = `/projects?filters[slug][$eq]=${slug}&populate[thumbnail][fields][0]=url&populate[thumbnail][fields][1]=formats&populate[logo][fields][0]=url&populate[logo][fields][1]=formats&populate[sections][populate][images][fields][0]=url&populate[sections][populate][images][fields][1]=formats&populate[credits]=*&populate[testimonial][populate]=*`;
+  // ✅ FIXED: Ensure credits is populated
+  const path = `/projects?filters[slug][$eq]=${slug}&populate[thumbnail][fields][0]=url&populate[thumbnail][fields][1]=formats&populate[logo][fields][0]=url&populate[logo][fields][1]=formats&populate[sections][populate][images][fields][0]=url&populate[sections][populate][images][fields][1]=formats&populate[credits][populate]=*&populate[testimonial][populate]=*`;
 
   try {
     const data = await fetchAPI(
@@ -128,6 +128,12 @@ export async function getProject(slug) {
         next: { revalidate: 3600 },
       },
     );
+
+    console.log("API Response for project:", data);
+    if (data.data && data.data[0]) {
+      console.log("Credits from API:", data.data[0].attributes.credits);
+    }
+
     return data.data[0] || null;
   } catch (error) {
     console.warn("getProject error:", error.message);
