@@ -25,6 +25,10 @@ const nextConfig = {
         hostname: "upload.wikimedia.org", // Untuk Client Logos di Services Page
       },
       {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+      {
         protocol: "http",
         hostname: "localhost", // Untuk fetch gambar dari Strapi Local (port 1337)
         port: "1337",

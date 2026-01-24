@@ -42,6 +42,7 @@ export default [
       methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
       headers: "*",
       keepHeaderOnError: true,
+      credentials: true,
     },
   },
   "strapi::poweredBy",
