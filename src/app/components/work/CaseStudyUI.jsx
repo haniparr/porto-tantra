@@ -2,6 +2,9 @@
 
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 import { getStrapiMedia } from "@/app/lib/utils";
 import "@/app/styles/case-study.css"; // Import CSS spesifik
 
@@ -78,11 +81,15 @@ export default function CaseStudyUI({ project }) {
                     key={section.id}
                     className={`cs-nav-item ${activeSection === section.id ? "active" : ""}`}
                     onClick={() => scrollToSection(section.id)}
-                    style={{ cursor: "pointer" }} // Tambahkan cursor pointer
+                    style={{ cursor: "pointer" }}
                   >
                     <h3 className="cs-nav-title">{section.title}</h3>
                     <div className="cs-nav-desc-wrapper">
-                      <p className="cs-nav-desc">{section.description}</p>
+                      <div className="cs-nav-desc markdown-content">
+                        <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+                          {section.description}
+                        </ReactMarkdown>
+                      </div>
                     </div>
                   </div>
                 ))}

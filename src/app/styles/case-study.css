@@ -265,3 +265,89 @@
     transform: translateY(0);
   }
 }
+
+/* Rich Text Content Styling */
+.cs-nav-desc h1,
+.cs-nav-desc h2,
+.cs-nav-desc h3 {
+  font-family: var(--font-headline);
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.cs-nav-desc h1 {
+  font-size: 1.5rem;
+}
+
+.cs-nav-desc h2 {
+  font-size: 1.25rem;
+}
+
+.cs-nav-desc h3 {
+  font-size: 1.1rem;
+}
+
+.cs-nav-desc p {
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+}
+
+.cs-nav-desc ul,
+.cs-nav-desc ol {
+  margin-left: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.cs-nav-desc li {
+  margin-bottom: 0.25rem;
+  line-height: 1.5;
+}
+
+.cs-nav-desc strong {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.cs-nav-desc em {
+  font-style: italic;
+}
+
+.cs-nav-desc a {
+  color: #4cd964;
+  text-decoration: underline;
+  transition: opacity 0.2s ease;
+}
+
+.cs-nav-desc a:hover {
+  opacity: 0.8;
+}
+
+.cs-nav-desc blockquote {
+  border-left: 3px solid rgba(255, 255, 255, 0.3);
+  padding-left: 1rem;
+  margin: 1rem 0;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.cs-nav-desc code {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-family: monospace;
+  font-size: 0.9em;
+}
+
+.cs-nav-desc pre {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.cs-nav-desc pre code {
+  background: none;
+  padding: 0;
+}
