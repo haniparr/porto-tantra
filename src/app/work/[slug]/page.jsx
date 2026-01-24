@@ -188,11 +188,15 @@ export default async function ProjectDetailPage({ params }) {
     const response = await getProjects();
 
     // Cari project yang cocok dengan slug
-    const projectItem = response.data?.find((p) => p.attributes.slug === slug);
+    const projectItem = response.data?.find((p) => {
+      const pSlug = p.attributes?.slug || p.slug;
+      return pSlug === slug;
+    });
 
     if (projectItem) {
-      console.log("✅ Project found in Strapi:", projectItem.attributes.client);
-      const attrs = projectItem.attributes;
+      // ✅ Handle both nested (.attributes) and flattened data structures
+      const attrs = projectItem.attributes || projectItem;
+      console.log("✅ Project found in Strapi:", attrs.client);
 
       // Get image URL helper
       const getImageUrl = (media) => {
@@ -229,6 +233,16 @@ export default async function ProjectDetailPage({ params }) {
             section.images?.data
               ?.map((img) => getStrapiMedia(img))
               .filter((url) => url !== null) || [];
+
+          // Handle if images is array directly (flattened)
+          if (!section.images?.data && Array.isArray(section.images)) {
+            const flattenedImages = section.images
+              .map((img) => getStrapiMedia(img))
+              .filter((url) => url !== null);
+            if (flattenedImages.length > 0) {
+              sectionImages.push(...flattenedImages);
+            }
+          }
 
           return {
             id: section.title.toLowerCase().replace(/\s+/g, "-"),
