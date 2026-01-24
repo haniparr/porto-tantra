@@ -60,6 +60,28 @@ export default function CaseStudyUI({ project }) {
 
   if (!project) return <div className="error-state">Project not found</div>;
 
+  // Helper simple markdown parser
+  const renderMarkdown = (text) => {
+    if (!text) return "";
+
+    // Escape HTML to prevent XSS (basic)
+    let safeText = text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+
+    // Replace **text** with <strong>text</strong>
+    safeText = safeText.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+
+    // Replace *text* with <em>text</em>
+    safeText = safeText.replace(/\*(.*?)\*/g, "<em>$1</em>");
+
+    // Replace newlines with <br>
+    safeText = safeText.replace(/\n/g, "<br />");
+
+    return <span dangerouslySetInnerHTML={{ __html: safeText }} />;
+  };
+
   return (
     <article className="case-study">
       <div className="cs-container">
@@ -78,11 +100,13 @@ export default function CaseStudyUI({ project }) {
                     key={section.id}
                     className={`cs-nav-item ${activeSection === section.id ? "active" : ""}`}
                     onClick={() => scrollToSection(section.id)}
-                    style={{ cursor: "pointer" }} // Tambahkan cursor pointer
+                    style={{ cursor: "pointer" }}
                   >
                     <h3 className="cs-nav-title">{section.title}</h3>
                     <div className="cs-nav-desc-wrapper">
-                      <p className="cs-nav-desc">{section.description}</p>
+                      <p className="cs-nav-desc">
+                        {renderMarkdown(section.description)}
+                      </p>
                     </div>
                   </div>
                 ))}
