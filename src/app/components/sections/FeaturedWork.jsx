@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getProjects } from "@/app/lib/api";
-import { getStrapiMedia } from "@/app/lib/utils";
+import { getImageWithFallback } from "@/app/lib/utils";
 
 // ✅ HARDCODED FALLBACK DATA (sama seperti Vite)
 function getHardcodedWorks() {
@@ -142,11 +142,19 @@ export default async function FeaturedWork() {
 
       <div className="work-grid">
         {works.map((work, index) => {
+          // ✅ Add null safety check for attributes
+          if (!work || !work.attributes) {
+            console.warn("Invalid work item:", work);
+            return null;
+          }
+
           const attrs = work.attributes;
-          const imageUrl =
-            getStrapiMedia(attrs.thumbnail) ||
-            getStrapiMedia(attrs.image) ||
-            "https://images.unsplash.com/photo-1481487484168-9b930d5b7d25";
+
+          // ✅ Use getImageWithFallback with proper null safety
+          const imageUrl = getImageWithFallback(
+            attrs.thumbnail || attrs.image,
+            "https://images.unsplash.com/photo-1481487484168-9b930d5b7d25",
+          );
 
           return (
             <Link
