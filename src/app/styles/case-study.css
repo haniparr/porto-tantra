@@ -373,3 +373,167 @@
   background: none;
   padding: 0;
 }
+
+.cs-nav-desc,
+.markdown-content {
+  font-size: 22px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Headings */
+.cs-nav-desc h1,
+.cs-nav-desc h2,
+.cs-nav-desc h3,
+.markdown-h1,
+.markdown-h2,
+.markdown-h3 {
+  font-family: var(--font-headline);
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.cs-nav-desc h1,
+.markdown-h1 {
+  font-size: 1.75rem;
+}
+
+.cs-nav-desc h2,
+.markdown-h2 {
+  font-size: 1.5rem;
+}
+
+.cs-nav-desc h3,
+.markdown-h3 {
+  font-size: 1.25rem;
+}
+
+/* Paragraphs */
+.cs-nav-desc p,
+.markdown-paragraph {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Lists */
+.cs-nav-desc ul,
+.cs-nav-desc ol,
+.markdown-list {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+  padding-left: 0.5rem;
+}
+
+.cs-nav-desc ul,
+.markdown-list:not(.ordered) {
+  list-style-type: disc;
+}
+
+.cs-nav-desc ol,
+.markdown-list.ordered {
+  list-style-type: decimal;
+}
+
+.cs-nav-desc li,
+.markdown-list-item {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Text Styling */
+.cs-nav-desc strong,
+.markdown-bold {
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.cs-nav-desc em,
+.markdown-italic {
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Links */
+.cs-nav-desc a,
+.markdown-link {
+  color: #4cd964;
+  text-decoration: underline;
+  transition: opacity 0.2s ease;
+}
+
+.cs-nav-desc a:hover,
+.markdown-link:hover {
+  opacity: 0.8;
+}
+
+/* Blockquotes */
+.cs-nav-desc blockquote,
+.markdown-quote {
+  border-left: 4px solid rgba(255, 255, 255, 0.3);
+  padding-left: 1.25rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 1rem 1.25rem;
+  border-radius: 4px;
+}
+
+/* Code */
+.cs-nav-desc code,
+.markdown-code-inline {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.2em 0.5em;
+  border-radius: 4px;
+  font-family: "Courier New", monospace;
+  font-size: 0.9em;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.cs-nav-desc pre,
+.markdown-code-block {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 1.25rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cs-nav-desc pre code,
+.markdown-code-block code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+/* Horizontal Rules */
+.cs-nav-desc hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 2rem 0;
+}
+
+/* Tables (if needed) */
+.cs-nav-desc table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+}
+
+.cs-nav-desc th,
+.cs-nav-desc td {
+  padding: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: left;
+}
+
+.cs-nav-desc th {
+  background: rgba(255, 255, 255, 0.05);
+  font-weight: 600;
+}

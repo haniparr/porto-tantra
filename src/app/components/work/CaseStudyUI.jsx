@@ -5,8 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
+import remarkGfm from "remark-gfm"; // ✅ ADD: Support for GitHub Flavored Markdown
 import { getStrapiMedia } from "@/app/lib/utils";
-import "@/app/styles/case-study.css"; // Import CSS spesifik
+import "@/app/styles/case-study.css";
 
 export default function CaseStudyUI({ project }) {
   const [activeSection, setActiveSection] = useState(
@@ -17,58 +18,33 @@ export default function CaseStudyUI({ project }) {
   const sidebarRef = useRef(null);
   const observerRef = useRef(null);
 
-  // Handle Credits: Pastikan selalu array
   const credits = Array.isArray(project.credits) ? project.credits : [];
 
-  // Sync state for event listeners
   useEffect(() => {
     activeSectionRef.current = activeSection;
   }, [activeSection]);
 
-  // --- LOGIC: SYNC SCROLL SIDEBAR ---
+  // --- SYNC SCROLL SIDEBAR ---
   useEffect(() => {
     const handleSyncScroll = () => {
       if (!containerRef.current || !sidebarRef.current) return;
 
       const container = containerRef.current;
       const sidebar = sidebarRef.current;
-
       const { top, height } = container.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
-      const scrollY = window.scrollY; // Absolute scroll Y
-      const containerTop = scrollY + top; // Absolute top position of container
-
-      // Hitung progress scroll relative terhadap container case study
-      // Berapa jauh kita sudah scroll MELEWATI bagian atas container?
-      const scrolledDistance = scrollY; // Asumsi start dari 0 atau sesuaikan offset jika ada header
-
-      // Total jarak yang bisa discroll di main content (kanan)
-      // = Tinggi Container - Tinggi Viewport (karena sticky berhenti saat container habis)
+      const scrollY = window.scrollY;
       const maxScrollMain = height - viewportHeight;
-
-      // Total jarak yang bisa discroll di sidebar (kiri)
-      // = Tinggi Isi Sidebar (scrollHeight) - Tinggi Viewport (clientHeight)
       const maxScrollSidebar = sidebar.scrollHeight - sidebar.clientHeight;
 
       if (maxScrollMain <= 0 || maxScrollSidebar <= 0) return;
 
-      // Hitung persentase progress (0 sampai 1)
-      // Gunakan Math.max/min untuk menjaga range 0-1
-      // Logic: (Current Scroll Position - Start Offset) / Scrollable Distance
-      // Start Offset disini anggap 0 atau container.offsetTop
-      // Kita pakai pendekatan simple: seberapa jauh container bagian atas sudah naik ke atas layar?
-      // top adalah negative value ketika discroll ke bawah.
-      // -top adalah pixel yang sudah terlewat.
-
       let progress = -top / maxScrollMain;
       progress = Math.max(0, Math.min(1, progress));
-
-      // Apply ke sidebar
       sidebar.scrollTop = progress * maxScrollSidebar;
     };
 
     window.addEventListener("scroll", handleSyncScroll);
-    // Trigger sekali saat mount/resize untuk initial positioning
     handleSyncScroll();
     window.addEventListener("resize", handleSyncScroll);
 
@@ -78,14 +54,12 @@ export default function CaseStudyUI({ project }) {
     };
   }, []);
 
-  // --- LOGIC: SCROLL SPY ---
+  // --- SCROLL SPY ---
   useEffect(() => {
-    // Cleanup observer lama jika ada
     if (observerRef.current) observerRef.current.disconnect();
 
     const observerOptions = {
       root: null,
-      // Logic asli: '-40% 0px -40% 0px' (Aktif saat elemen berada di tengah layar)
       rootMargin: "-40% 0px -40% 0px",
       threshold: 0,
     };
@@ -103,28 +77,23 @@ export default function CaseStudyUI({ project }) {
       observerOptions,
     );
 
-    // Observe semua section
     const sections = document.querySelectorAll(".cs-section");
     sections.forEach((section) => observerRef.current.observe(section));
 
     return () => {
       if (observerRef.current) observerRef.current.disconnect();
     };
-  }, [project]); // Re-run jika project berubah
+  }, [project]);
 
-  // --- LOGIC: SMOOTH SCROLL CLICK ---
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element) {
-      // Offset sedikit untuk header sticky jika ada, atau biarkan default
       element.scrollIntoView({ behavior: "smooth" });
-      setActiveSection(id); // Set active langsung agar responsif
+      setActiveSection(id);
     }
   };
 
   if (!project) return <div className="error-state">Project not found</div>;
-
-  // Removed custom renderMarkdown helper
 
   return (
     <article className="case-study">
@@ -149,7 +118,65 @@ export default function CaseStudyUI({ project }) {
                     <h3 className="cs-nav-title">{section.title}</h3>
                     <div className="cs-nav-desc-wrapper">
                       <div className="cs-nav-desc markdown-content">
-                        <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+                        {/* ✅ FIX: Add remarkGfm for better markdown support */}
+                        <ReactMarkdown
+                          rehypePlugins={[rehypeRaw]}
+                          remarkPlugins={[remarkGfm]}
+                          components={{
+                            // ✅ Custom components untuk styling
+                            p: ({ node, ...props }) => (
+                              <p className="markdown-paragraph" {...props} />
+                            ),
+                            h1: ({ node, ...props }) => (
+                              <h1 className="markdown-h1" {...props} />
+                            ),
+                            h2: ({ node, ...props }) => (
+                              <h2 className="markdown-h2" {...props} />
+                            ),
+                            h3: ({ node, ...props }) => (
+                              <h3 className="markdown-h3" {...props} />
+                            ),
+                            ul: ({ node, ...props }) => (
+                              <ul className="markdown-list" {...props} />
+                            ),
+                            ol: ({ node, ...props }) => (
+                              <ol
+                                className="markdown-list ordered"
+                                {...props}
+                              />
+                            ),
+                            li: ({ node, ...props }) => (
+                              <li className="markdown-list-item" {...props} />
+                            ),
+                            strong: ({ node, ...props }) => (
+                              <strong className="markdown-bold" {...props} />
+                            ),
+                            em: ({ node, ...props }) => (
+                              <em className="markdown-italic" {...props} />
+                            ),
+                            blockquote: ({ node, ...props }) => (
+                              <blockquote
+                                className="markdown-quote"
+                                {...props}
+                              />
+                            ),
+                            code: ({ node, inline, ...props }) =>
+                              inline ? (
+                                <code
+                                  className="markdown-code-inline"
+                                  {...props}
+                                />
+                              ) : (
+                                <code
+                                  className="markdown-code-block"
+                                  {...props}
+                                />
+                              ),
+                            a: ({ node, ...props }) => (
+                              <a className="markdown-link" {...props} />
+                            ),
+                          }}
+                        >
                           {section.description}
                         </ReactMarkdown>
                       </div>
@@ -186,7 +213,6 @@ export default function CaseStudyUI({ project }) {
             >
               <div className="cs-gallery">
                 {section.images.map((img, imgIndex) => {
-                  // Handle URL gambar (apakah string URL langsung atau path dari Strapi)
                   const imgSrc =
                     typeof img === "string" ? img : getStrapiMedia(img);
 
@@ -196,12 +222,11 @@ export default function CaseStudyUI({ project }) {
                       className="cs-image-wrapper"
                       style={{ position: "relative" }}
                     >
-                      {/* Gunakan Next Image untuk optimasi */}
                       <Image
                         src={imgSrc}
                         alt={`${section.title} image ${imgIndex + 1}`}
-                        width={1200} // Estimasi lebar container konten
-                        height={800} // Aspect ratio default, akan diatur CSS object-fit
+                        width={1200}
+                        height={800}
                         style={{
                           width: "100%",
                           height: "auto",
