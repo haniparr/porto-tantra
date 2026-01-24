@@ -155,13 +155,14 @@ export default async function FeaturedWork() {
 
       <div className="work-grid">
         {works.map((work, index) => {
-          // ✅ Add null safety check for attributes
-          if (!work || !work.attributes) {
+          // ✅ Handle both nested (.attributes) and flattened data structures
+          const attrs = work.attributes || work;
+
+          // ✅ Skip if no valid data
+          if (!attrs || !attrs.slug) {
             console.warn("Invalid work item:", work);
             return null;
           }
-
-          const attrs = work.attributes;
 
           // ✅ Use getImageWithFallback with proper null safety
           const imageUrl = getImageWithFallback(
@@ -172,14 +173,14 @@ export default async function FeaturedWork() {
           return (
             <Link
               href={`/work/${attrs.slug}`}
-              key={work.id}
+              key={work.id || index}
               className="work-card"
               data-index={index}
             >
               <div className="work-card-image" style={{ position: "relative" }}>
                 <Image
                   src={imageUrl}
-                  alt={attrs.title}
+                  alt={attrs.title || attrs.client}
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
                   style={{ objectFit: "cover" }}
@@ -193,7 +194,7 @@ export default async function FeaturedWork() {
                   {attrs.title || attrs.client || "Untitled Project"}
                 </span>
                 <h3 className="work-card-tagline">
-                  {attrs.tagline || attrs.client || "Project description"}
+                  {attrs.tagline || attrs.services || "Project description"}
                 </h3>
               </div>
             </Link>

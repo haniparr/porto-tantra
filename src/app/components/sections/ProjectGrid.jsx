@@ -51,7 +51,8 @@ export default function ProjectGrid({ projects = [] }) {
       <section className="portfolio-list-section">
         <div className="portfolio-list">
           {projects.map((project, index) => {
-            const attrs = project.attributes || {};
+            // ✅ Handle both nested (.attributes) and flattened data structures
+            const attrs = project.attributes || project;
 
             // ✅ Logo dengan fallback
             const logoUrl = getImageWithFallback(
@@ -74,7 +75,7 @@ export default function ProjectGrid({ projects = [] }) {
             return (
               <Link
                 href={`/work/${attrs.slug}`}
-                key={index}
+                key={project.id || index}
                 className="portfolio-item-link"
                 style={{
                   textDecoration: "none",
@@ -90,7 +91,7 @@ export default function ProjectGrid({ projects = [] }) {
                   <div className="item-col client">
                     <img
                       src={logoUrl}
-                      alt={`${attrs.client} Logo`}
+                      alt={`${attrs.client || attrs.title} Logo`}
                       className="client-logo"
                     />
                     {attrs.client || attrs.title}{" "}
