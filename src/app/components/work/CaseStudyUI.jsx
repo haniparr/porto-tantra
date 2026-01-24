@@ -2,8 +2,6 @@
 
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import ReactMarkdown from "react-markdown";
 import { getStrapiMedia } from "@/app/lib/utils";
 import "@/app/styles/case-study.css"; // Import CSS spesifik
 
@@ -62,8 +60,6 @@ export default function CaseStudyUI({ project }) {
 
   if (!project) return <div className="error-state">Project not found</div>;
 
-  // Removed custom renderMarkdown helper
-
   return (
     <article className="case-study">
       <div className="cs-container">
@@ -82,19 +78,11 @@ export default function CaseStudyUI({ project }) {
                     key={section.id}
                     className={`cs-nav-item ${activeSection === section.id ? "active" : ""}`}
                     onClick={() => scrollToSection(section.id)}
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer" }} // Tambahkan cursor pointer
                   >
                     <h3 className="cs-nav-title">{section.title}</h3>
                     <div className="cs-nav-desc-wrapper">
-                      <div className="cs-nav-desc markdown-content">
-                        <ReactMarkdown
-                          components={{
-                            p: ({ node, ...props }) => <span {...props} />, // Render p as span to maintain layout
-                          }}
-                        >
-                          {section.description}
-                        </ReactMarkdown>
-                      </div>
+                      <p className="cs-nav-desc">{section.description}</p>
                     </div>
                   </div>
                 ))}
