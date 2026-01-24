@@ -2,23 +2,19 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-// import Image from "next/image"; // Not used in the main list items anymore (using standard img), optional for optimization but user code uses standard img
-import { getStrapiMedia } from "@/app/lib/utils";
+import { getImageWithFallback } from "@/app/lib/utils";
 
 export default function ProjectGrid({ projects = [] }) {
   const [hoveredProject, setHoveredProject] = useState(null);
   const previewRef = useRef(null);
   const requestRef = useRef(null);
 
-  // Mouse position state
   const mousePos = useRef({ x: 0, y: 0 });
-  const cursorPos = useRef({ x: 0, y: 0 }); // Smooth cursor position
+  const cursorPos = useRef({ x: 0, y: 0 });
 
-  // Handle active preview state
   const isHovering = hoveredProject !== null;
 
   useEffect(() => {
-    // Only add listeners if we have projects
     if (projects.length === 0) return;
 
     const handleMouseMove = (e) => {
@@ -28,7 +24,6 @@ export default function ProjectGrid({ projects = [] }) {
     window.addEventListener("mousemove", handleMouseMove);
 
     const animate = () => {
-      // Linear interpolation for smooth movement
       const lerp = (start, end, factor) => start + (end - start) * factor;
 
       cursorPos.current.x = lerp(cursorPos.current.x, mousePos.current.x, 0.15);
@@ -43,7 +38,6 @@ export default function ProjectGrid({ projects = [] }) {
       requestRef.current = requestAnimationFrame(animate);
     };
 
-    // Initialize animation loop
     requestRef.current = requestAnimationFrame(animate);
 
     return () => {
@@ -57,14 +51,21 @@ export default function ProjectGrid({ projects = [] }) {
       <section className="portfolio-list-section">
         <div className="portfolio-list">
           {projects.map((project, index) => {
-            // ADAPTATION: Handle Strapi Structure
             const attrs = project.attributes || {};
-            const logoUrl = getStrapiMedia(attrs.logo);
-            // Used for preview:
-            const thumbnailUrl =
-              getStrapiMedia(attrs.thumbnail) || getStrapiMedia(attrs.image);
 
-            // Hover data object mimicking flattened structure
+            // ✅ Logo dengan fallback
+            const logoUrl = getImageWithFallback(
+              attrs.logo,
+              "https://placehold.co/40x40/1a1a1a/ffffff?text=" +
+                (attrs.client?.[0] || "P"),
+            );
+
+            // ✅ Thumbnail dengan fallback
+            const thumbnailUrl = getImageWithFallback(
+              attrs.thumbnail || attrs.image,
+              "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
+            );
+
             const hoverData = {
               image: thumbnailUrl,
               ...attrs,
@@ -87,14 +88,11 @@ export default function ProjectGrid({ projects = [] }) {
                   onMouseLeave={() => setHoveredProject(null)}
                 >
                   <div className="item-col client">
-                    {/* Using standard img for external URLs or small icons if not optimized */}
-                    {logoUrl && (
-                      <img
-                        src={logoUrl}
-                        alt={`${attrs.client} Logo`}
-                        className="client-logo"
-                      />
-                    )}
+                    <img
+                      src={logoUrl}
+                      alt={`${attrs.client} Logo`}
+                      className="client-logo"
+                    />
                     {attrs.client || attrs.title}{" "}
                     <span className="client-year">{attrs.year}</span>
                   </div>
@@ -117,7 +115,6 @@ export default function ProjectGrid({ projects = [] }) {
           pointerEvents: "none",
           opacity: isHovering ? 1 : 0,
           transition: "opacity 0.2s ease",
-          // transform is handled by JS for performance
         }}
       >
         <div
@@ -130,7 +127,6 @@ export default function ProjectGrid({ projects = [] }) {
             boxShadow: "0 20px 40px rgba(0,0,0,0.2)",
           }}
         >
-          {/* We strictly use standard img here for immediate updates without hydration mismatch issues during rapid hover */}
           {hoveredProject && hoveredProject.image && (
             <img
               src={hoveredProject.image}
@@ -145,7 +141,6 @@ export default function ProjectGrid({ projects = [] }) {
         </div>
       </div>
 
-      {/* CSS needs to be ensured globally or scoped here */}
       <style jsx global>{`
         .portfolio-list-section {
           padding: 2rem 0;
@@ -162,7 +157,7 @@ export default function ProjectGrid({ projects = [] }) {
         }
         .portfolio-item:hover {
           background-color: rgba(255, 255, 255, 0.02);
-          padding-left: 1rem; /* Slight shift */
+          padding-left: 1rem;
         }
         .item-col {
           display: flex;
@@ -176,22 +171,13 @@ export default function ProjectGrid({ projects = [] }) {
           object-fit: contain;
           margin-right: 1.5rem;
           border-radius: 50%;
-          background: #fff; /* fallback */
+          background: #fff;
         }
         .client-year {
           margin-left: auto;
           font-size: 1rem;
           opacity: 0.5;
           font-weight: normal;
-        }
-
-        /* Pagination if needed */
-        .pagination-controls {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          padding: 3rem 0;
-          gap: 2rem;
         }
       `}</style>
     </>

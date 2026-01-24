@@ -1,12 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getBlogPosts } from "@/app/lib/api";
-import { getStrapiMedia } from "@/app/lib/utils";
-
-// Import CSS khusus blog jika belum ada di layout
+import { getImageWithFallback } from "@/app/lib/utils";
 import "@/app/styles/blog.css";
 
-// ✅ HARDCODED FALLBACK DATA (sama seperti Vite)
+// Default blogs (tetap sama)
 function getDefaultBlogs() {
   return [
     {
@@ -84,49 +82,23 @@ export default async function BlogSection() {
   let blogs = [];
 
   try {
-    // ✅ FIXED: Remove 'true' parameter - fetch ALL blogs like Vite
     const response = await getBlogPosts();
-    console.log("Blog Posts API Response:", response);
 
-    if (response && response.data && Array.isArray(response.data)) {
-      // ✅ SAFETY CHECKS like Vite
-      const formattedBlogs = response.data
-        .map((item) => {
-          try {
-            // Safety check: ensure item and attributes exist
-            if (!item || !item.attributes) {
-              console.warn("Blog item missing attributes:", item);
-              return null;
-            }
-
-            const attrs = item.attributes;
-
-            // Safety check: ensure required fields exist
-            if (!attrs.title || !attrs.slug) {
-              console.warn("Blog item missing required fields:", attrs);
-              return null;
-            }
-
-            return item; // Return valid item
-          } catch (itemError) {
-            console.error("Error processing blog item:", itemError, item);
-            return null;
-          }
-        })
-        .filter((blog) => blog !== null); // Remove null entries
-
-      blogs = formattedBlogs;
+    if (
+      response?.data &&
+      Array.isArray(response.data) &&
+      response.data.length > 0
+    ) {
+      // ✅ TIDAK PERLU FILTER - Terima semua blog posts
+      blogs = response.data;
       console.log(
         "✅ Using Strapi data for Blog Section:",
         blogs.length,
         "posts",
       );
-    }
-
-    // ✅ FALLBACK LOGIC like Vite
-    if (blogs.length === 0) {
+    } else {
       blogs = getDefaultBlogs();
-      console.log("⚠️ Using hardcoded data for Blog Section (no Strapi data)");
+      console.log("⚠️ Using hardcoded data for Blog Section");
     }
   } catch (error) {
     console.error("Error fetching blog posts:", error);
@@ -144,22 +116,20 @@ export default async function BlogSection() {
       </div>
 
       <div className="blog-grid">
-        {/* ✅ FIXED: Show ALL blogs, not just 3 */}
         {blogs.map((item) => {
-          // ✅ SAFETY CHECK: Handle both API and hardcoded data structure
-          if (!item || !item.attributes) {
-            return null;
-          }
+          if (!item || !item.attributes) return null;
 
           const attrs = item.attributes;
-          const imageUrl =
-            getStrapiMedia(attrs.featuredImage) ||
-            "https://images.unsplash.com/photo-1516426122078-c23e76319801";
+
+          // ✅ Gunakan helper dengan fallback
+          const imageUrl = getImageWithFallback(
+            attrs.featuredImage,
+            "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80",
+          );
 
           return (
             <div className="blog-card" key={item.id} data-slug={attrs.slug}>
               <div className="blog-card-bg" style={{ position: "relative" }}>
-                {/* Next Image dengan fill parent */}
                 <Image
                   src={imageUrl}
                   alt={attrs.title}
@@ -174,7 +144,6 @@ export default async function BlogSection() {
                 <h3 className="blog-title">{attrs.title}</h3>
                 <p className="blog-desc">{attrs.excerpt || "No description"}</p>
 
-                {/* ✅ Use Link instead of button for better Next.js routing */}
                 <Link href={`/blog/${attrs.slug}`} className="blog-btn">
                   MORE DETAILS
                   <svg
