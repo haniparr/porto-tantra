@@ -15,7 +15,7 @@ function getHardcodedWorks() {
         thumbnail: {
           data: {
             attributes: {
-              url: "https://images.unsplash.com/photo-1481487484168-9b930d5b7d25?auto=format&fit=crop&w=800&q=80",
+              url: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=800&q=80",
             },
           },
         },

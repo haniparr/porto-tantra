@@ -51,7 +51,7 @@ function getFallbackProjects() {
         logo: {
           data: {
             attributes: {
-              url: "https://via.placeholder.com/60x60/1a1a1a/ffffff?text=E",
+              url: "https://placehold.co/40x40/333/fff?text=E",
             },
           },
         },
@@ -74,7 +74,7 @@ function getFallbackProjects() {
         logo: {
           data: {
             attributes: {
-              url: "https://via.placeholder.com/60x60/1a1a1a/ffffff?text=D",
+              url: "https://placehold.co/40x40/333/fff?text=Z",
             },
           },
         },
