@@ -7,7 +7,7 @@ import FAQ from "@/app/components/sections/FAQ";
 import TestimonialsSlider from "@/app/components/sections/TestimonialsSlider"; // Kita buat slider terpisah di bawah
 
 // Import API
-import { getTestimonials } from "@/app/services/api"; // Pastikan Anda punya fungsi ini atau gunakan data dummy
+import { getTestimonials } from "@/app/lib/api"; // Pastikan Anda punya fungsi ini atau gunakan data dummy
 
 export const metadata = {
   title: "Services & Experience",
