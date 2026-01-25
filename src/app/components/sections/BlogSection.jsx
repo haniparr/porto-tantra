@@ -117,9 +117,11 @@ export default async function BlogSection() {
 
       <div className="blog-grid">
         {blogs.map((item) => {
-          if (!item || !item.attributes) return null;
+          if (!item) return null;
 
-          const attrs = item.attributes;
+          // ✅ Robust data access: Handle both v4 (attributes) and v5/flattened data
+          const attrs = item.attributes || item;
+          if (!attrs) return null;
 
           // ✅ Gunakan helper dengan fallback
           const imageUrl = getImageWithFallback(
