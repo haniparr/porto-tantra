@@ -1,6 +1,15 @@
-import { getProjects } from "@/app/lib/api";
+import { getProjects, getProject } from "@/app/lib/api";
 import { getStrapiMedia } from "@/app/lib/utils";
 import CaseStudyUI from "@/app/components/work/CaseStudyUI";
+
+// Helper to fix Strapi Markdown (handle line breaks)
+function fixMarkdown(content) {
+  if (typeof content !== "string") return "";
+  // Ensure newlines are treated as breaks if they aren't double newlines (optional, but helps with "glued" markdown)
+  // Strapi standard usage often results in single newlines which Markdown acts as soft-spaces.
+  // Converting single \n to \n\n ensures lists and paragraphs break correctly.
+  return content.replace(/\n/g, "\n\n");
+}
 
 // ✅ DEFAULT PROJECT DATA (sama seperti Vite main.js)
 function getDefaultProjectData(slug) {
@@ -276,7 +285,8 @@ export default async function ProjectDetailPage({ params }) {
           return {
             id: section.title.toLowerCase().replace(/\s+/g, "-"),
             title: `${String(index + 1).padStart(2, "0")} ${section.title}`,
-            description: section.description || "No content available.",
+            description:
+              fixMarkdown(section.description) || "No content available.",
             images:
               sectionImages.length > 0
                 ? sectionImages
