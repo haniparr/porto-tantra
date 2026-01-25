@@ -158,11 +158,18 @@ export async function generateMetadata({ params }) {
   const { slug } = await params;
 
   try {
-    console.log("🔍 Generating metadata for slug:", slug);
-    const project = await getProject(slug); // ✅ Use getProject API
+    console.log("🔍 [generateMetadata] START for slug:", slug);
+    const project = await getProject(slug);
+
+    console.log(
+      "🔍 [generateMetadata] getProject Result:",
+      JSON.stringify(project, null, 2),
+    );
 
     if (!project || !project.attributes) {
-      console.warn("⚠️ Project not found for metadata, using fallback");
+      console.warn(
+        "⚠️ [generateMetadata] Project not found or invalid structure, using fallback",
+      );
       const defaultProject = getDefaultProjectData(slug);
       return {
         title: `${defaultProject.title} - Case Study`,
@@ -171,7 +178,7 @@ export async function generateMetadata({ params }) {
     }
 
     const attrs = project.attributes;
-    console.log("✅ Metadata generated from Strapi:", attrs.client);
+    console.log("✅ [generateMetadata] SUCCESS from Strapi:", attrs.client);
 
     return {
       title: `${attrs.client || attrs.title} - Case Study | Tantra Hariastama`,
@@ -184,7 +191,7 @@ export async function generateMetadata({ params }) {
       },
     };
   } catch (error) {
-    console.error("❌ Error generating metadata:", error);
+    console.error("❌ [generateMetadata] CRITICAL ERROR:", error);
     const defaultProject = getDefaultProjectData(slug);
     return {
       title: `${defaultProject.title} - Case Study`,

@@ -136,6 +136,15 @@ export default function CaseStudyUI({ project }) {
                             h3: ({ node, ...props }) => (
                               <h3 className="markdown-h3" {...props} />
                             ),
+                            u: ({ node, ...props }) => (
+                              <u className="markdown-underline" {...props} />
+                            ),
+                            del: ({ node, ...props }) => (
+                              <del
+                                className="markdown-strikethrough"
+                                {...props}
+                              />
+                            ),
                             ul: ({ node, ...props }) => (
                               <ul className="markdown-list" {...props} />
                             ),
