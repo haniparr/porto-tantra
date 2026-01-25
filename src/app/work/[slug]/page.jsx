@@ -184,7 +184,7 @@ export async function generateMetadata({ params }) {
     console.log("✅ [generateMetadata] SUCCESS from Strapi:", attrs.client);
 
     return {
-      title: `${attrs.client || attrs.title} - Case Study | Tantra Hariastama`,
+      title: `${attrs.client || attrs.title} | Tantra Hariastama`,
       description:
         attrs.services || attrs.subtitle || "Project portfolio case study.",
       openGraph: {
