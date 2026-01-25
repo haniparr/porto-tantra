@@ -156,28 +156,31 @@ function stripHtmlTags(html) {
 // 1. Generate Metadata untuk SEO
 export async function generateMetadata({ params }) {
   const { slug } = await params;
+  const decodedSlug = decodeURIComponent(slug); // Ensure slug is decoded
 
   try {
-    console.log("🔍 [generateMetadata] START for slug:", slug);
-    const project = await getProject(slug);
+    console.log("🔍 [generateMetadata] START for slug:", decodedSlug);
+    // Use getProjects() (fetch all) instead of getProject(slug) to match the working page logic
+    // This bypasses potential issues with the single-item API filter
+    const response = await getProjects();
 
-    console.log(
-      "🔍 [generateMetadata] getProject Result:",
-      JSON.stringify(project, null, 2),
-    );
+    const project = response.data?.find((p) => {
+      const pSlug = p.attributes?.slug || p.slug;
+      return pSlug === decodedSlug;
+    });
 
-    if (!project || !project.attributes) {
+    if (!project) {
       console.warn(
-        "⚠️ [generateMetadata] Project not found or invalid structure, using fallback",
+        "⚠️ [generateMetadata] Project not found in list, using fallback",
       );
-      const defaultProject = getDefaultProjectData(slug);
+      const defaultProject = getDefaultProjectData(decodedSlug);
       return {
         title: `${defaultProject.title} - Case Study`,
         description: defaultProject.subtitle,
       };
     }
 
-    const attrs = project.attributes;
+    const attrs = project.attributes || project;
     console.log("✅ [generateMetadata] SUCCESS from Strapi:", attrs.client);
 
     return {
@@ -192,7 +195,7 @@ export async function generateMetadata({ params }) {
     };
   } catch (error) {
     console.error("❌ [generateMetadata] CRITICAL ERROR:", error);
-    const defaultProject = getDefaultProjectData(slug);
+    const defaultProject = getDefaultProjectData(decodedSlug);
     return {
       title: `${defaultProject.title} - Case Study`,
       description: defaultProject.subtitle,
