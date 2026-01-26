@@ -27,6 +27,8 @@ export default function TestimonialsSlider({ initialData = [] }) {
     },
   ];
 
+  // Debug logging
+  console.log("TestimonialsSlider received data:", initialData);
   const dataToRender = initialData.length > 0 ? initialData : placeholders;
 
   const scrollSlider = (direction) => {
