@@ -144,6 +144,7 @@ export default async function BlogDetailsPage({ params }) {
   const decodedSlug = decodeURIComponent(slug);
 
   let post = null;
+  let isUsingFallback = false;
 
   // ✅ TRY-CATCH ERROR HANDLING like Vite
   try {
@@ -160,6 +161,7 @@ export default async function BlogDetailsPage({ params }) {
     if (!post) {
       console.warn("Blog post not found for slug:", decodedSlug);
       post = getDefaultPost();
+      isUsingFallback = true;
       console.log("⚠️ Using default post fallback");
     } else {
       console.log("✅ Using Strapi blog post data");
@@ -167,6 +169,7 @@ export default async function BlogDetailsPage({ params }) {
   } catch (error) {
     console.error("Error fetching blog post:", error);
     post = getDefaultPost();
+    isUsingFallback = true;
     console.log("⚠️ Using default post fallback (API error)");
   }
 
