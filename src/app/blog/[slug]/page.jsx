@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getBlogPost } from "@/app/lib/api";
+import { getBlogPost, getBlogPosts } from "@/app/lib/api";
 import { getStrapiMedia } from "@/app/lib/utils";
 import "@/app/styles/blog.css";
 
@@ -75,10 +75,17 @@ function getDefaultReadNext() {
 
 // 1. Generate Metadata Dinamis untuk SEO
 export async function generateMetadata({ params }) {
-  try {
-    const post = await getBlogPost(params.slug);
+  const { slug } = await params;
+  const decodedSlug = decodeURIComponent(slug);
 
-    if (!post || !post.attributes) {
+  try {
+    const response = await getBlogPosts();
+    const post = response.data?.find((p) => {
+      const pSlug = p.attributes?.slug || p.slug;
+      return pSlug === decodedSlug;
+    });
+
+    if (!post) {
       const defaultPost = getDefaultPost();
       return {
         title: `${defaultPost.attributes.title} | Blog`,
@@ -86,7 +93,7 @@ export async function generateMetadata({ params }) {
       };
     }
 
-    const attrs = post.attributes;
+    const attrs = post.attributes || post;
     const imageUrl = getStrapiMedia(attrs.featuredImage);
 
     return {
@@ -124,20 +131,26 @@ function formatDate(dateString) {
 
 // 2. Main Component
 export default async function BlogDetailsPage({ params }) {
+  const { slug } = await params;
+  const decodedSlug = decodeURIComponent(slug);
+
   let post = null;
-  let isUsingFallback = false;
 
   // ✅ TRY-CATCH ERROR HANDLING like Vite
   try {
-    console.log("Fetching blog post with slug:", params.slug);
-    post = await getBlogPost(params.slug);
-    console.log("Blog Post Response:", post);
+    console.log("Fetching blog post with slug:", decodedSlug);
+    // Use getBlogPosts (fetch all) instead of single fetch to ensure consistency
+    const response = await getBlogPosts();
+
+    post = response.data?.find((p) => {
+      const pSlug = p.attributes?.slug || p.slug;
+      return pSlug === decodedSlug;
+    });
 
     // ✅ FALLBACK if post not found
-    if (!post || !post.attributes) {
-      console.warn("Blog post not found for slug:", params.slug);
+    if (!post) {
+      console.warn("Blog post not found for slug:", decodedSlug);
       post = getDefaultPost();
-      isUsingFallback = true;
       console.log("⚠️ Using default post fallback");
     } else {
       console.log("✅ Using Strapi blog post data");
@@ -145,7 +158,6 @@ export default async function BlogDetailsPage({ params }) {
   } catch (error) {
     console.error("Error fetching blog post:", error);
     post = getDefaultPost();
-    isUsingFallback = true;
     console.log("⚠️ Using default post fallback (API error)");
   }
 
