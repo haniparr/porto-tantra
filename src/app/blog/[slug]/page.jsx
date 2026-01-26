@@ -3,6 +3,9 @@ import Image from "next/image";
 import { getBlogPost, getBlogPosts } from "@/app/lib/api";
 import { getStrapiMedia } from "@/app/lib/utils";
 import "@/app/styles/blog.css";
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import remarkGfm from "remark-gfm";
 
 // ✅ HARDCODED DEFAULT POST (sama seperti Vite)
 function getDefaultPost() {
@@ -113,6 +116,12 @@ export async function generateMetadata({ params }) {
   }
 }
 
+// Helper to fix Strapi Markdown (handle line breaks)
+function fixMarkdown(content) {
+  if (typeof content !== "string") return "";
+  return content.replace(/\n/g, "\n\n");
+}
+
 // Helper Format Tanggal
 function formatDate(dateString) {
   if (!dateString) return "Date not available";
@@ -185,8 +194,26 @@ export default async function BlogDetailsPage({ params }) {
   const readTime = attrs.readTime || "5 min read";
   const imageUrl = getStrapiMedia(attrs.featuredImage);
 
-  // ✅ HARDCODED "Read Next" like Vite (no dynamic API call)
-  const readNextArticles = getDefaultReadNext();
+  // ✅ DYNAMIC READ NEXT
+  // Filter out current post and take first 2
+  let readNextArticles = [];
+  if (response?.data && Array.isArray(response.data)) {
+    readNextArticles = response.data
+      .filter((p) => {
+        const pSlug = p.attributes?.slug || p.slug;
+        return pSlug !== decodedSlug;
+      })
+      .slice(0, 2);
+  }
+
+  // Fallback if no others found (optional, or keep empty)
+  if (readNextArticles.length === 0) {
+    const defaultReadNext = getDefaultReadNext();
+    // Only use default if we are using fallback post, otherwise show nothing or maybe random
+    if (isUsingFallback) {
+      readNextArticles = defaultReadNext;
+    }
+  }
 
   return (
     <div className="blog-details-page">
@@ -221,8 +248,55 @@ export default async function BlogDetailsPage({ params }) {
 
         {/* Content Section */}
         <article className="article-content">
-          {/* ✅ Render HTML dari Strapi (sama seperti Vite) */}
-          <div dangerouslySetInnerHTML={{ __html: content }} />
+          {/* ✅ Render Markdown using ReactMarkdown */}
+          <div className="markdown-content">
+            <ReactMarkdown
+              rehypePlugins={[rehypeRaw]}
+              remarkPlugins={[remarkGfm]}
+              components={{
+                p: ({ node, ...props }) => (
+                  <p className="article-text" {...props} />
+                ),
+                h1: ({ node, ...props }) => (
+                  <h1 className="article-h1" {...props} />
+                ),
+                h2: ({ node, ...props }) => (
+                  <h2 className="article-h2" {...props} />
+                ),
+                h3: ({ node, ...props }) => (
+                  <h3 className="article-h3" {...props} />
+                ),
+                ul: ({ node, ...props }) => (
+                  <ul className="article-list" {...props} />
+                ),
+                ol: ({ node, ...props }) => (
+                  <ol className="article-list ordered" {...props} />
+                ),
+                li: ({ node, ...props }) => (
+                  <li className="article-list-item" {...props} />
+                ),
+                blockquote: ({ node, ...props }) => (
+                  <blockquote className="article-quote" {...props} />
+                ),
+                a: ({ node, ...props }) => (
+                  <a className="article-link" {...props} />
+                ),
+                u: ({ node, ...props }) => (
+                  <u className="article-underline" {...props} />
+                ),
+                del: ({ node, ...props }) => (
+                  <del className="article-strikethrough" {...props} />
+                ),
+                img: ({ node, ...props }) => (
+                  <div className="article-image-wrapper">
+                    <img className="article-image" {...props} />
+                  </div>
+                ),
+              }}
+            >
+              {fixMarkdown(content)}
+            </ReactMarkdown>
+          </div>
         </article>
 
         {/* Read Next Section - ✅ HARDCODED like Vite */}
@@ -232,7 +306,7 @@ export default async function BlogDetailsPage({ params }) {
           </div>
           <div className="read-next-grid">
             {readNextArticles.map((nextPost) => {
-              const nextAttrs = nextPost.attributes;
+              const nextAttrs = nextPost.attributes || nextPost;
               const nextImage =
                 getStrapiMedia(nextAttrs.featuredImage) ||
                 "https://images.unsplash.com/photo-1551836022-d5d88e9218df";
