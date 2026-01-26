@@ -145,12 +145,13 @@ export default async function BlogDetailsPage({ params }) {
 
   let post = null;
   let isUsingFallback = false;
+  let response = null;
 
   // ✅ TRY-CATCH ERROR HANDLING like Vite
   try {
     console.log("Fetching blog post with slug:", decodedSlug);
     // Use getBlogPosts (fetch all) instead of single fetch to ensure consistency
-    const response = await getBlogPosts();
+    response = await getBlogPosts();
 
     post = response.data?.find((p) => {
       const pSlug = p.attributes?.slug || p.slug;
