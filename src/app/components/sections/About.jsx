@@ -14,11 +14,11 @@ export default function About() {
 
           {/* Content Area */}
           <div className="about-content">
-            <div className="about-media-grid">
+            {/* <div className="about-media-grid">
               <div className="media-placeholder video-placeholder">
                 <span>Video Placeholder</span>
               </div>
-            </div>
+            </div> */}
 
             {/* Quote / Headline */}
             <div

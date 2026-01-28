@@ -7,6 +7,7 @@ import Link from "next/link";
 import Navbar from "@/app/components/layout/Navbar";
 import Footer from "@/app/components/layout/Footer";
 import GradualBlur from "@/app/components/ui/GradualBlur";
+import AnimatedHeading from "@/app/components/ui/AnimatedHeading";
 import { getBlogPosts } from "@/app/lib/api";
 // Import CSS directly to ensure styles work
 import "@/app/styles/blog-page.css";
@@ -103,7 +104,15 @@ export default function BlogPage() {
           <div className="blog-page" style={{ paddingTop: "120px" }}>
             <div className="blog-container">
               <header className="blog-page-header">
-                <h1 className="blog-page-title">Blog & articles</h1>
+                <AnimatedHeading
+                  text="Blog & articles"
+                  as="h1"
+                  direction="right"
+                  className="blog-page-title"
+                  style={{
+                    fontSize: "clamp(3rem, 6vw, 5rem)",
+                  }}
+                />
               </header>
 
               <section className="latest-insights">

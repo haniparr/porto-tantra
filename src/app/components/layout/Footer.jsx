@@ -98,9 +98,7 @@ export default function Footer() {
           <div className="footer-cols">
             <div className="footer-col">
               <h4>Office</h4>
-              <p>Jakarta, Indonesia</p>
-              <p>South Quarter, Tower A</p>
-              <p>Jl. R.A. Kartini Kav 8</p>
+              <p>Yogyakarta, Indonesia</p>
             </div>
 
             <div className="footer-col">
@@ -152,9 +150,6 @@ export default function Footer() {
 
         {/* Bottom Section */}
         <div className="footer-bottom">
-          <div className="copyright">
-            <p>Copyright © 2024 Creative Strategist</p>
-          </div>
           <div className="big-text">
             {/* Next.js Image membutuhkan width/height untuk mencegah Layout Shift.
                CSS Anda (.footer-logo-img) akan tetap mengontrol ukuran visualnya.

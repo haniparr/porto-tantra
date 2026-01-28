@@ -1,3 +1,6 @@
+import Image from "next/image";
+import "@/app/styles/skill-ticker.css";
+
 // Helper Sub-component untuk merender satu baris ticker
 function TickerRow({ items, reverse = false }) {
   return (
@@ -8,16 +11,34 @@ function TickerRow({ items, reverse = false }) {
         */}
         {items.map((item, index) => (
           <div key={`original-${index}`} className="ticker-item">
-            <div className="ticker-placeholder"></div>
-            {item}
+            <div className="ticker-image-wrapper">
+              <Image
+                src={item.image}
+                alt={item.label}
+                width={50}
+                height={50}
+                className="ticker-image"
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              />
+            </div>
+            {item.label}
           </div>
         ))}
 
         {/* Set 2: Duplicate (untuk loop) */}
         {items.map((item, index) => (
           <div key={`duplicate-${index}`} className="ticker-item">
-            <div className="ticker-placeholder"></div>
-            {item}
+            <div className="ticker-image-wrapper">
+              <Image
+                src={item.image}
+                alt={item.label}
+                width={50}
+                height={50}
+                className="ticker-image"
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              />
+            </div>
+            {item.label}
           </div>
         ))}
       </div>
@@ -27,33 +48,65 @@ function TickerRow({ items, reverse = false }) {
 
 export default function SkillTicker() {
   const row1 = [
-    "Development",
-    "UI/UX Design",
-    "E-commerce",
-    "Product Design",
-    "Development",
-    "UI/UX Design",
-    "E-commerce",
-    "Product Design",
-    "Development",
-    "UI/UX Design",
-    "E-commerce",
-    "Product Design",
+    {
+      label: "App Design",
+      image: "/assets/skill-ticker/AppDesign.png",
+    },
+    {
+      label: "Brand Identity",
+      image: "/assets/skill-ticker/BrandIdentity.png",
+    },
+    {
+      label: "Graphic Design",
+      image: "/assets/skill-ticker/GraphicDesign.png",
+    },
+    {
+      label: "Illustration",
+      image: "/assets/skill-ticker/Illustration.png",
+    },
+    {
+      label: "Marketing Content",
+      image: "/assets/skill-ticker/MarketingContent.png",
+    },
+    {
+      label: "Motion Graphic",
+      image: "/assets/skill-ticker/MotionGraphic.png",
+    },
+    {
+      label: "Web Design",
+      image: "/assets/skill-ticker/MotionGraphic.png",
+    },
   ];
 
   const row2 = [
-    "Packaging",
-    "Art Direction",
-    "Content",
-    "Brand Identity",
-    "Packaging",
-    "Art Direction",
-    "Content",
-    "Brand Identity",
-    "Packaging",
-    "Art Direction",
-    "Content",
-    "Brand Identity",
+    {
+      label: "Web Design",
+      image: "/assets/skill-ticker/MotionGraphic.png",
+    },
+    {
+      label: "Motion Graphic",
+      image: "/assets/skill-ticker/MotionGraphic.png",
+    },
+    {
+      label: "Marketing Content",
+      image: "/assets/skill-ticker/MarketingContent.png",
+    },
+    {
+      label: "Illustration",
+      image: "/assets/skill-ticker/Illustration.png",
+    },
+    {
+      label: "Graphic Design",
+      image: "/assets/skill-ticker/GraphicDesign.png",
+    },
+    {
+      label: "Brand Identity",
+      image: "/assets/skill-ticker/BrandIdentity.png",
+    },
+    {
+      label: "App Design",
+      image: "/assets/skill-ticker/AppDesign.png",
+    },
   ];
 
   return (

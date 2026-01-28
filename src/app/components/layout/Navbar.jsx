@@ -39,7 +39,13 @@ export default function Navbar() {
       {/* Header */}
       <header className="staggered-menu-header">
         <Link href="/" className="sm-logo" onClick={closeMenu}>
-          CREATIVE STRATEGIST
+          <Image
+            src="/Namelogo_white.svg"
+            alt="CREATIVE STRATEGIST"
+            width={200}
+            height={50}
+            priority
+          />
         </Link>
         <button
           className="sm-toggle"

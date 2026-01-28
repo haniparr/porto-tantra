@@ -6,6 +6,8 @@ export default function AnimatedHeading({
   text,
   as: Tag = "h1", // Bisa jadi 'h1' atau 'h2'
   className = "",
+  direction = "up", // 'up' atau 'right'
+  style = {}, // Custom inline styles
 }) {
   const [isVisible, setIsVisible] = useState(false);
   const elementRef = useRef(null);
@@ -37,7 +39,7 @@ export default function AnimatedHeading({
     <Tag
       ref={elementRef}
       className={className}
-      style={{ opacity: 1 }} // Parent visible
+      style={{ opacity: 1, ...style }} // Parent visible + custom styles
     >
       {words.map((word, index) => (
         <span
@@ -52,7 +54,9 @@ export default function AnimatedHeading({
             filter: isVisible ? "blur(0px)" : "blur(10px)",
             transform: isVisible
               ? "translate3d(0, 0, 0)"
-              : "translate3d(0, 20px, 0)",
+              : direction === "right"
+                ? "translate3d(-50px, 0, 0)"
+                : "translate3d(0, 20px, 0)",
           }}
         >
           {word}

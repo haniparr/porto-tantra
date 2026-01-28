@@ -130,14 +130,15 @@ export default async function WorkPage() {
               padding: "0 var(--spacing-md)",
             }}
           >
-            <h1
+            <AnimatedHeading
+              text="Selected Work"
+              as="h1"
+              direction="right"
+              className=""
               style={{
                 fontSize: "clamp(3rem, 6vw, 5rem)",
-                marginBottom: "var(--spacing-lg)",
               }}
-            >
-              Selected Work
-            </h1>
+            />
           </div>
           <ProjectGrid projects={projects} />
         </div>

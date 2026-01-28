@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { getImageWithFallback } from "@/app/lib/utils";
+import "@/app/styles/grid.css";
 
 export default function ProjectGrid({ projects = [] }) {
   const [hoveredProject, setHoveredProject] = useState(null);
@@ -53,6 +54,14 @@ export default function ProjectGrid({ projects = [] }) {
           {projects.map((project, index) => {
             // ✅ Handle both nested (.attributes) and flattened data structures
             const attrs = project.attributes || project;
+            console.log(
+              `[ProjectGrid Debug] Project ${index}:`,
+              JSON.stringify(project, null, 2),
+            );
+            console.log(
+              `[ProjectGrid Debug] Attrs ${index}:`,
+              JSON.stringify(attrs, null, 2),
+            );
 
             // ✅ Logo dengan fallback
             const logoUrl = getImageWithFallback(
@@ -141,46 +150,6 @@ export default function ProjectGrid({ projects = [] }) {
           )}
         </div>
       </div>
-
-      <style jsx global>{`
-        .portfolio-list-section {
-          padding: 2rem 0;
-          width: 100%;
-        }
-        .portfolio-list {
-          border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .portfolio-item {
-          padding: 2rem 0;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-          transition: background-color 0.3s ease;
-          cursor: pointer;
-        }
-        .portfolio-item:hover {
-          background-color: rgba(255, 255, 255, 0.02);
-          padding-left: 1rem;
-        }
-        .item-col {
-          display: flex;
-          align-items: center;
-          font-size: 1.5rem;
-          font-weight: 500;
-        }
-        .client-logo {
-          width: 40px;
-          height: 40px;
-          object-fit: contain;
-          margin-right: 1.5rem;
-          border-radius: 50%;
-          background: #fff;
-        }
-        .client-year {
-          margin-left: auto;
-          font-size: 1rem;
-          opacity: 0.5;
-          font-weight: normal;
-        }
-      `}</style>
     </>
   );
 }
