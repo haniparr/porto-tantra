@@ -54,11 +54,16 @@
 
 .parallax-img-wrapper {
   position: absolute;
-  overflow: hidden;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
-  transition:
-    transform 0.1s linear,
-    filter 0.1s linear;
+  overflow: visible; /* Changed from hidden to allow rotation/overflow */
+  transition: transform 0.1s linear;
+  perspective: 1000px;
+}
+
+.parallax-floating-inner {
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+  transform-style: preserve-3d;
 }
 
 .parallax-img-wrapper img {
@@ -68,81 +73,66 @@
   display: block;
 }
 
-/* Scattered Layout Positions - Larger Images */
+/* 3-2-3 Pattern Layout */
+/* Top Row */
 .img-1 {
-  top: 10%;
+  top: 5%;
   left: 5%;
-  width: 250px;
-  height: 300px;
+  width: 350px;
+  height: 350px;
 }
 
 .img-2 {
-  top: 7%;
+  top: 6%;
+  left: 40%;
+  transform: translateX(-50%);
+  width: 350px;
+  height: 250px;
+}
+
+.img-3 {
+  top: 8%;
   right: 5%;
+  width: 280px;
+  height: 380px;
+}
+
+/* Middle Row (1 Left, 1 Right) */
+.img-4 {
+  top: 40%;
+  left: 8%;
   width: 300px;
   height: 400px;
 }
 
-.img-3 {
-  top: 40%;
-  left: 10%;
-  width: 300px;
-  height: 350px;
-}
-
-.img-4 {
-  top: 45%;
-  right: 10%;
-  width: 380px;
-  height: 280px;
-}
-
 .img-5 {
-  top: 50%;
-  left: 40%;
-  transform: translateX(-50%);
-  width: 250px;
-  height: 300px;
-  z-index: 0;
-  opacity: 0.6;
+  top: 45%;
+  right: 8%;
+  width: 320px;
+  height: 320px;
 }
 
-/* New Images */
+/* Bottom Row */
 .img-6 {
-  top: 70%;
+  top: 72%;
   left: 5%;
-  width: 400px;
-  height: 300px;
+  width: 350px;
+  height: 250px;
 }
 
 .img-7 {
   top: 75%;
-  right: 5%;
-  width: 350px;
-  height: 450px;
+  left: 45%;
+  transform: translateX(-50%);
+  width: 400px;
+  height: 300px;
 }
 
 .img-8 {
-  top: 85%;
-  left: 20%;
-  width: 300px;
-  height: 400px;
-}
-
-.img-9 {
-  top: 90%;
-  right: 25%;
-  width: 320px;
-  height: 250px;
-}
-
-.img-10 {
-  top: 5%;
-  left: 40%;
-  width: 200px;
-  height: 200px;
-  z-index: 0;
-  opacity: 0.5;
+  top: 78%;
+  right: 5%;
+  width: 250px;
+  height: 350px;
 }
 
 @media (max-width: 768px) {

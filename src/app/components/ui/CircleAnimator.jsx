@@ -1,12 +1,11 @@
-import Image from "next/image";
-// Sesuaikan path ini dengan lokasi gambar Anda sebenarnya di folder Next.js
-import cardImage from "@/app/assets/card-shape.png";
+import { AsciiImage } from "./AsciiImage";
 
 export default function CircleAnimator() {
   // Setup data items
   const count = 8;
-  const items = Array(count).fill(cardImage);
-  const radius = 550;
+  const videoSrc = "/assets/Watchtower.webm";
+  const items = Array(count).fill(videoSrc);
+  const radius = 500;
   const angleStep = 360 / count;
 
   return (
@@ -34,13 +33,15 @@ export default function CircleAnimator() {
                    - Karena kita import 'cardImage', Next.js otomatis tahu width/height aslinya.
                    - 'placeholder="blur"' opsional jika ingin efek loading blur.
                 */}
-                <Image
+                <AsciiImage
                   src={src}
-                  alt={`Work ${index + 1}`}
-                  style={{ objectFit: "contain" }}
-                  width={200} // Sesuaikan estimasi ukuran visual kartu Anda agar optimal
-                  height={300} // Sesuaikan estimasi ukuran visual kartu Anda
-                  priority={index < 4} // Prioritaskan loading 4 kartu pertama
+                  width={132}
+                  height={176}
+                  cellSize={6}
+                  enableColor={false}
+                  densePreset={true}
+                  className="circle-ascii"
+                  maxDuration={5}
                 />
               </div>
             </div>

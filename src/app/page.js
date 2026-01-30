@@ -4,7 +4,8 @@ import SkillTicker from "@/app/components/sections/SkillTicker";
 import FeaturedWork from "@/app/components/sections/FeaturedWork";
 import About from "@/app/components/sections/About";
 import BlogSection from "@/app/components/sections/BlogSection";
-import GradientWrapper from "@/app/components/ui/GradientWrapper"; // Wrapper mouse effect
+import GradientWrapper from "@/app/components/ui/GradientWrapper";
+import CircleAnimator from "@/app/components/ui/CircleAnimator";
 
 export const metadata = {
   title: "Tantra Hariastama - Graphic Designer",
@@ -22,8 +23,7 @@ export default function Home() {
         {/* 1. Intro Section */}
         <ParallaxIntro />
 
-        {/* 2. Hero Section */}
-        <Hero />
+        <CircleAnimator />
 
         {/* 3. About Me */}
         <About />

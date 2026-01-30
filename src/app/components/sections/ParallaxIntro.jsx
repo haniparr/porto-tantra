@@ -2,85 +2,73 @@
 
 import { useEffect, useRef } from "react";
 import { AsciiImage } from "./../ui/AsciiImage";
-import AnimatedHeading from "./../ui/AnimatedHeading"; // Import AnimatedHeading
+import AnimatedHeading from "./../ui/AnimatedHeading";
+import gsap from "gsap";
 
 // Image configuration with dimensions for ASCII rendering
 const imageConfig = [
   {
-    src: "/assets/video-1.mp4",
-    speed: 0.2,
+    src: "/assets/HummingBird1.webm",
+    speed: 0.3,
     className: "img-1",
     width: 350,
-    height: 450,
-  }, // Video
+    height: 350,
+  },
   {
     src: "/assets/project-preview.jpg",
     speed: 0.5,
     className: "img-2",
-    width: 400,
-    height: 500,
-  },
-  {
-    src: "https://images.pexels.com/photos/3052728/pexels-photo-3052728.jpeg?auto=compress&cs=tinysrgb&w=800",
-    speed: 0.3,
-    className: "img-3",
-    width: 300,
-    height: 350,
-  },
-  {
-    src: "/assets/video-2.mp4",
-    speed: 0.6,
-    className: "img-4",
-    width: 380,
-    height: 280,
-  }, // Video
-  {
-    src: "https://images.pexels.com/photos/3052724/pexels-photo-3052724.jpeg?auto=compress&cs=tinysrgb&w=800",
-    speed: 0.4,
-    className: "img-5",
-    width: 250,
-    height: 300,
-  },
-  {
-    src: "/assets/project-preview.jpg",
-    speed: 0.25,
-    className: "img-6",
-    width: 400,
-    height: 300,
-  },
-  {
-    src: "https://images.pexels.com/photos/3062541/pexels-photo-3062541.jpeg?auto=compress&cs=tinysrgb&w=800",
-    speed: 0.55,
-    className: "img-7",
     width: 350,
-    height: 450,
-  },
-  {
-    src: "/assets/video-3.mp4",
-    speed: 0.35,
-    className: "img-8",
-    width: 300,
-    height: 400,
-  }, // Video
-  {
-    src: "/assets/project-preview.jpg",
-    speed: 0.65,
-    className: "img-9",
-    width: 320,
     height: 250,
   },
   {
-    src: "https://images.pexels.com/photos/3062539/pexels-photo-3062539.jpeg?auto=compress&cs=tinysrgb&w=800",
-    speed: 0.45,
-    className: "img-10",
-    width: 200,
-    height: 200,
+    src: "/assets/video-1.mp4",
+    speed: 0.2,
+    className: "img-3",
+    width: 280,
+    height: 380,
+  },
+  {
+    src: "/assets/video-1.mp4",
+    speed: 0.6,
+    className: "img-4",
+    width: 300,
+    height: 400,
+  },
+  {
+    src: "/assets/HummingBird2.webm",
+    speed: 0.4,
+    className: "img-5",
+    width: 320,
+    height: 320,
+  },
+  {
+    src: "/assets/HummingBird1.webm",
+    speed: 0.35,
+    className: "img-6",
+    width: 350,
+    height: 350,
+  },
+  {
+    src: "/assets/project-preview.jpg",
+    speed: 0.3,
+    className: "img-7",
+    width: 400,
+    height: 300,
+  },
+  {
+    src: "/assets/HummingBird2.webm",
+    speed: 0.4,
+    className: "img-8",
+    width: 250,
+    height: 350,
   },
 ];
 
 export default function ParallaxIntro() {
   const sectionRef = useRef(null);
   const imagesRef = useRef([]);
+  const floatingRef = useRef([]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -102,7 +90,36 @@ export default function ParallaxIntro() {
     };
 
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    const handleMouseMove = (e) => {
+      const { clientX, clientY } = e;
+      const { innerWidth, innerHeight } = window;
+
+      const xPos = (clientX / innerWidth - 0.5) * 2;
+      const yPos = (clientY / innerHeight - 0.5) * 2;
+
+      floatingRef.current.forEach((el, index) => {
+        if (!el) return;
+        const speed = ((index % 5) + 1) * 15; // Varying intensity
+        const rotationSpeed = ((index % 3) + 1) * 2;
+
+        gsap.to(el, {
+          x: xPos * speed,
+          y: yPos * speed,
+          rotateX: yPos * -rotationSpeed,
+          rotateY: xPos * rotationSpeed,
+          duration: 1.5,
+          ease: "power2.out",
+        });
+      });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
   }, []);
 
   return (
@@ -119,15 +136,23 @@ export default function ParallaxIntro() {
             ref={(el) => (imagesRef.current[index] = el)}
             className={`parallax-img-wrapper ${img.className}`}
             data-speed={img.speed}
+            style={{ perspective: "1000px" }}
           >
-            <div className="ascii-mount">
-              <AsciiImage
-                src={img.src}
-                width={img.width}
-                height={img.height}
-                enableColor={false}
-                cellSize={4}
-              />
+            <div
+              ref={(el) => (floatingRef.current[index] = el)}
+              className="parallax-floating-inner"
+              style={{ width: "100%", height: "100%" }}
+            >
+              <div className="ascii-mount">
+                <AsciiImage
+                  src={img.src}
+                  width={img.width}
+                  height={img.height}
+                  enableColor={false}
+                  cellSize={4}
+                  objectFit="cover"
+                />
+              </div>
             </div>
           </div>
         ))}
