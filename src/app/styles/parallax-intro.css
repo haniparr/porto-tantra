@@ -82,25 +82,25 @@
 }
 
 .img-2 {
-  top: 6%;
+  top: 2%;
   left: 40%;
   width: 350px;
-  height: 250px;
+  height: 350px;
 }
 
 .img-3 {
   top: 8%;
   right: 5%;
-  width: 280px;
-  height: 380px;
+  width: 250px;
+  height: 250px;
 }
 
 /* Middle Row (1 Left, 1 Right) */
 .img-4 {
-  top: 38%;
+  top: 43%;
   left: 8%;
   width: 300px;
-  height: 400px;
+  height: 300px;
 }
 
 .img-5 {
@@ -112,10 +112,10 @@
 
 /* Bottom Row */
 .img-6 {
-  top: 70%;
-  left: 20%;
+  top: 60%;
+  left: 35%;
   width: 350px;
-  height: 250px;
+  height: 350px;
 }
 
 .img-7 {
