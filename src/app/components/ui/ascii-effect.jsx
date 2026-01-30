@@ -254,19 +254,7 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
 }
 `;
 
-// Module-level variables for state management
-let _time = 0;
-let _deltaAccumulator = 0;
-let _cellSize = 9;
-let _invert = false;
-let _colorMode = true;
-let _asciiStyle = 0;
-let _resolution = new Vector2(1920, 1080);
-let _mousePos = new Vector2(0, 0);
-let _useMonochromeColor = false;
-let _monochromeColor = new Color(0xffffff);
-let _customDarkColor = new Color(0x1a1a1e);
-let _customLightColor = new Color(0xffffff);
+// REMOVED GLOBAL VARIABLES TO PREVENT CONFLICTS BETWEEN MULTIPLE INSTANCES
 
 class AsciiEffectImpl extends Effect {
   constructor(options) {
@@ -324,16 +312,8 @@ class AsciiEffectImpl extends Effect {
       ]),
     });
 
-    _cellSize = cellSize;
-    _invert = invert;
-    _colorMode = color;
-    _asciiStyle = style;
-    _resolution = resolution;
-    _mousePos = mousePos;
-    _useMonochromeColor = useMonochromeColor;
-    _monochromeColor.set(monochromeColor);
-    _customDarkColor.set(customDarkColor);
-    _customLightColor.set(customLightColor);
+    this.timeValue = 0;
+    this.deltaAccumulator = 0;
   }
 
   update(renderer, inputBuffer, deltaTime) {
@@ -341,26 +321,16 @@ class AsciiEffectImpl extends Effect {
 
     if (targetFPS > 0) {
       const frameDuration = 1 / targetFPS;
-      _deltaAccumulator += deltaTime;
-      if (_deltaAccumulator >= frameDuration) {
-        _time += frameDuration;
-        _deltaAccumulator = _deltaAccumulator % frameDuration;
+      this.deltaAccumulator += deltaTime;
+      if (this.deltaAccumulator >= frameDuration) {
+        this.timeValue += frameDuration;
+        this.deltaAccumulator = this.deltaAccumulator % frameDuration;
       }
     } else {
-      _time += deltaTime;
+      this.timeValue += deltaTime;
     }
 
-    this.uniforms.get("time").value = _time;
-    this.uniforms.get("cellSize").value = _cellSize;
-    this.uniforms.get("invert").value = _invert;
-    this.uniforms.get("colorMode").value = _colorMode;
-    this.uniforms.get("asciiStyle").value = _asciiStyle;
-    this.uniforms.get("resolution").value = _resolution;
-    this.uniforms.get("mousePos").value = _mousePos;
-    this.uniforms.get("useMonochromeColor").value = _useMonochromeColor;
-    this.uniforms.get("monochromeColor").value = _monochromeColor;
-    this.uniforms.get("customDarkColor").value = _customDarkColor;
-    this.uniforms.get("customLightColor").value = _customLightColor;
+    this.uniforms.get("time").value = this.timeValue;
   }
 }
 
@@ -383,17 +353,6 @@ export const AsciiEffect = forwardRef((props, ref) => {
 
   const styleMap = { standard: 0, dense: 1, minimal: 2, blocks: 3 };
   const styleNum = styleMap[style] || 0;
-
-  _cellSize = cellSize;
-  _invert = invert;
-  _colorMode = color;
-  _asciiStyle = styleNum;
-  _resolution = resolution;
-  _mousePos = mousePos;
-  _useMonochromeColor = monochrome;
-  _monochromeColor.set(monoColorHex);
-  _customDarkColor.set(darkColor);
-  _customLightColor.set(lightColor);
 
   const effect = useMemo(
     () =>
@@ -431,10 +390,34 @@ export const AsciiEffect = forwardRef((props, ref) => {
 
   useEffect(() => {
     if (effect.uniforms) {
+      effect.uniforms.get("cellSize").value = cellSize;
+      effect.uniforms.get("invert").value = invert;
+      effect.uniforms.get("colorMode").value = color;
+      effect.uniforms.get("asciiStyle").value = styleNum;
+      effect.uniforms.get("resolution").value = resolution;
+      effect.uniforms.get("mousePos").value = mousePos;
+      effect.uniforms.get("useMonochromeColor").value = monochrome;
+      effect.uniforms.get("monochromeColor").value.set(monoColorHex);
+      effect.uniforms.get("customDarkColor").value.set(darkColor);
+      effect.uniforms.get("customLightColor").value.set(lightColor);
       effect.uniforms.get("brightnessAdjust").value = brightness;
       effect.uniforms.get("contrastAdjust").value = contrast;
     }
-  }, [effect, brightness, contrast]);
+  }, [
+    effect,
+    cellSize,
+    invert,
+    color,
+    styleNum,
+    resolution,
+    mousePos,
+    monochrome,
+    monoColorHex,
+    darkColor,
+    lightColor,
+    brightness,
+    contrast,
+  ]);
 
   return <primitive ref={ref} object={effect} dispose={null} />;
 });
