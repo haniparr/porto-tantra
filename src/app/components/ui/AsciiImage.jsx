@@ -48,6 +48,8 @@ function VideoPlane({
   asciiRef,
   maxDuration,
   objectFit = "contain",
+  brightness = 0,
+  contrast = 1,
 }) {
   const texture = useVideoTexture(src, {
     unsuspend: "canplay",
@@ -72,23 +74,27 @@ function VideoPlane({
       return;
     }
 
-    let brightness = 0;
+    let localFade = 0;
     const fadeDuration = 0.5; // seconds
 
     if (currentTime < fadeDuration) {
       // Fade in
-      brightness = -1.0 + currentTime / fadeDuration;
+      localFade = -1.0 + currentTime / fadeDuration;
     } else if (currentTime > actualDuration - fadeDuration) {
       // Fade out
-      brightness = -(
+      localFade = -(
         (currentTime - (actualDuration - fadeDuration)) /
         fadeDuration
       );
     }
 
+    const fadeBrightness = localFade;
+
     const effect = asciiRef.current;
     if (effect.uniforms) {
-      effect.uniforms.get("brightnessAdjust").value = brightness;
+      effect.uniforms.get("brightnessAdjust").value =
+        brightness + fadeBrightness;
+      effect.uniforms.get("contrastAdjust").value = contrast;
     }
   });
 
@@ -133,6 +139,8 @@ function Scene({
   densePreset,
   maxDuration,
   objectFit,
+  brightness,
+  contrast,
 }) {
   const isVideo = src.endsWith(".mp4") || src.endsWith(".webm");
   const asciiRef = useRef();
@@ -153,6 +161,8 @@ function Scene({
             asciiRef={asciiRef}
             maxDuration={maxDuration}
             objectFit={objectFit}
+            brightness={brightness}
+            contrast={contrast}
           />
         ) : (
           <ImagePlane
@@ -171,6 +181,8 @@ function Scene({
             color={enableColor}
             invert={false}
             resolution={new Vector2(width, height)}
+            brightness={brightness}
+            contrast={contrast}
             postfx={{
               colorPalette: 0,
             }}
@@ -191,6 +203,8 @@ export function AsciiImage({
   className = "",
   maxDuration = null,
   objectFit = "contain",
+  brightness = 0,
+  contrast = 1,
 }) {
   return (
     <div
@@ -211,6 +225,8 @@ export function AsciiImage({
         densePreset={densePreset}
         maxDuration={maxDuration}
         objectFit={objectFit}
+        brightness={brightness}
+        contrast={contrast}
       />
     </div>
   );

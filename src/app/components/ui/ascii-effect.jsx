@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useMemo, useRef } from "react";
+import { forwardRef, useMemo, useRef, useEffect } from "react";
 import { Effect, BlendFunction } from "postprocessing";
 import { Uniform, Vector2, Color } from "three";
 
@@ -377,6 +377,8 @@ export const AsciiEffect = forwardRef((props, ref) => {
     color: monoColorHex = "#ffffff",
     darkColor = "#1a1a1e",
     lightColor = "#ffffff",
+    brightness = 0,
+    contrast = 1,
   } = props;
 
   const styleMap = { standard: 0, dense: 1, minimal: 2, blocks: 3 };
@@ -407,6 +409,8 @@ export const AsciiEffect = forwardRef((props, ref) => {
         monochromeColor: monoColorHex,
         customDarkColor: darkColor,
         customLightColor: lightColor,
+        brightness,
+        contrast,
       }),
     [
       cellSize,
@@ -420,8 +424,17 @@ export const AsciiEffect = forwardRef((props, ref) => {
       monoColorHex,
       darkColor,
       lightColor,
+      brightness,
+      contrast,
     ],
   );
+
+  useEffect(() => {
+    if (effect.uniforms) {
+      effect.uniforms.get("brightnessAdjust").value = brightness;
+      effect.uniforms.get("contrastAdjust").value = contrast;
+    }
+  }, [effect, brightness, contrast]);
 
   return <primitive ref={ref} object={effect} dispose={null} />;
 });

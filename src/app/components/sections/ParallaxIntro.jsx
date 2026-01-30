@@ -13,6 +13,7 @@ const imageConfig = [
     className: "img-1",
     width: 350,
     height: 350,
+    contrast: 1.2,
   },
   {
     src: "/assets/project-preview.jpg",
@@ -20,6 +21,7 @@ const imageConfig = [
     className: "img-2",
     width: 350,
     height: 250,
+    contrast: 1.1,
   },
   {
     src: "/assets/video-1.mp4",
@@ -27,6 +29,7 @@ const imageConfig = [
     className: "img-3",
     width: 280,
     height: 380,
+    contrast: 1.3,
   },
   {
     src: "/assets/video-1.mp4",
@@ -34,6 +37,7 @@ const imageConfig = [
     className: "img-4",
     width: 300,
     height: 400,
+    contrast: 1.3,
   },
   {
     src: "/assets/HummingBird2.webm",
@@ -41,13 +45,15 @@ const imageConfig = [
     className: "img-5",
     width: 320,
     height: 320,
+    contrast: 1.2,
   },
   {
     src: "/assets/HummingBird1.webm",
     speed: 0.35,
     className: "img-6",
     width: 350,
-    height: 350,
+    height: 250,
+    contrast: 1.2,
   },
   {
     src: "/assets/project-preview.jpg",
@@ -55,13 +61,7 @@ const imageConfig = [
     className: "img-7",
     width: 400,
     height: 300,
-  },
-  {
-    src: "/assets/HummingBird2.webm",
-    speed: 0.4,
-    className: "img-8",
-    width: 250,
-    height: 350,
+    contrast: 1.1,
   },
 ];
 
@@ -90,6 +90,7 @@ export default function ParallaxIntro() {
     };
 
     window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Set initial positions on mount
 
     const handleMouseMove = (e) => {
       const { clientX, clientY } = e;
@@ -151,6 +152,8 @@ export default function ParallaxIntro() {
                   enableColor={false}
                   cellSize={4}
                   objectFit="cover"
+                  contrast={img.contrast || 1.0}
+                  brightness={img.brightness || 0.0}
                 />
               </div>
             </div>

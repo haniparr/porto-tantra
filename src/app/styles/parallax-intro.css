@@ -1,6 +1,6 @@
 .parallax-intro {
   position: relative;
-  min-height: 180vh;
+  min-height: 160vh;
   /* Increased height for more spacing */
   width: 100%;
   overflow: hidden;
@@ -55,7 +55,6 @@
 .parallax-img-wrapper {
   position: absolute;
   overflow: visible; /* Changed from hidden to allow rotation/overflow */
-  transition: transform 0.1s linear;
   perspective: 1000px;
 }
 
@@ -85,7 +84,6 @@
 .img-2 {
   top: 6%;
   left: 40%;
-  transform: translateX(-50%);
   width: 350px;
   height: 250px;
 }
@@ -99,7 +97,7 @@
 
 /* Middle Row (1 Left, 1 Right) */
 .img-4 {
-  top: 40%;
+  top: 38%;
   left: 8%;
   width: 300px;
   height: 400px;
@@ -114,22 +112,21 @@
 
 /* Bottom Row */
 .img-6 {
-  top: 72%;
-  left: 5%;
+  top: 70%;
+  left: 20%;
   width: 350px;
   height: 250px;
 }
 
 .img-7 {
   top: 75%;
-  left: 45%;
-  transform: translateX(-50%);
+  right: 20%;
   width: 400px;
   height: 300px;
 }
 
 .img-8 {
-  top: 78%;
+  top: 70%;
   right: 5%;
   width: 250px;
   height: 350px;
