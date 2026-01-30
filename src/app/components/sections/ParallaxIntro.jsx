@@ -48,7 +48,7 @@ const imageConfig = [
     contrast: 1.2,
   },
   {
-    src: "/assets/HummingBird6.webm",
+    src: "/assets/HummingBird1.webm",
     speed: 0.35,
     className: "img-6",
     width: 350,
