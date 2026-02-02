@@ -25,7 +25,17 @@ export default function TestimonialsSlider({ initialData = [] }) {
       content:
         "From the first meeting to final delivery, the process was seamless. The results speak for themselves - our conversion rate doubled.",
     },
+    {
+      clientName: "Elena Rodriguez",
+      company: "Director, FutureScale",
+      content:
+        "From the first meeting to final delivery, the process was seamless. The results speak for themselves - our conversion rate doubled.",
+    },
   ];
+
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const scrollLeft = useRef(0);
 
   // Debug logging
   console.log("TestimonialsSlider received data:", initialData);
@@ -41,20 +51,50 @@ export default function TestimonialsSlider({ initialData = [] }) {
     }
   };
 
+  const handleMouseDown = (e) => {
+    isDragging.current = true;
+    startX.current = e.pageX - sliderRef.current.offsetLeft;
+    scrollLeft.current = sliderRef.current.scrollLeft;
+    sliderRef.current.style.cursor = "grabbing";
+    sliderRef.current.style.scrollBehavior = "auto";
+  };
+
+  const handleMouseLeave = () => {
+    isDragging.current = false;
+    sliderRef.current.style.cursor = "grab";
+  };
+
+  const handleMouseUp = () => {
+    isDragging.current = false;
+    sliderRef.current.style.cursor = "grab";
+    sliderRef.current.style.scrollBehavior = "smooth";
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging.current) return;
+    e.preventDefault();
+    const x = e.pageX - sliderRef.current.offsetLeft;
+    const walk = (x - startX.current) * 2; // Scroll speed
+    sliderRef.current.scrollLeft = scrollLeft.current - walk;
+  };
+
   return (
     <section className="testimonials-section">
       <div className="section-layout">
         <div className="section-label">
           <span>[ TESTIMONIALS ]</span>
         </div>
-        <div className="intro-content">
+        <div
+          className="intro-content"
+          style={{ minWidth: 0, overflow: "hidden" }}
+        >
           <div
             className="testimonials-header"
             style={{
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              marginBottom: 0,
+              marginBottom: "var(--spacing-md)",
             }}
           >
             <h1 className="intro-headline" style={{ marginBottom: 0 }}>
@@ -99,33 +139,38 @@ export default function TestimonialsSlider({ initialData = [] }) {
             </div>
           </div>
 
-          <div
-            className="testimonial-slider-wrapper"
-            style={{ overflow: "hidden" }}
-          >
+          <div className="testimonial-slider-wrapper">
             <div
-              className="intro-features-grid testimonial-slider"
+              className="testimonial-slider"
               id="testimonial-slider"
               ref={sliderRef}
+              onMouseDown={handleMouseDown}
+              onMouseLeave={handleMouseLeave}
+              onMouseUp={handleMouseUp}
+              onMouseMove={handleMouseMove}
               style={{
                 display: "flex",
                 overflowX: "auto",
                 scrollBehavior: "smooth",
-                gridTemplateColumns: "none",
                 scrollbarWidth: "none",
-                margin: "var(--spacing-md) 0",
+                cursor: "grab",
+                userSelect: "none",
+                gap: "20px",
               }}
             >
               {dataToRender.map((t, index) => {
-                // Normalisasi data (jika dari API Strapi atau Placeholder)
                 const data = t.attributes || t;
                 const num = (index + 1).toString().padStart(2, "0");
 
                 return (
                   <div
-                    className="service-card"
+                    className="service-card testimonial-slide-card"
                     key={index}
-                    style={{ minWidth: "300px", marginRight: "20px" }}
+                    style={{
+                      flex: "0 0 300px",
+                      maxWidth: "300px",
+                      marginRight: 0,
+                    }}
                   >
                     <div className="card-header">
                       <span className="service-number">{num}</span>

@@ -36,6 +36,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
+        <div className="sticky-blur-top"></div>
+        <div className="sticky-blur-bottom"></div>
         <SmoothScroll />
         <ScrollAnimations />
 

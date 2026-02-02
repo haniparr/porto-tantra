@@ -42,6 +42,8 @@
 
 .intro-content {
   width: 100%;
+  min-width: 0;
+  /* Crucial for flex/grid parents to not expand */
 }
 
 .intro-image-box {
@@ -156,36 +158,32 @@
 }
 
 /* Other sections adjustments */
-/* Other sections adjustments - Testimonials & Clients Enforce 100vh */
+/* Other sections adjustments - Testimonials & Clients */
 .clients-section,
 .testimonials-section {
-  min-height: 100vh;
-  height: 100vh;
-  /* Enforce 100vh */
+  min-height: 70vh;
+  /* Reduced from 100vh to bring sections closer */
   display: flex;
   align-items: center;
-  /* Vertically center content */
   width: 100%;
-  padding: 0;
-  /* Remove default padding to allow exact 100vh fit */
+  padding: var(--spacing-lg) 0;
+  /* Consistent padding */
   position: relative;
   overflow: hidden;
-  /* Prevent spillover */
 }
 
-/* FAQ Section - Allow growth */
+/* FAQ Section */
 .faq-section {
-  min-height: 100vh;
+  min-height: 70vh;
+  /* Reduced from 100vh */
   height: auto;
-  /* Allow expanding */
   display: flex;
   align-items: center;
   width: 100%;
-  padding: var(--spacing-xl) 0;
-  /* Restore padding */
+  padding: var(--spacing-lg) 0;
+  /* Reduced padding */
   position: relative;
   overflow: visible;
-  /* Allow toggles to show */
 }
 
 /* Specific adjustment for layouts inside 100vh sections */
@@ -570,37 +568,210 @@
 
 /* Cleaned up old styles */
 
-/* Mobile Responsive */
-@media (max-width: 768px) {
-  /* Intro & Testimonials Grid */
-  .intro-features-grid {
+/* ========================================= */
+/* RESPONSIVE STYLES */
+/* ========================================= */
+
+/* Tablet (768px - 1024px) */
+@media (max-width: 1024px) and (min-width: 768px) {
+  /* Section Layout */
+  .section-layout {
     grid-template-columns: 1fr;
-    gap: var(--spacing-lg);
+    gap: var(--spacing-md);
+    padding: 0 var(--spacing-md);
   }
 
-  .features-label {
-    margin-bottom: var(--spacing-md);
-  }
-
-  /* Work Experience Mobile */
-  .work-progress-nav {
-    display: none;
-  }
-
-  .entry-grid {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-sm);
-  }
-
-  .entry-number {
-    font-size: 4rem;
+  .section-label {
     margin-bottom: var(--spacing-sm);
+  }
+
+  /* Intro Section */
+  .services-intro {
+    padding: var(--spacing-lg) 0;
+  }
+
+  .intro-headline {
+    font-size: clamp(1.75rem, 3.5vw, 3rem);
+  }
+
+  .intro-subheadline {
+    font-size: clamp(1.125rem, 1.75vw, 1.5rem);
+  }
+
+  .intro-features-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+
+  .intro-features-grid .service-card {
+    min-height: 280px;
+  }
+
+  .intro-features-grid .service-title {
+    font-size: clamp(1.75rem, 2.75vw, 2.25rem);
+  }
+
+  .intro-features-grid .service-description {
+    font-size: 1.125rem;
+  }
+
+  /* Work Experience */
+  .work-experience-section {
+    padding: var(--spacing-lg) 0;
+  }
+
+  .experience-entry {
+    padding: 100px var(--spacing-md) var(--spacing-md);
+  }
+
+  .entry-title {
+    font-size: 2rem;
+  }
+
+  .entry-role {
+    font-size: 1.25rem;
+  }
+
+  .entry-year {
+    font-size: 1.125rem;
+  }
+
+  .entry-achievements {
+    font-size: 1.125rem;
   }
 
   /* Clients Grid */
   .clients-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--spacing-md);
+  }
+}
+
+/* Mobile (< 768px) */
+@media (max-width: 767px) {
+  /* Section Layout */
+  .section-layout {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+    padding: 0 var(--spacing-sm);
+  }
+
+  .section-label {
+    margin-bottom: var(--spacing-sm);
+  }
+
+  /* Intro Section */
+  .services-intro {
+    padding: var(--spacing-lg) 0;
+    min-height: auto;
+  }
+
+  .intro-headline {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .intro-subheadline {
+    font-size: clamp(1rem, 4vw, 1.25rem);
+  }
+
+  .intro-features-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
+  }
+
+  .intro-features-grid .service-card {
+    min-height: auto;
+    padding: var(--spacing-md);
+  }
+
+  .intro-features-grid .service-title {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+  }
+
+  .intro-features-grid .service-description {
+    font-size: 1rem;
+  }
+
+  /* Work Experience */
+  .work-experience-section {
+    height: auto;
+    min-height: auto;
+    padding: calc(var(--spacing-xl) * 1.5) 0;
+  }
+
+  .experience-entries {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .experience-entry {
+    height: auto;
+    min-height: 400px;
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: var(--spacing-xl) var(--spacing-sm);
+    flex: none;
+  }
+
+  .experience-entry:hover {
+    flex: none;
+  }
+
+  .entry-logo-box {
+    width: 100px;
+    height: 100px;
+  }
+
+  .entry-title {
+    font-size: 1.75rem;
+    margin-top: var(--spacing-sm);
+  }
+
+  .entry-role {
+    font-size: 1.125rem;
+  }
+
+  .entry-year {
+    font-size: 1rem;
+  }
+
+  .entry-achievements {
+    font-size: 1rem;
+  }
+
+  /* Clients & Testimonials Grid */
+  .clients-section,
+  .testimonials-section {
+    height: auto;
+    min-height: auto;
+    padding: var(--spacing-lg) 0;
+  }
+
+  .clients-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    gap: var(--spacing-sm);
+  }
+
+  .client-logo-item {
+    padding: var(--spacing-sm);
+  }
+
+  .client-text {
+    font-size: 1.125rem;
+  }
+
+  .client-logo-item img {
+    max-width: 70%;
+    max-height: 50%;
+  }
+
+  /* FAQ Section */
+  .faq-section {
+    padding: var(--spacing-lg) 0;
   }
 }
 
@@ -639,4 +810,28 @@
 .testimonial-slider {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Testimonial Card Refinements */
+.testimonial-slide-card {
+  padding: 2rem !important;
+  min-height: 280px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+}
+
+.testimonial-slide-card .card-header {
+  margin-bottom: 0.75rem !important;
+}
+
+.testimonial-slide-card .service-title {
+  font-size: 1.5rem !important;
+  margin-bottom: 0.25rem !important;
+}
+
+.testimonial-slide-card .service-description {
+  font-size: 1.125rem !important;
+  line-height: 1.5 !important;
+  margin-top: 1rem !important;
 }

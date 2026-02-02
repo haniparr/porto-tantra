@@ -10,8 +10,8 @@
   justify-content: center;
   align-items: flex-start;
   /* Align to top to allow scrolling through */
-  padding-top: 40vh;
-  /* Push content down */
+  padding-top: 25vh;
+  /* Reduced default padding to prevent cutoff */
   z-index: 10;
 }
 
@@ -132,50 +132,254 @@
   height: 350px;
 }
 
-@media (max-width: 768px) {
+/* ========================================= */
+/* RESPONSIVE STYLES */
+/* ========================================= */
+
+/* Responsive adjustments for smaller desktop heights */
+@media (max-height: 1100px) and (min-width: 1025px) {
   .parallax-intro {
-    min-height: 120vh;
-    padding-top: 30vh;
+    min-height: 140vh;
+    padding-top: 20vh;
   }
 
   .parallax-title {
-    font-size: 12vw;
-    /* Ensure it fits width */
+    font-size: clamp(3.5rem, 9vw, 9rem);
+  }
+
+  .parallax-year {
+    font-size: 2.25rem;
+    margin-top: 1.5rem;
+  }
+}
+
+@media (max-height: 900px) and (min-width: 1025px) {
+  .parallax-intro {
+    min-height: 130vh;
+    padding-top: 15vh;
+  }
+
+  .parallax-title {
+    font-size: clamp(3rem, 8vw, 8rem);
+  }
+
+  .parallax-year {
+    font-size: 2rem;
+    margin-top: 1.25rem;
+  }
+}
+
+@media (max-height: 800px) and (min-width: 1025px) {
+  .parallax-intro {
+    min-height: 120vh;
+    padding-top: 12vh;
+  }
+
+  .parallax-title {
+    font-size: clamp(2.5rem, 7vw, 7rem);
+  }
+
+  .parallax-year {
+    font-size: 1.75rem;
+    margin-top: 1rem;
+  }
+
+  /* Scale down images slightly */
+  .img-1,
+  .img-2,
+  .img-6 {
+    width: 300px;
+    height: 300px;
+  }
+
+  .img-3 {
+    width: 220px;
+    height: 220px;
+  }
+
+  .img-4 {
+    width: 260px;
+    height: 260px;
+  }
+
+  .img-5 {
+    width: 280px;
+    height: 280px;
+  }
+}
+
+@media (max-height: 700px) and (min-width: 1025px) {
+  .parallax-intro {
+    min-height: 110vh;
+    padding-top: 10vh;
+  }
+
+  .parallax-title {
+    font-size: clamp(2rem, 6vw, 6rem);
+  }
+
+  .parallax-year {
+    font-size: 1.5rem;
+    margin-top: 0.75rem;
+  }
+
+  /* Further scale down images */
+  .img-1,
+  .img-2,
+  .img-6 {
+    width: 250px;
+    height: 250px;
+  }
+
+  .img-3 {
+    width: 180px;
+    height: 180px;
+  }
+
+  .img-4 {
+    width: 220px;
+    height: 220px;
+  }
+
+  .img-5 {
+    width: 240px;
+    height: 240px;
+  }
+}
+
+/* Tablet (768px - 1024px) */
+@media (max-width: 1024px) and (min-width: 768px) {
+  .parallax-intro {
+    min-height: 140vh;
+    padding-top: 25vh;
+  }
+
+  .parallax-title {
+    font-size: clamp(3rem, 8vw, 7rem);
+  }
+
+  .parallax-year {
+    font-size: 2rem;
+    margin-top: 1.5rem;
   }
 
   .parallax-img-wrapper {
-    opacity: 0.4;
-    /* Fade images on mobile */
+    opacity: 0.6;
+  }
+
+  /* Scale images for tablet */
+  .img-1,
+  .img-2,
+  .img-6 {
+    width: 280px;
+    height: 280px;
+  }
+
+  .img-3 {
+    width: 200px;
+    height: 200px;
+  }
+
+  .img-4 {
+    width: 240px;
+    height: 240px;
+  }
+
+  .img-5 {
+    width: 260px;
+    height: 260px;
+  }
+
+  .img-7 {
+    width: 320px;
+    height: 240px;
+  }
+
+  .img-8 {
+    width: 200px;
+    height: 280px;
+  }
+}
+
+/* Mobile (< 768px) */
+@media (max-width: 767px) {
+  .parallax-intro {
+    min-height: 100vh;
+    padding-top: 25vh;
+  }
+
+  .parallax-title {
+    font-size: clamp(2.5rem, 10vw, 4rem);
+  }
+
+  .parallax-year {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .parallax-img-wrapper {
+    opacity: 0.3;
   }
 
   /* Reduce sizes for mobile */
   .img-1 {
-    width: 150px;
-    height: 200px;
+    width: 140px;
+    height: 180px;
+    top: 8%;
+    left: 3%;
   }
 
   .img-2 {
-    width: 180px;
-    height: 220px;
+    width: 160px;
+    height: 200px;
+    top: 5%;
+    left: 50%;
   }
 
   .img-3 {
-    width: 140px;
-    height: 160px;
+    width: 120px;
+    height: 140px;
+    top: 12%;
+    right: 3%;
   }
 
   .img-4 {
-    width: 160px;
-    height: 120px;
+    width: 140px;
+    height: 100px;
+    top: 50%;
+    left: 5%;
   }
 
   /* Hide some images on mobile to reduce clutter */
   .img-5,
   .img-6,
   .img-7,
-  .img-8,
-  .img-9,
-  .img-10 {
+  .img-8 {
     display: none;
+  }
+}
+
+/* Extra Small Mobile (< 375px) */
+@media (max-width: 374px) {
+  .parallax-intro {
+    min-height: 90vh;
+    padding-top: 20vh;
+  }
+
+  .parallax-title {
+    font-size: clamp(2rem, 9vw, 3rem);
+  }
+
+  .parallax-year {
+    font-size: 1.25rem;
+    margin-top: 0.75rem;
+  }
+
+  .img-1,
+  .img-2,
+  .img-3,
+  .img-4 {
+    width: 100px;
+    height: 120px;
   }
 }

@@ -10,7 +10,7 @@
   --color-accent: #0055ff;
   --color-accent-secondary: #ff4500;
 
-  /* Spacing */
+  /* Spacing - Desktop */
   --spacing-xs: 0.75rem;
   --spacing-sm: 1.5rem;
   --spacing-md: 3rem;
@@ -24,6 +24,29 @@
   /* Fallback Fonts (Jika typography.css belum ter-load) */
   --font-body: system-ui, -apple-system, sans-serif;
   --font-headline: system-ui, -apple-system, sans-serif;
+
+  /* Touch Target Minimum */
+  --touch-target-min: 44px;
+}
+
+/* Tablet Spacing Adjustments (768px - 1024px) */
+@media (max-width: 1024px) and (min-width: 768px) {
+  :root {
+    --spacing-md: 2rem;
+    --spacing-lg: 4rem;
+    --spacing-xl: 8rem;
+  }
+}
+
+/* Mobile Spacing Adjustments (< 768px) */
+@media (max-width: 767px) {
+  :root {
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 3rem;
+    --spacing-xl: 4rem;
+  }
 }
 
 /* =========================================
@@ -108,6 +131,17 @@ button {
     box-shadow 0.3s ease,
     transform 0.2s ease;
   border: 1px solid transparent;
+  min-height: var(--touch-target-min);
+}
+
+/* Mobile button adjustments */
+@media (max-width: 767px) {
+  .btn-primary {
+    padding: 16px 28px;
+    font-size: 0.9375rem;
+    width: 100%;
+    max-width: 100%;
+  }
 }
 
 /* Efek Hover untuk Button Primary (Light Theme style pada tombol hitam) */
@@ -129,4 +163,60 @@ button {
   overflow: hidden;
   /* Variable mouse-x dan mouse-y akan di-inject oleh JS */
   /* background: radial-gradient deleted to remove cursor light effect */
+}
+/* =========================================
+   STICKY BLUR OVERLAYS
+   ========================================= */
+.sticky-blur-top,
+.sticky-blur-bottom {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 115px; /* Matched to navbar height */
+  pointer-events: none;
+  z-index: 90; /* Below navbar header (100) but above content */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.sticky-blur-top {
+  top: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 10, 10, 0.6) 0%,
+    rgba(10, 10, 10, 0) 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    black 0%,
+    black 40%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    black 0%,
+    black 40%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+.sticky-blur-bottom {
+  bottom: 0;
+  background: linear-gradient(
+    to top,
+    rgba(10, 10, 10, 0.6) 0%,
+    rgba(10, 10, 10, 0) 100%
+  );
+  mask-image: linear-gradient(
+    to top,
+    black 0%,
+    black 40%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to top,
+    black 0%,
+    black 40%,
+    rgba(0, 0, 0, 0) 100%
+  );
 }

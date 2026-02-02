@@ -5,11 +5,10 @@
   color: #1a1a1a;
 }
 
-.blog-container {
+.blog-content-wrapper {
   max-width: 100%;
   /* Wide layout request */
   margin: 0 auto;
-  padding: 0 var(--spacing-md) var(--spacing-xl);
 }
 
 /* Header & Filters */
@@ -283,34 +282,151 @@
   transform: none;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+/* ========================================= */
+/* RESPONSIVE STYLES */
+/* ========================================= */
+
+/* Tablet (768px - 1024px) */
+@media (max-width: 1024px) and (min-width: 768px) {
+  .blog-page-title {
+    font-size: clamp(1.75rem, 3.5vw, 3rem);
+  }
+
   .featured-article {
     grid-template-columns: 1fr;
     gap: var(--spacing-lg);
+    margin-bottom: 80px;
   }
 
-  .blog-page-title {
+  .featured-title {
     font-size: 2.5rem;
   }
 
-  .insights-grid {
-    grid-template-columns: 1fr;
-    /* Force 1 column on mobile */
+  .featured-excerpt {
+    font-size: 1.0625rem;
   }
 
-  .insight-card {
-    height: auto;
-    min-height: 300px;
-    /* Allow natural height or set min */
+  .insights-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+
+  .section-headline {
+    font-size: clamp(1.75rem, 3.5vw, 3rem);
+  }
+
+  .insight-title {
+    font-size: 1.5rem;
+  }
+}
+
+/* Mobile (< 768px) */
+@media (max-width: 767px) {
+  .blog-page {
+    padding-top: 80px;
+  }
+
+  .blog-content-wrapper {
+    padding: 0 var(--spacing-sm);
+  }
+
+  .blog-page-header {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .blog-page-title {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+    margin-bottom: var(--spacing-md);
   }
 
   .blog-filters {
     justify-content: flex-start;
     overflow-x: auto;
     padding-bottom: 10px;
-    /* Scroll space */
     flex-wrap: nowrap;
-    /* Horizontal scroll for filters */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .filter-btn {
+    flex-shrink: 0;
+    font-size: 0.8125rem;
+    padding: 6px 14px;
+  }
+
+  .featured-article {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .featured-title {
+    font-size: clamp(1.75rem, 6vw, 2.25rem);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .featured-excerpt {
+    font-size: 1rem;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .btn-read-more {
+    width: auto;
+    padding: 0.875rem 2rem;
+    min-height: 44px;
+  }
+
+  .section-header {
+    margin-bottom: var(--spacing-md);
+  }
+
+  .section-headline {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+  }
+
+  .insights-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+
+  .insight-card {
+    min-height: auto;
+  }
+
+  .insight-card-content {
+    padding: 1.25rem;
+  }
+
+  .insight-title {
+    font-size: 1.375rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .insight-excerpt {
+    font-size: 0.875rem;
+  }
+
+  .insight-card .article-tag {
+    font-size: 0.6875rem;
+    padding: 5px 10px;
+    margin-bottom: 0.75rem;
+  }
+}
+
+/* Extra Small Mobile (< 375px) */
+@media (max-width: 374px) {
+  .blog-page-title {
+    font-size: clamp(1.375rem, 5vw, 1.75rem);
+  }
+
+  .featured-title {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+  }
+
+  .section-headline {
+    font-size: clamp(1.375rem, 5vw, 1.75rem);
+  }
+
+  .insight-title {
+    font-size: 1.25rem;
   }
 }

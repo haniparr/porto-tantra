@@ -125,8 +125,6 @@ export default async function WorkPage() {
         >
           <div
             style={{
-              maxWidth: "1440px",
-              margin: "0 auto",
               padding: "0 var(--spacing-md)",
             }}
           >

@@ -102,20 +102,31 @@ export default function BlogPage() {
       >
         <div className="gradient-container">
           <div className="blog-page" style={{ paddingTop: "120px" }}>
-            <div className="blog-container">
-              <header className="blog-page-header">
+            <div className="blog-content-wrapper">
+              <header
+                style={{
+                  padding: "0 var(--spacing-md)",
+                  marginBottom: "var(--spacing-xl)",
+                }}
+              >
                 <AnimatedHeading
                   text="Blog & articles"
                   as="h1"
                   direction="right"
-                  className="blog-page-title"
+                  className=""
                   style={{
                     fontSize: "clamp(3rem, 6vw, 5rem)",
                   }}
                 />
               </header>
 
-              <section className="latest-insights">
+              <section
+                className="latest-insights"
+                style={{
+                  padding:
+                    "var(--spacing-lg) var(--spacing-md) var(--spacing-xl)",
+                }}
+              >
                 <div className="insights-grid">
                   {posts.map((post) => {
                     const attrs = post.attributes || post;

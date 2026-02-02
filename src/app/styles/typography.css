@@ -1,16 +1,16 @@
 /* Typography */
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@300;400;600&display=swap");
 
 :root {
-  --font-headline: 'Geist', sans-serif;
-  --font-body: 'Geist', sans-serif;
+  --font-headline: "Geist", sans-serif;
+  --font-body: "Geist", sans-serif;
 }
 
 /* Standardized Heading Class */
 /* Standardized Heading Class */
 .display-heading {
   font-family: var(--font-headline);
-  font-size: clamp(4rem, 10vw, 9rem);
+  font-size: clamp(3rem, 10vw, 9rem);
   line-height: 0.9;
   font-weight: 400;
   letter-spacing: normal;
@@ -18,5 +18,22 @@
   /* Force visible spacing */
   font-variant-ligatures: none;
   /* Disable ligatures that might merge characters */
-  color: #FFFFFF;
+  color: #ffffff;
+}
+
+/* Tablet display heading */
+@media (max-width: 1024px) {
+  .display-heading {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    word-spacing: 0.5rem;
+  }
+}
+
+/* Mobile display heading */
+@media (max-width: 767px) {
+  .display-heading {
+    font-size: clamp(2rem, 12vw, 4rem);
+    word-spacing: 0.25rem;
+    line-height: 1;
+  }
 }
