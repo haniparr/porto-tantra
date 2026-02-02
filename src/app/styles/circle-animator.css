@@ -124,7 +124,8 @@
 
 @media (max-width: 768px) {
   .circle-animator-container {
-    --circle-radius: 250px;
+    --circle-radius: 300px;
+    height: 100vh;
   }
 
   .circle-track {
@@ -133,15 +134,22 @@
   }
 
   .circle-item {
-    width: 160px;
-    height: 220px;
-    margin-top: -110px;
-    margin-left: -80px;
+    width: 120px;
+    height: 160px;
+    margin-top: -80px;
+    margin-left: -60px;
   }
 }
 
 @media (max-width: 480px) {
   .circle-animator-container {
-    --circle-radius: 180px;
+    --circle-radius: 220px;
+  }
+
+  .circle-item {
+    width: 100px;
+    height: 135px;
+    margin-top: -67.5px;
+    margin-left: -50px;
   }
 }

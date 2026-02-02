@@ -172,10 +172,10 @@ button {
   position: fixed;
   left: 0;
   width: 100%;
-  height: 115px; /* Matched to navbar height */
+  height: 18vh; /* Reduced from 25vh */
   pointer-events: none;
   z-index: 90; /* Below navbar header (100) but above content */
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px); /* Reduced from 30px */
   -webkit-backdrop-filter: blur(20px);
 }
 
@@ -183,19 +183,19 @@ button {
   top: 0;
   background: linear-gradient(
     to bottom,
-    rgba(10, 10, 10, 0.6) 0%,
-    rgba(10, 10, 10, 0) 100%
+    rgba(10, 10, 10, 0.7) 0%,
+    /* Slightly less opaque */ rgba(10, 10, 10, 0) 100%
   );
   mask-image: linear-gradient(
     to bottom,
     black 0%,
-    black 40%,
+    black 30%,
     rgba(0, 0, 0, 0) 100%
   );
   -webkit-mask-image: linear-gradient(
     to bottom,
     black 0%,
-    black 40%,
+    black 30%,
     rgba(0, 0, 0, 0) 100%
   );
 }
@@ -204,19 +204,19 @@ button {
   bottom: 0;
   background: linear-gradient(
     to top,
-    rgba(10, 10, 10, 0.6) 0%,
-    rgba(10, 10, 10, 0) 100%
+    rgba(10, 10, 10, 0.7) 0%,
+    /* Slightly less opaque */ rgba(10, 10, 10, 0) 100%
   );
   mask-image: linear-gradient(
     to top,
     black 0%,
-    black 40%,
+    black 30%,
     rgba(0, 0, 0, 0) 100%
   );
   -webkit-mask-image: linear-gradient(
     to top,
     black 0%,
-    black 40%,
+    black 30%,
     rgba(0, 0, 0, 0) 100%
   );
 }

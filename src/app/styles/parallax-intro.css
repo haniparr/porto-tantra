@@ -1,6 +1,6 @@
 .parallax-intro {
   position: relative;
-  min-height: 160vh;
+  min-height: 100vh;
   /* Increased height for more spacing */
   width: 100%;
   overflow: hidden;
@@ -10,13 +10,14 @@
   justify-content: center;
   align-items: center; /* Changed from flex-start to center */
   z-index: 10;
+  margin-bottom: 20vh; /* Added space between intro and circle animator */
 }
 
 .parallax-content {
   text-align: center;
   z-index: 2;
   position: relative;
-  margin-top: -10vh; /* Shifted up slightly as requested */
+  /* Perfectly centered vertically via flexbox in .parallax-intro */
 }
 
 .parallax-title {
@@ -77,9 +78,9 @@
 }
 
 .img-2 {
-  top: 2%;
+  top: 0%;
   left: 40%;
-  width: 350px;
+  width: 400px;
   height: 350px;
 }
 
@@ -92,15 +93,15 @@
 
 /* Middle Row (1 Left, 1 Right) */
 .img-4 {
-  top: 43%;
-  left: 8%;
-  width: 300px;
+  top: 50%;
+  left: 5%;
+  width: 400px;
   height: 300px;
 }
 
 .img-5 {
   top: 45%;
-  right: 8%;
+  right: 5%;
   width: 320px;
   height: 320px;
 }
@@ -149,7 +150,7 @@
 
 @media (max-height: 900px) and (min-width: 1025px) {
   .parallax-intro {
-    min-height: 130vh;
+    min-height: 100vh;
   }
 
   .parallax-title {
@@ -164,7 +165,7 @@
 
 @media (max-height: 800px) and (min-width: 1025px) {
   .parallax-intro {
-    min-height: 120vh;
+    min-height: 100vh;
   }
 
   .parallax-title {
@@ -202,7 +203,7 @@
 
 @media (max-height: 700px) and (min-width: 1025px) {
   .parallax-intro {
-    min-height: 110vh;
+    min-height: 100vh;
   }
 
   .parallax-title {
@@ -261,8 +262,8 @@
   .img-1,
   .img-2,
   .img-6 {
-    width: 280px;
-    height: 280px;
+    width: 200px;
+    height: 200px;
   }
 
   .img-3 {
@@ -295,6 +296,7 @@
 @media (max-width: 767px) {
   .parallax-intro {
     min-height: 100vh;
+    margin-bottom: 5vh;
   }
 
   .parallax-title {
@@ -312,30 +314,30 @@
 
   /* Reduce sizes for mobile */
   .img-1 {
-    width: 140px;
-    height: 180px;
+    width: 10px;
+    height: 50px;
     top: 8%;
-    left: 3%;
+    left: 0%;
   }
 
   .img-2 {
     width: 160px;
     height: 200px;
-    top: 5%;
-    left: 50%;
+    top: 37%;
+    left: -40%;
   }
 
   .img-3 {
     width: 120px;
     height: 140px;
-    top: 12%;
+    top: 35%;
     right: 3%;
   }
 
   .img-4 {
     width: 140px;
     height: 100px;
-    top: 50%;
+    top: 60%;
     left: 5%;
   }
 
@@ -351,7 +353,7 @@
 /* Extra Small Mobile (< 375px) */
 @media (max-width: 374px) {
   .parallax-intro {
-    min-height: 90vh;
+    min-height: 100vh;
   }
 
   .parallax-title {
