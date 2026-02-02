@@ -86,6 +86,8 @@ function VideoPlane({
     loop: true,
     start: true,
     crossOrigin: "Anonymous",
+    playsInline: true,
+    preload: "auto",
   });
 
   const video = texture?.image;

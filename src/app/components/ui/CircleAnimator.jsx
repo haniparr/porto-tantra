@@ -6,7 +6,7 @@ import { useIsMobile } from "@/app/lib/hooks/useIsMobile";
 export default function CircleAnimator() {
   const isMobile = useIsMobile();
   // Setup data items
-  const count = isMobile ? 6 : 8;
+  const count = isMobile ? 4 : 8;
   const videoSrc = "/assets/Watchtower.webm";
   const items = Array(count).fill(videoSrc);
   const angleStep = 360 / count;

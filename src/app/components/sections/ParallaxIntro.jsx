@@ -42,7 +42,7 @@ const imageConfig = [
     width: 400,
     height: 300,
     contrast: 1.3,
-    hideOnMobile: false,
+    hideOnMobile: true,
   },
   {
     src: "/assets/HummingBird5.webm",
