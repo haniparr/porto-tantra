@@ -8,20 +8,15 @@
   /* Transparent background */
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  /* Align to top to allow scrolling through */
-  padding-top: 25vh;
-  /* Reduced default padding to prevent cutoff */
+  align-items: center; /* Changed from flex-start to center */
   z-index: 10;
 }
 
 .parallax-content {
   text-align: center;
   z-index: 2;
-  position: sticky;
-  /* Keep title visible for a bit? No, let it scroll */
   position: relative;
-  margin-top: 0;
+  margin-top: -10vh; /* Shifted up slightly as requested */
 }
 
 .parallax-title {
@@ -140,7 +135,6 @@
 @media (max-height: 1100px) and (min-width: 1025px) {
   .parallax-intro {
     min-height: 140vh;
-    padding-top: 20vh;
   }
 
   .parallax-title {
@@ -156,7 +150,6 @@
 @media (max-height: 900px) and (min-width: 1025px) {
   .parallax-intro {
     min-height: 130vh;
-    padding-top: 15vh;
   }
 
   .parallax-title {
@@ -172,7 +165,6 @@
 @media (max-height: 800px) and (min-width: 1025px) {
   .parallax-intro {
     min-height: 120vh;
-    padding-top: 12vh;
   }
 
   .parallax-title {
@@ -211,7 +203,6 @@
 @media (max-height: 700px) and (min-width: 1025px) {
   .parallax-intro {
     min-height: 110vh;
-    padding-top: 10vh;
   }
 
   .parallax-title {
@@ -251,7 +242,6 @@
 @media (max-width: 1024px) and (min-width: 768px) {
   .parallax-intro {
     min-height: 140vh;
-    padding-top: 25vh;
   }
 
   .parallax-title {
@@ -305,7 +295,6 @@
 @media (max-width: 767px) {
   .parallax-intro {
     min-height: 100vh;
-    padding-top: 25vh;
   }
 
   .parallax-title {
@@ -363,7 +352,6 @@
 @media (max-width: 374px) {
   .parallax-intro {
     min-height: 90vh;
-    padding-top: 20vh;
   }
 
   .parallax-title {

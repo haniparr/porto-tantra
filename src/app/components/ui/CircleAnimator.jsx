@@ -1,11 +1,14 @@
+"use client";
+
 import { AsciiImage } from "./AsciiImage";
+import { useIsMobile } from "@/app/lib/hooks/useIsMobile";
 
 export default function CircleAnimator() {
+  const isMobile = useIsMobile();
   // Setup data items
-  const count = 8;
+  const count = isMobile ? 4 : 8;
   const videoSrc = "/assets/Watchtower.webm";
   const items = Array(count).fill(videoSrc);
-  const radius = 500;
   const angleStep = 360 / count;
 
   return (
@@ -20,7 +23,7 @@ export default function CircleAnimator() {
 
           // Style Logic:
           // Rotate wrapper to angle -> Translate out (radius) -> Rotate item to be upright (90deg offset)
-          const transformStyle = `rotate(${angle}deg) translate(${radius}px) rotate(90deg)`;
+          const transformStyle = `rotate(${angle}deg) translate(var(--circle-radius)) rotate(90deg)`;
 
           return (
             <div

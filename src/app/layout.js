@@ -31,31 +31,34 @@ import Footer from "./components/layout/Footer";
 import ScrollAnimations from "./components/utils/ScrollAnimations";
 import SmoothScroll from "./components/utils/SmoothScroll";
 import GradualBlur from "./components/ui/GradualBlur";
+import ErrorBoundary from "./components/ui/ErrorBoundary";
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <div className="sticky-blur-top"></div>
-        <div className="sticky-blur-bottom"></div>
-        <SmoothScroll />
-        <ScrollAnimations />
+        <ErrorBoundary>
+          <div className="sticky-blur-top"></div>
+          <div className="sticky-blur-bottom"></div>
+          <SmoothScroll />
+          <ScrollAnimations />
 
-        <Navbar />
+          <Navbar />
 
-        <div
-          id="main-wrapper"
-          style={{
-            position: "relative",
-            zIndex: 1,
-            minHeight: "100vh",
-            boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
-          }}
-        >
-          {children}
-        </div>
+          <div
+            id="main-wrapper"
+            style={{
+              position: "relative",
+              zIndex: 1,
+              minHeight: "100vh",
+              boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+            }}
+          >
+            {children}
+          </div>
 
-        <Footer />
+          <Footer />
+        </ErrorBoundary>
       </body>
     </html>
   );

@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { AsciiImage } from "./../ui/AsciiImage";
 import AnimatedHeading from "./../ui/AnimatedHeading";
+import { useIsMobile } from "@/app/lib/hooks/useIsMobile";
 import gsap from "gsap";
 
 // Image configuration with dimensions for ASCII rendering
@@ -14,6 +15,7 @@ const imageConfig = [
     width: 350,
     height: 350,
     contrast: 1.2,
+    hideOnMobile: false,
   },
   {
     src: "/assets/HummingBird2.webm",
@@ -22,6 +24,7 @@ const imageConfig = [
     width: 350,
     height: 350,
     contrast: 1.1,
+    hideOnMobile: false,
   },
   {
     src: "/assets/HummingBird3.webm",
@@ -30,6 +33,7 @@ const imageConfig = [
     width: 250,
     height: 250,
     contrast: 1.3,
+    hideOnMobile: false,
   },
   {
     src: "/assets/HummingBird4.webm",
@@ -38,6 +42,7 @@ const imageConfig = [
     width: 300,
     height: 300,
     contrast: 1.3,
+    hideOnMobile: false,
   },
   {
     src: "/assets/HummingBird5.webm",
@@ -46,6 +51,7 @@ const imageConfig = [
     width: 320,
     height: 320,
     contrast: 1.2,
+    hideOnMobile: true,
   },
   {
     src: "/assets/HummingBird1.webm",
@@ -54,6 +60,7 @@ const imageConfig = [
     width: 350,
     height: 350,
     contrast: 1.2,
+    hideOnMobile: true,
   },
 ];
 
@@ -61,6 +68,7 @@ export default function ParallaxIntro() {
   const sectionRef = useRef(null);
   const imagesRef = useRef([]);
   const floatingRef = useRef([]);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -85,6 +93,9 @@ export default function ParallaxIntro() {
     handleScroll(); // Set initial positions on mount
 
     const handleMouseMove = (e) => {
+      // Mouse move is usually not needed on mobile touch devices
+      if (isMobile) return;
+
       const { clientX, clientY } = e;
       const { innerWidth, innerHeight } = window;
 
@@ -113,7 +124,7 @@ export default function ParallaxIntro() {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("mousemove", handleMouseMove);
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <div className="parallax-intro" ref={sectionRef}>
@@ -123,34 +134,39 @@ export default function ParallaxIntro() {
       </div>
 
       <div className="parallax-images">
-        {imageConfig.map((img, index) => (
-          <div
-            key={index}
-            ref={(el) => (imagesRef.current[index] = el)}
-            className={`parallax-img-wrapper ${img.className}`}
-            data-speed={img.speed}
-            style={{ perspective: "1000px" }}
-          >
+        {imageConfig.map((img, index) => {
+          // Skip rendering on mobile if marked to hide
+          if (isMobile && img.hideOnMobile) return null;
+
+          return (
             <div
-              ref={(el) => (floatingRef.current[index] = el)}
-              className="parallax-floating-inner"
-              style={{ width: "100%", height: "100%" }}
+              key={index}
+              ref={(el) => (imagesRef.current[index] = el)}
+              className={`parallax-img-wrapper ${img.className}`}
+              data-speed={img.speed}
+              style={{ perspective: "1000px" }}
             >
-              <div className="ascii-mount">
-                <AsciiImage
-                  src={img.src}
-                  width={img.width}
-                  height={img.height}
-                  enableColor={false}
-                  cellSize={4}
-                  objectFit="cover"
-                  contrast={img.contrast || 1.0}
-                  brightness={img.brightness || 0.0}
-                />
+              <div
+                ref={(el) => (floatingRef.current[index] = el)}
+                className="parallax-floating-inner"
+                style={{ width: "100%", height: "100%" }}
+              >
+                <div className="ascii-mount">
+                  <AsciiImage
+                    src={img.src}
+                    width={img.width}
+                    height={img.height}
+                    enableColor={false}
+                    cellSize={4}
+                    objectFit="cover"
+                    contrast={img.contrast || 1.0}
+                    brightness={img.brightness || 0.0}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
