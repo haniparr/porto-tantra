@@ -95,71 +95,67 @@ export default function BlogPage() {
 
   return (
     <>
-      <Navbar />
-      <div
-        id="main-wrapper"
-        style={{ position: "relative", zIndex: 1, minHeight: "100vh" }}
-      >
-        <div className="gradient-container">
-          <div className="blog-page" style={{ paddingTop: "120px" }}>
-            <div className="blog-content-wrapper">
-              <header
+      <div className="gradient-container">
+        <div
+          className="blog-page"
+          style={{ paddingTop: "clamp(60px, 10vh, 100px)", minHeight: "auto" }}
+        >
+          <div className="blog-content-wrapper">
+            <header
+              style={{
+                padding: "0 var(--spacing-md)",
+                marginBottom: "var(--spacing-xl)",
+              }}
+            >
+              <AnimatedHeading
+                text="Blog & articles"
+                as="h1"
+                direction="right"
+                className=""
                 style={{
-                  padding: "0 var(--spacing-md)",
-                  marginBottom: "var(--spacing-xl)",
+                  fontSize: "clamp(3rem, 6vw, 5rem)",
                 }}
-              >
-                <AnimatedHeading
-                  text="Blog & articles"
-                  as="h1"
-                  direction="right"
-                  className=""
-                  style={{
-                    fontSize: "clamp(3rem, 6vw, 5rem)",
-                  }}
-                />
-              </header>
+              />
+            </header>
 
-              <section
-                className="latest-insights"
-                style={{
-                  padding:
-                    "var(--spacing-lg) var(--spacing-md) var(--spacing-xl)",
-                }}
-              >
-                <div className="insights-grid">
-                  {posts.map((post) => {
-                    const attrs = post.attributes || post;
-                    return (
-                      <Link
-                        href={`/blog/${attrs.slug}`}
-                        key={post.id}
-                        className="insight-card-link"
-                        style={{ textDecoration: "none", color: "inherit" }}
-                      >
-                        <article className="insight-card">
-                          <div className="insight-card-image">
-                            <img src={getImageUrl(post)} alt={attrs.title} />
-                            <div className="insight-card-overlay"></div>
-                          </div>
-                          <div className="insight-card-content">
-                            <span className="article-tag">
-                              {attrs.category || "News"}
-                            </span>
-                            <h4 className="insight-title">{attrs.title}</h4>
-                            <p className="insight-excerpt">{attrs.excerpt}</p>
-                          </div>
-                        </article>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </section>
-            </div>
+            <section
+              className="latest-insights"
+              style={{
+                padding:
+                  "var(--spacing-lg) var(--spacing-md) var(--spacing-xl)",
+              }}
+            >
+              <div className="insights-grid">
+                {posts.map((post) => {
+                  const attrs = post.attributes || post;
+                  return (
+                    <Link
+                      href={`/blog/${attrs.slug}`}
+                      key={post.id}
+                      className="insight-card-link"
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      <article className="insight-card">
+                        <div className="insight-card-image">
+                          <img src={getImageUrl(post)} alt={attrs.title} />
+                          <div className="insight-card-overlay"></div>
+                        </div>
+                        <div className="insight-card-content">
+                          <span className="article-tag">
+                            {attrs.category || "News"}
+                          </span>
+                          <h4 className="insight-title">{attrs.title}</h4>
+                          <p className="insight-excerpt">{attrs.excerpt}</p>
+                        </div>
+                      </article>
+                    </Link>
+                  );
+                })}
+              </div>
+            </section>
           </div>
         </div>
       </div>
-      <GradualBlur />
     </>
   );
 }

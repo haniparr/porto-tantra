@@ -18,7 +18,7 @@
     var(--color-gradient-end) 100%
   );
   transition: background 0.5s ease;
-  min-height: 100vh;
+  min-height: auto;
   overflow: hidden;
   z-index: 1;
 }

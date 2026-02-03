@@ -50,7 +50,7 @@ export default function RootLayout({ children }) {
             style={{
               position: "relative",
               zIndex: 1,
-              minHeight: "100vh",
+              minHeight: "auto",
               boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
             }}
           >

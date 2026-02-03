@@ -114,35 +114,31 @@ export default async function WorkPage() {
   }
 
   return (
-    <div
-      id="main-wrapper"
-      style={{ position: "relative", zIndex: 1, minHeight: "100vh" }}
-    >
-      <div className="gradient-container">
+    <div className="gradient-container">
+      <div
+        className="work-page"
+        style={{
+          paddingTop: "clamp(60px, 10vh, 100px)",
+          paddingBottom: "var(--spacing-md)",
+          minHeight: "auto",
+        }}
+      >
         <div
-          className="work-page"
           style={{
-            paddingTop: "clamp(80px, 15vh, 120px)",
-            minHeight: "calc(100vh - 120px)", // Adjusting for viewport minus some footer room
+            padding: "0 var(--spacing-md)",
           }}
         >
-          <div
+          <AnimatedHeading
+            text="Selected Work"
+            as="h1"
+            direction="right"
+            className=""
             style={{
-              padding: "0 var(--spacing-md)",
+              fontSize: "clamp(3rem, 6vw, 5rem)",
             }}
-          >
-            <AnimatedHeading
-              text="Selected Work"
-              as="h1"
-              direction="right"
-              className=""
-              style={{
-                fontSize: "clamp(3rem, 6vw, 5rem)",
-              }}
-            />
-          </div>
-          <ProjectGrid projects={projects} />
+          />
         </div>
+        <ProjectGrid projects={projects} />
       </div>
     </div>
   );
