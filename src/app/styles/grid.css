@@ -2,7 +2,8 @@
 .portfolio-list-section {
   padding: var(--spacing-lg) var(--spacing-md);
   position: relative;
-  min-height: 100vh;
+  min-height: auto;
+  padding: 0 var(--spacing-md) var(--spacing-xl);
   max-width: 100%;
   /* Full width */
   margin: 0 auto;

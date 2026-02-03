@@ -121,7 +121,10 @@ export default async function WorkPage() {
       <div className="gradient-container">
         <div
           className="work-page"
-          style={{ paddingTop: "120px", minHeight: "100vh" }}
+          style={{
+            paddingTop: "clamp(80px, 15vh, 120px)",
+            minHeight: "calc(100vh - 120px)", // Adjusting for viewport minus some footer room
+          }}
         >
           <div
             style={{
