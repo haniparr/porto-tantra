@@ -121,7 +121,10 @@ export default function Footer() {
                 Whether you have a clear roadmap or just a rough idea, I&rsquo;m
                 here to help you.
               </h2>
-              <a href="mailto:hello@example.com" className="btn-footer">
+              <a
+                href="mailto:witantrahariastama@gmail.com"
+                className="btn-footer"
+              >
                 <span>↳ Let's Collaborate</span>
               </a>
             </div>
