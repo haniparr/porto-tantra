@@ -250,7 +250,13 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
     finalColor *= mix(1.0, vignette, vignetteIntensity);
   }
 
-  outputColor = vec4(finalColor, cellColor.a);
+  float finalAlpha = cellColor.a;
+  // Factor in charValue to ensure transparency in empty parts of the character
+  finalAlpha *= smoothstep(0.0, 0.1, charValue);
+  // Factor in brightness to key out dark backgrounds (helps on mobile where video alpha might fail)
+  finalAlpha *= smoothstep(0.02, 0.1, brightness);
+
+  outputColor = vec4(finalColor, finalAlpha);
 }
 `;
 

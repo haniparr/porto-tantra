@@ -230,6 +230,7 @@ function Scene({
               resolution={new Vector2(width, height)}
               brightness={brightness}
               contrast={contrast}
+              darkColor="#000000"
               postfx={{
                 colorPalette: 0,
               }}
