@@ -118,7 +118,7 @@ export default async function WorkPage() {
       <div
         className="work-page"
         style={{
-          paddingTop: "clamp(60px, 10vh, 100px)",
+          paddingTop: "clamp(100px, 15vh, 120px)",
           paddingBottom: "var(--spacing-md)",
           minHeight: "auto",
         }}

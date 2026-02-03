@@ -98,7 +98,7 @@ export default function BlogPage() {
       <div className="gradient-container">
         <div
           className="blog-page"
-          style={{ paddingTop: "clamp(60px, 10vh, 100px)", minHeight: "auto" }}
+          style={{ paddingTop: "clamp(100px, 15vh, 120px)", minHeight: "auto" }}
         >
           <div className="blog-content-wrapper">
             <header
