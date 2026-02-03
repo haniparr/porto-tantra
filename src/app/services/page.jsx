@@ -34,7 +34,10 @@ export default async function ServicesPage() {
   return (
     <div className="services-page">
       {/* Intro / Services Section */}
-      <section className="services-intro">
+      <section
+        className="services-intro"
+        style={{ paddingTop: "clamp(100px, 15vh, 120px)" }}
+      >
         <div className="section-layout">
           <div className="section-label">
             <span>[ SERVICES ]</span>

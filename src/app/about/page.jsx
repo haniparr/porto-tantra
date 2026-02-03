@@ -29,7 +29,10 @@ export default async function AboutPage() {
     <div className="services-page">
       <GradientWrapper className="min-h-screen">
         {/* Intro Section */}
-        <section className="services-intro pt-24">
+        <section
+          className="services-intro"
+          style={{ paddingTop: "clamp(100px, 15vh, 120px)" }}
+        >
           <div className="section-layout">
             <div className="section-label">
               <span>[ ABOUT & SERVICES ]</span>
