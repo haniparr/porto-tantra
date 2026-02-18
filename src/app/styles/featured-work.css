@@ -115,13 +115,13 @@
   mix-blend-mode: normal;
 }
 
-/* Overlay for blur effect */
-.work-card-overlay {
+/* Overlay for blur effect - REMOVED to prevent dark effect on images */
+/* .work-card-overlay {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0);
   transition: background 0.5s ease;
-}
+} */
 
 /* Card Content - Hidden by default, shown on hover */
 .work-card-content {
@@ -166,10 +166,11 @@
   transform: scale(1.05);
 }
 
-.work-card:hover .work-card-overlay,
+/* Removed overlay hover effect */
+/* .work-card:hover .work-card-overlay,
 .work-card.is-hovered .work-card-overlay {
   background: rgba(0, 0, 0, 0.3);
-}
+} */
 
 .work-card:hover .work-card-content,
 .work-card.is-hovered .work-card-content {

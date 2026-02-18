@@ -54,14 +54,6 @@ export default function ProjectGrid({ projects = [] }) {
           {projects.map((project, index) => {
             // ✅ Handle both nested (.attributes) and flattened data structures
             const attrs = project.attributes || project;
-            console.log(
-              `[ProjectGrid Debug] Project ${index}:`,
-              JSON.stringify(project, null, 2),
-            );
-            console.log(
-              `[ProjectGrid Debug] Attrs ${index}:`,
-              JSON.stringify(attrs, null, 2),
-            );
 
             // ✅ Logo dengan fallback
             const logoUrl = getImageWithFallback(
@@ -130,8 +122,8 @@ export default function ProjectGrid({ projects = [] }) {
         <div
           className="preview-inner"
           style={{
-            width: "300px",
-            height: "200px",
+            width: "320px",
+            height: "400px", // 4:5 aspect ratio (320 x 400)
             overflow: "hidden",
             borderRadius: "8px",
             boxShadow: "0 20px 40px rgba(0,0,0,0.2)",

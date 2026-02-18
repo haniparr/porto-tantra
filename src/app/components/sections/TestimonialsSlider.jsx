@@ -37,8 +37,6 @@ export default function TestimonialsSlider({ initialData = [] }) {
   const startX = useRef(0);
   const scrollLeft = useRef(0);
 
-  // Debug logging
-  console.log("TestimonialsSlider received data:", initialData);
   const dataToRender = initialData.length > 0 ? initialData : placeholders;
 
   const scrollSlider = (direction) => {

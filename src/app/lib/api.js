@@ -1,13 +1,12 @@
-import { getStrapiURL } from "./utils";
+// API client for fetching data from internal Next.js API routes
+// Updated to use Prisma-backed API instead of Strapi
 
 // Helper Fetcher with Timeout
-async function fetchAPI(path, urlParamsObject = {}, options = {}) {
-  // Create AbortController for timeout
+async function fetchAPI(path, options = {}) {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+  const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
   try {
-    // Merge options with abort signal
     const mergedOptions = {
       headers: {
         "Content-Type": "application/json",
@@ -16,40 +15,40 @@ async function fetchAPI(path, urlParamsObject = {}, options = {}) {
       signal: controller.signal,
     };
 
-    // Construct URL
-    const requestUrl = path.startsWith("http")
-      ? path
-      : `${getStrapiURL("/api")}${path}`;
+    // Build absolute URL for both client and server-side rendering
+    // In server components, we need absolute URLs
+    let requestUrl;
 
-    // Fetch with timeout
+    if (typeof window === "undefined") {
+      // Server-side: use environment variable or localhost
+      const baseUrl =
+        process.env.NEXT_PUBLIC_SITE_URL || process.env.VERCEL_URL
+          ? `https://${process.env.VERCEL_URL}`
+          : "http://localhost:3000"; // Fixed: was 3001
+      requestUrl = `${baseUrl}${path}`;
+    } else {
+      // Client-side: can use relative URLs
+      requestUrl = path;
+    }
+
     const response = await fetch(requestUrl, mergedOptions);
-    clearTimeout(timeoutId); // Clear timeout if request succeeds
+    clearTimeout(timeoutId);
 
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("API Error Details:", {
-        status: response.status,
-        statusText: response.statusText,
-        data: data,
-        path: path,
-      });
-      throw new Error(
-        data.error?.message || `Failed to fetch API: ${response.status}`,
-      );
+      throw new Error(data.error || `Failed to fetch API: ${response.status}`);
     }
 
     return data;
   } catch (error) {
-    clearTimeout(timeoutId); // Clear timeout on error
+    clearTimeout(timeoutId);
 
-    // Handle timeout specifically
     if (error.name === "AbortError") {
-      console.warn(`API request timeout after 5s: ${path}`);
+      console.warn(`API request timeout after 10s: ${path}`);
       throw new Error("API request timeout");
     }
 
-    console.error("Fetch API Error:", error);
     throw error;
   }
 }
@@ -57,18 +56,48 @@ async function fetchAPI(path, urlParamsObject = {}, options = {}) {
 // --- BLOG POSTS ---
 
 export async function getBlogPosts(featured = false) {
-  const filters = featured ? "&filters[featured][$eq]=true" : "";
-  const path = `/blog-posts?${filters}&populate[featuredImage][fields][0]=url&populate[featuredImage][fields][1]=formats&sort[0]=publishedDate:desc`;
+  const params = new URLSearchParams({
+    published: "true",
+    limit: "100",
+  });
+
+  if (featured) params.append("featured", "true");
+
+  const path = `/api/blog?${params.toString()}`;
 
   try {
-    const data = await fetchAPI(
-      path,
-      {},
-      {
-        next: { revalidate: 60 }, // Cache update tiap 60 detik
+    const data = await fetchAPI(path, {
+      next: { revalidate: 60 }, // Cache for 60 seconds
+    });
+
+    // Transform to Strapi-like format for compatibility
+    const transformedPosts = (data.posts || []).map((post) => ({
+      id: post.id,
+      attributes: {
+        slug: post.slug,
+        title: post.title,
+        excerpt: post.excerpt,
+        content: post.content,
+        category: post.category,
+        tags: post.tags,
+        publishedDate: post.publishedDate,
+        readTime: post.readTime,
+        featured: post.featured,
+        published: post.published,
+        featuredImage: {
+          data: post.featuredImage
+            ? {
+                attributes: { url: post.featuredImage },
+              }
+            : null,
+        },
       },
-    );
-    return data;
+    }));
+
+    return {
+      data: transformedPosts,
+      pagination: data.pagination,
+    };
   } catch (error) {
     console.warn("getBlogPosts error:", error.message);
     return { data: [] };
@@ -76,17 +105,42 @@ export async function getBlogPosts(featured = false) {
 }
 
 export async function getBlogPost(slug) {
-  const path = `/blog-posts?filters[slug][$eq]=${slug}&populate[featuredImage][fields][0]=url&populate[featuredImage][fields][1]=formats`;
-
   try {
+    // Search by slug using the list endpoint
     const data = await fetchAPI(
-      path,
-      {},
+      `/api/blog?search=${encodeURIComponent(slug)}&limit=1&published=true`,
       {
         next: { revalidate: 60 },
       },
     );
-    return data.data[0] || null;
+
+    // Find exact slug match
+    const post = data.posts?.find((p) => p.slug === slug);
+    if (!post) return null;
+
+    // Transform to Strapi-like format
+    return {
+      id: post.id,
+      attributes: {
+        slug: post.slug,
+        title: post.title,
+        excerpt: post.excerpt,
+        content: post.content,
+        category: post.category,
+        tags: post.tags,
+        publishedDate: post.publishedDate,
+        readTime: post.readTime,
+        featured: post.featured,
+        published: post.published,
+        featuredImage: {
+          data: post.featuredImage
+            ? {
+                attributes: { url: post.featuredImage },
+              }
+            : null,
+        },
+      },
+    };
   } catch (error) {
     console.warn("getBlogPost error:", error.message);
     return null;
@@ -96,20 +150,83 @@ export async function getBlogPost(slug) {
 // --- PROJECTS ---
 
 export async function getProjects(featured = false) {
-  const filters = featured ? "&filters[featured][$eq]=true" : "";
+  const params = new URLSearchParams({
+    published: "true",
+    limit: "100", // Get all published projects
+  });
 
-  // Fixed: Populate sections with nested images
-  const path = `/projects?${filters}&populate[thumbnail][fields][0]=url&populate[thumbnail][fields][1]=formats&populate[logo][fields][0]=url&populate[logo][fields][1]=formats&populate[sections][populate][images][fields][0]=url&populate[sections][populate][images][fields][1]=formats&populate[credits]=*&populate[testimonial][populate]=*&sort[0]=year:desc`;
+  // No need to add featured to params, we'll filter client-side
+  // because API doesn't support featured query param
+
+  const path = `/api/projects?${params.toString()}`;
 
   try {
-    const data = await fetchAPI(
-      path,
-      {},
-      {
-        next: { revalidate: 3600 }, // Cache 1 jam
-      },
-    );
-    return data;
+    const data = await fetchAPI(path, {
+      next: { revalidate: 3600 }, // Cache for 1 hour
+    });
+
+    // Filter featured if requested
+    let projects = data.projects || [];
+    if (featured) {
+      projects = projects.filter((p) => p.featured === true);
+    }
+
+    // Transform to Strapi-like format for compatibility with existing components
+    return {
+      data: projects.map((project) => ({
+        id: project.id,
+        attributes: {
+          slug: project.slug,
+          client: project.client,
+          title: project.client, // Use client as title for compatibility
+          year: project.year,
+          services: Array.isArray(project.services)
+            ? project.services.join(", ")
+            : project.services,
+          tagline: Array.isArray(project.services)
+            ? project.services.join(" • ")
+            : project.services,
+          thumbnail: {
+            data: project.thumbnail
+              ? {
+                  attributes: { url: project.thumbnail },
+                }
+              : null,
+          },
+          logo: {
+            data: project.logo
+              ? {
+                  attributes: { url: project.logo },
+                }
+              : null,
+          },
+          sections: project.sections || [],
+          credits: project.credits || [],
+          testimonial: project.testimonial
+            ? {
+                data: {
+                  attributes: {
+                    clientName: project.testimonial.clientName,
+                    company: project.testimonial.company,
+                    position: project.testimonial.position,
+                    content: project.testimonial.content,
+                    rating: project.testimonial.rating,
+                    avatar: {
+                      data: project.testimonial.avatar
+                        ? {
+                            attributes: { url: project.testimonial.avatar },
+                          }
+                        : null,
+                    },
+                  },
+                },
+              }
+            : null,
+          featured: project.featured,
+          published: project.published,
+        },
+      })),
+    };
   } catch (error) {
     console.warn("getProjects error:", error.message);
     return { data: [] };
@@ -117,24 +234,80 @@ export async function getProjects(featured = false) {
 }
 
 export async function getProject(slug) {
-  // ✅ FIXED: Ensure credits is populated
-  const path = `/projects?filters[slug][$eq]=${slug}&populate[thumbnail][fields][0]=url&populate[thumbnail][fields][1]=formats&populate[logo][fields][0]=url&populate[logo][fields][1]=formats&populate[sections][populate][images][fields][0]=url&populate[sections][populate][images][fields][1]=formats&populate[credits][populate]=*&populate[testimonial][populate]=*`;
-
   try {
-    const data = await fetchAPI(
-      path,
-      {},
-      {
-        next: { revalidate: 3600 },
+    const response = await fetchAPI(`/api/projects?search=${slug}&limit=1`, {
+      next: { revalidate: 3600 },
+    });
+
+    const project = response.projects?.[0];
+    if (!project) return null;
+
+    // Transform to Strapi-like format
+    return {
+      id: project.id,
+      attributes: {
+        slug: project.slug,
+        client: project.client,
+        year: project.year,
+        services: Array.isArray(project.services)
+          ? project.services.join(", ")
+          : project.services,
+        thumbnail: {
+          data: project.thumbnail
+            ? {
+                attributes: { url: project.thumbnail },
+              }
+            : null,
+        },
+        logo: {
+          data: project.logo
+            ? {
+                attributes: { url: project.logo },
+              }
+            : null,
+        },
+        sections:
+          project.sections?.map((s) => ({
+            id: s.id,
+            title: s.title,
+            description: s.description,
+            images: {
+              data: (s.images || []).map((url) => ({
+                attributes: { url },
+              })),
+            },
+            order: s.order,
+          })) || [],
+        credits:
+          project.credits?.map((c) => ({
+            id: c.id,
+            name: c.name,
+            role: c.role,
+          })) || [],
+        testimonial: project.testimonial
+          ? {
+              data: {
+                attributes: {
+                  clientName: project.testimonial.clientName,
+                  company: project.testimonial.company,
+                  position: project.testimonial.position,
+                  content: project.testimonial.content,
+                  rating: project.testimonial.rating,
+                  avatar: project.testimonial.avatar
+                    ? {
+                        data: {
+                          attributes: { url: project.testimonial.avatar },
+                        },
+                      }
+                    : null,
+                },
+              },
+            }
+          : null,
+        featured: project.featured,
+        published: project.published,
       },
-    );
-
-    console.log("API Response for project:", data);
-    if (data.data && data.data[0]) {
-      console.log("Credits from API:", data.data[0].attributes.credits);
-    }
-
-    return data.data[0] || null;
+    };
   } catch (error) {
     console.warn("getProject error:", error.message);
     return null;
@@ -144,17 +317,39 @@ export async function getProject(slug) {
 // --- TESTIMONIALS ---
 
 export async function getTestimonials() {
-  const path = `/testimonials?populate[avatar][fields][0]=url&populate[avatar][fields][1]=formats`;
+  const params = new URLSearchParams({
+    published: "true",
+    limit: "100",
+  });
+
+  const path = `/api/testimonials?${params.toString()}`;
 
   try {
-    const data = await fetchAPI(
-      path,
-      {},
-      {
-        next: { revalidate: 3600 },
-      },
-    );
-    return data;
+    const data = await fetchAPI(path, {
+      next: { revalidate: 3600 },
+    });
+
+    // Transform to Strapi-like format
+    return {
+      data: (data.testimonials || []).map((testimonial) => ({
+        id: testimonial.id,
+        attributes: {
+          clientName: testimonial.clientName,
+          company: testimonial.company,
+          position: testimonial.position,
+          content: testimonial.content,
+          rating: testimonial.rating,
+          avatar: {
+            data: testimonial.avatar
+              ? {
+                  attributes: { url: testimonial.avatar },
+                }
+              : null,
+          },
+          published: testimonial.published,
+        },
+      })),
+    };
   } catch (error) {
     console.warn("getTestimonials error:", error.message);
     return { data: [] };

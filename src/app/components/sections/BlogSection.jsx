@@ -89,21 +89,12 @@ export default async function BlogSection() {
       Array.isArray(response.data) &&
       response.data.length > 0
     ) {
-      // ✅ TIDAK PERLU FILTER - Terima semua blog posts
       blogs = response.data;
-      console.log(
-        "✅ Using Strapi data for Blog Section:",
-        blogs.length,
-        "posts",
-      );
     } else {
       blogs = getDefaultBlogs();
-      console.log("⚠️ Using hardcoded data for Blog Section");
     }
   } catch (error) {
-    console.error("Error fetching blog posts:", error);
     blogs = getDefaultBlogs();
-    console.log("⚠️ Using hardcoded data for Blog Section (API error)");
   }
 
   return (

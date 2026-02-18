@@ -3,6 +3,8 @@ const nextConfig = {
   images: {
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    minimumCacheTTL: 60, // Cache images for at least 60 seconds
+    formats: ["image/webp"], // Use WebP for better compression
     remotePatterns: [
       {
         protocol: "https",
@@ -26,7 +28,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "res.cloudinary.com",
+        hostname: "res.cloudinary.com", // Cloudinary images from database
       },
       {
         protocol: "http",
@@ -34,6 +36,11 @@ const nextConfig = {
         port: "1337",
       },
     ],
+  },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "10mb",
+    },
   },
 };
 
