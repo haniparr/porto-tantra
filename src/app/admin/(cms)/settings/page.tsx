@@ -137,27 +137,6 @@ export default function SettingsPage() {
           </p>
         </div>
       </div>
-
-      <div>
-        <h3
-          style={{ fontSize: "18px", fontWeight: "600", marginBottom: "15px" }}
-        >
-          Environment Variables
-        </h3>
-        <p style={{ color: "#6b7280", marginBottom: "15px" }}>
-          Make sure these environment variables are configured:
-        </p>
-        <ul
-          style={{ listStyle: "disc", paddingLeft: "20px", color: "#6b7280" }}
-        >
-          <li>DATABASE_URL - Database connection string</li>
-          <li>NEXTAUTH_SECRET - NextAuth secret key</li>
-          <li>NEXTAUTH_URL - Application URL</li>
-          <li>CLOUDINARY_CLOUD_NAME - Cloudinary cloud name</li>
-          <li>CLOUDINARY_API_KEY - Cloudinary API key</li>
-          <li>CLOUDINARY_API_SECRET - Cloudinary API secret</li>
-        </ul>
-      </div>
     </div>
   );
 }

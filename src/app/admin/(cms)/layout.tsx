@@ -24,7 +24,7 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
 
   // Add Users link only for ADMIN role
   if (session?.user?.role === "ADMIN") {
-    navItems.splice(4, 0, {
+    navItems.splice(6, 0, {
       href: "/admin/users",
       label: "Users",
       exact: false,
