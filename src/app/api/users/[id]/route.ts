@@ -10,10 +10,11 @@ import { prisma } from "@/app/lib/prisma";
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     await requireRole(["ADMIN"]);
+    const { id } = await params;
 
     const body = await request.json();
     const { name, email, role, password } = body;
@@ -26,7 +27,7 @@ export async function PUT(
     }
 
     const user = await prisma.user.update({
-      where: { id: params.id },
+      where: { id },
       data: updateData,
       select: {
         id: true,
@@ -52,18 +53,19 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const currentUser = await requireRole(["ADMIN"]);
+    const { id } = await params;
 
     // Prevent deleting yourself
-    if (currentUser.id === params.id) {
+    if (currentUser.id === id) {
       return errorResponse("Cannot delete your own account", 400);
     }
 
     await prisma.user.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json({ success: true });
