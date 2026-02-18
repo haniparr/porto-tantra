@@ -20,11 +20,15 @@ async function fetchAPI(path, options = {}) {
     let requestUrl;
 
     if (typeof window === "undefined") {
-      // Server-side: use environment variable or localhost
-      const baseUrl =
-        process.env.NEXT_PUBLIC_SITE_URL || process.env.VERCEL_URL
-          ? `https://${process.env.VERCEL_URL}`
-          : "http://localhost:3000"; // Fixed: was 3001
+      // Server-side: build absolute URL using env vars (priority order)
+      let baseUrl;
+      if (process.env.NEXT_PUBLIC_SITE_URL) {
+        baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+      } else if (process.env.VERCEL_URL) {
+        baseUrl = `https://${process.env.VERCEL_URL}`;
+      } else {
+        baseUrl = "http://localhost:3000";
+      }
       requestUrl = `${baseUrl}${path}`;
     } else {
       // Client-side: can use relative URLs
