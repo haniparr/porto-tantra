@@ -172,7 +172,6 @@ export default async function FeaturedWork() {
                   style={{ objectFit: "cover" }}
                   loading="lazy"
                 />
-                <div className="work-card-overlay"></div>
               </div>
 
               <div className="work-card-content">

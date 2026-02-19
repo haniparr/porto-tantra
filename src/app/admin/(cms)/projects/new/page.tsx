@@ -27,6 +27,7 @@ export default function NewProjectPage() {
     services: [] as string[],
     thumbnail: "",
     logo: "",
+    featured: false,
     published: false,
   });
   const [sections, setSections] = useState<Section[]>([]);
@@ -480,6 +481,16 @@ export default function NewProjectPage() {
         </div>
 
         <div style={{ marginBottom: "20px" }}>
+          <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <input
+              type="checkbox"
+              checked={formData.featured}
+              onChange={(e) =>
+                setFormData({ ...formData, featured: e.target.checked })
+              }
+            />
+            Featured Project (Show on Homepage)
+          </label>
           <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <input
               type="checkbox"

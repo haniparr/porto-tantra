@@ -14,7 +14,9 @@ export default function CircleAnimator() {
   return (
     <div className="circle-animator-container">
       <div className="circle-overlay">
-        <h1>Graphic Designer</h1>
+        <h1>
+          Graphic <br /> Designer
+        </h1>
       </div>
 
       <div className="circle-track">

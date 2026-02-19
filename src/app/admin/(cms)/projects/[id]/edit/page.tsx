@@ -29,6 +29,7 @@ export default function EditProjectPage() {
     services: [] as string[],
     thumbnail: "",
     logo: "",
+    featured: false,
     published: false,
   });
   const [sections, setSections] = useState<Section[]>([]);
@@ -51,6 +52,7 @@ export default function EditProjectPage() {
         services: project.services || [],
         thumbnail: project.thumbnail || "",
         logo: project.logo || "",
+        featured: project.featured,
         published: project.published,
       });
       setSections(project.sections || []);
@@ -243,17 +245,20 @@ export default function EditProjectPage() {
           </div>
 
           <div className="form-group">
-            <label>Published</label>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <input
-                type="checkbox"
-                checked={formData.published}
-                onChange={(e) =>
-                  setFormData({ ...formData, published: e.target.checked })
-                }
+            <label>Logo</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => handleImageUpload(e, "logo")}
+              disabled={uploadingImage}
+            />
+            {formData.logo && (
+              <img
+                src={formData.logo}
+                alt="Logo"
+                style={{ maxWidth: "200px", marginTop: "10px" }}
               />
-              <span>Visible on website</span>
-            </div>
+            )}
           </div>
         </div>
 
@@ -501,6 +506,16 @@ export default function EditProjectPage() {
         </div>
 
         <div style={{ marginBottom: "20px" }}>
+          <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <input
+              type="checkbox"
+              checked={formData.featured}
+              onChange={(e) =>
+                setFormData({ ...formData, featured: e.target.checked })
+              }
+            />
+            Featured Project (Show on Homepage)
+          </label>
           <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <input
               type="checkbox"
