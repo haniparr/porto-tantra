@@ -306,6 +306,112 @@ export default function NewProjectPage() {
                   rows={3}
                 />
               </div>
+
+              <div className="form-group">
+                <label>Section Images</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={async (e) => {
+                    const files = Array.from(e.target.files || []);
+                    if (files.length === 0) return;
+
+                    setUploadingImage(true);
+                    try {
+                      const uploadedUrls: string[] = [];
+
+                      for (const file of files) {
+                        const formData = new FormData();
+                        formData.append("file", file);
+
+                        const response = await fetch("/api/upload", {
+                          method: "POST",
+                          body: formData,
+                        });
+
+                        const data = await response.json();
+                        if (data.success) {
+                          uploadedUrls.push(data.url);
+                        }
+                      }
+
+                      if (uploadedUrls.length > 0) {
+                        updateSection(index, "images", [
+                          ...(section.images || []),
+                          ...uploadedUrls,
+                        ]);
+                      }
+                    } catch (error) {
+                      console.error("Upload error:", error);
+                      alert("Failed to upload images");
+                    } finally {
+                      setUploadingImage(false);
+                    }
+                  }}
+                  disabled={uploadingImage}
+                />
+                {uploadingImage && (
+                  <p style={{ fontSize: "13px", color: "#6b7280" }}>
+                    Uploading images...
+                  </p>
+                )}
+
+                {section.images && section.images.length > 0 && (
+                  <div
+                    style={{
+                      marginTop: "10px",
+                      display: "grid",
+                      gridTemplateColumns:
+                        "repeat(auto-fill, minmax(120px, 1fr))",
+                      gap: "10px",
+                    }}
+                  >
+                    {section.images.map((url, imgIdx) => (
+                      <div
+                        key={imgIdx}
+                        style={{
+                          position: "relative",
+                          aspectRatio: "1",
+                        }}
+                      >
+                        <img
+                          src={url}
+                          alt={`Section ${index + 1} Image ${imgIdx + 1}`}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                            borderRadius: "4px",
+                          }}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const newImages = [...section.images];
+                            newImages.splice(imgIdx, 1);
+                            updateSection(index, "images", newImages);
+                          }}
+                          style={{
+                            position: "absolute",
+                            top: "4px",
+                            right: "4px",
+                            background: "rgba(239, 68, 68, 0.9)",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "4px",
+                            padding: "4px 8px",
+                            fontSize: "11px",
+                            cursor: "pointer",
+                          }}
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           ))}
         </div>

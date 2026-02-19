@@ -30,7 +30,6 @@ export default function EditProjectPage() {
     thumbnail: "",
     logo: "",
     published: false,
-    createdAt: "", // New field for sorting
   });
   const [sections, setSections] = useState<Section[]>([]);
   const [credits, setCredits] = useState<Credit[]>([]);
@@ -53,9 +52,6 @@ export default function EditProjectPage() {
         thumbnail: project.thumbnail || "",
         logo: project.logo || "",
         published: project.published,
-        createdAt: project.createdAt
-          ? new Date(project.createdAt).toISOString().slice(0, 16)
-          : "",
       });
       setSections(project.sections || []);
       setCredits(project.credits || []);
@@ -257,72 +253,6 @@ export default function EditProjectPage() {
                 }
               />
               <span>Visible on website</span>
-            </div>
-          </div>
-
-          <div
-            style={{
-              background: "#f8fafc",
-              padding: "20px",
-              borderRadius: "8px",
-              border: "1px solid #e2e8f0",
-              marginTop: "20px",
-            }}
-          >
-            <h3
-              style={{
-                fontSize: "16px",
-                fontWeight: "600",
-                marginBottom: "15px",
-              }}
-            >
-              Sorting / Display Order
-            </h3>
-            <p
-              style={{
-                fontSize: "13px",
-                color: "#64748b",
-                marginBottom: "15px",
-              }}
-            >
-              Projects are ordered by <strong>Creation Date</strong> (Newest
-              First). Adjust this date to change the order.
-            </p>
-
-            <div className="form-group">
-              <label>Sort Date (Newer dates appear first)</label>
-              <div style={{ display: "flex", gap: "10px" }}>
-                <input
-                  type="datetime-local"
-                  value={formData.createdAt}
-                  onChange={(e) =>
-                    setFormData({ ...formData, createdAt: e.target.value })
-                  }
-                  style={{ flex: 1 }}
-                />
-                <button
-                  type="button"
-                  className="btn"
-                  onClick={() => {
-                    const now = new Date();
-                    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-                    setFormData({
-                      ...formData,
-                      createdAt: now.toISOString().slice(0, 16),
-                    });
-                  }}
-                  style={{
-                    background: "#e2e8f0",
-                    color: "#0f172a",
-                    border: "1px solid #cbd5e1",
-                    whiteSpace: "nowrap",
-                    padding: "0 15px",
-                    cursor: "pointer",
-                  }}
-                >
-                  Move to Top (Set to Now)
-                </button>
-              </div>
             </div>
           </div>
         </div>
