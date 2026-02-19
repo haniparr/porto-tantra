@@ -34,20 +34,12 @@
 
 /* Custom Scrollbar for Chrome/Safari/Edge */
 .cs-sidebar::-webkit-scrollbar {
-  width: 4px; /* Thin scrollbar */
+  display: none; /* Hide scrollbar completely */
 }
 
-.cs-sidebar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.cs-sidebar::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-}
-
-.cs-sidebar::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.4);
+/* For Firefox */
+.cs-sidebar {
+  scrollbar-width: none;
 }
 
 .cs-sidebar-content {
@@ -108,7 +100,7 @@
 }
 
 .cs-nav-title {
-  font-size: 2.5rem;
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
   font-weight: 500;
   margin-bottom: 0.75rem;
   color: #fff;
@@ -126,11 +118,11 @@
 }
 
 .cs-nav-desc {
-  font-size: 22px;
-  line-height: 1.5;
+  font-size: clamp(1rem, 1.5vw, 1.125rem); /* ~16px to 18px */
+  line-height: 1.65;
   color: rgba(255, 255, 255, 0.8);
-  overflow: hidden;
-  max-width: 90%;
+  /* overflow: hidden; Removed to prevent clipping of list bullets */
+  max-width: 95%;
 }
 
 /* Credits Section */
@@ -465,8 +457,8 @@
 
 .cs-nav-desc,
 .markdown-content {
-  font-size: 22px;
-  line-height: 1.5;
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  line-height: 1.65;
   color: rgba(255, 255, 255, 0.8);
 }
 
@@ -506,6 +498,7 @@
   margin-bottom: 1rem;
   line-height: 1.7;
   color: rgba(255, 255, 255, 0.8);
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
 }
 
 /* Lists */
@@ -519,12 +512,14 @@
 
 .cs-nav-desc ul,
 .markdown-list:not(.ordered) {
-  list-style-type: disc;
+  list-style-type: disc !important; /* Force list style */
+  list-style-position: inside; /* Ensure bullets are inside the box */
 }
 
 .cs-nav-desc ol,
 .markdown-list.ordered {
-  list-style-type: decimal;
+  list-style-type: decimal !important; /* Force list style */
+  list-style-position: inside;
 }
 
 .cs-nav-desc li,

@@ -299,12 +299,11 @@ export default function NewProjectPage() {
 
               <div className="form-group">
                 <label>Section Description</label>
-                <textarea
-                  value={section.description}
-                  onChange={(e) =>
-                    updateSection(index, "description", e.target.value)
+                <TiptapEditor
+                  content={section.description}
+                  onChange={(content) =>
+                    updateSection(index, "description", content)
                   }
-                  rows={3}
                 />
               </div>
 
