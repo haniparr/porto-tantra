@@ -100,10 +100,19 @@ export default async function BlogSection() {
   return (
     <section className="blog-section">
       <div className="blog-header">
-        <span className="section-label">[ MY THOUGHT ]</span>
-        <h2 className="section-title">
-          The view from here: A collection of personal notes.
-        </h2>
+        <div className="section-label">
+          <span>[ MY THOUGHT ]</span>
+        </div>
+        <div className="section-center">
+          <h2 className="section-title">
+            The view from here: A collection of personal notes.
+          </h2>
+        </div>
+        <div className="section-action">
+          <Link href="/blog" className="btn-primary">
+            See All Blog
+          </Link>
+        </div>
       </div>
 
       <div className="blog-grid">

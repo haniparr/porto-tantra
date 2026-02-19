@@ -31,12 +31,14 @@ import Footer from "../components/layout/Footer";
 import ScrollAnimations from "../components/utils/ScrollAnimations";
 import SmoothScroll from "../components/utils/SmoothScroll";
 import ErrorBoundary from "../components/ui/ErrorBoundary";
+import CursorBlur from "../components/ui/CursorBlur";
 
 // RootLayout is now in src/app/layout.tsx
 // This layout only handles the public pages structure
 export default function PublicLayout({ children }) {
   return (
     <ErrorBoundary>
+      <CursorBlur />
       <div className="sticky-blur-top"></div>
       <div className="sticky-blur-bottom"></div>
       <SmoothScroll />
