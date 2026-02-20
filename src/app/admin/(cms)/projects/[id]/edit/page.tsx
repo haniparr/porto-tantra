@@ -134,6 +134,7 @@ export default function EditProjectPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...formData,
+          services: formData.services.map((s) => s.trim()).filter(Boolean),
           sections,
           credits,
         }),
@@ -206,10 +207,7 @@ export default function EditProjectPage() {
             onChange={(e) =>
               setFormData({
                 ...formData,
-                services: e.target.value
-                  .split(",")
-                  .map((s) => s.trim())
-                  .filter((s) => s),
+                services: e.target.value.split(","),
               })
             }
             placeholder="e.g., Web Design, Branding, UI/UX"

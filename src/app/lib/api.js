@@ -166,7 +166,7 @@ export async function getProjects(featured = false) {
 
   try {
     const data = await fetchAPI(path, {
-      next: { revalidate: 3600 }, // Cache for 1 hour
+      next: { revalidate: process.env.NODE_ENV === "development" ? 0 : 3600 }, // No cache in dev, 1 hour in prod
     });
 
     // Filter featured if requested
@@ -240,7 +240,7 @@ export async function getProjects(featured = false) {
 export async function getProject(slug) {
   try {
     const response = await fetchAPI(`/api/projects?search=${slug}&limit=1`, {
-      next: { revalidate: 3600 },
+      next: { revalidate: process.env.NODE_ENV === "development" ? 0 : 3600 },
     });
 
     const project = response.projects?.[0];

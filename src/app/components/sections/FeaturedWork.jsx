@@ -172,15 +172,20 @@ export default async function FeaturedWork() {
                   style={{ objectFit: "cover" }}
                   loading="lazy"
                 />
+                <div className="work-card-overlay"></div>
               </div>
 
               <div className="work-card-content">
-                <span className="work-card-title">
+                <h3 className="work-card-title">
                   {attrs.title || attrs.client || "Untitled Project"}
-                </span>
-                <h3 className="work-card-tagline">
-                  {attrs.tagline || attrs.services || "Project description"}
                 </h3>
+                <span className="work-card-tagline">
+                  {attrs.tagline ||
+                    (Array.isArray(attrs.services)
+                      ? attrs.services.join(", ")
+                      : attrs.services) ||
+                    "Project description"}
+                </span>
               </div>
             </Link>
           );

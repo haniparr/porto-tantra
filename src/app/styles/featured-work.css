@@ -93,7 +93,7 @@
   overflow: hidden;
   cursor: pointer;
   background: #1a1a1a;
-  mix-blend-mode: normal;
+  mix-blend-mode: normal !important; /* Force override gradient-container exclusion */
 }
 
 .work-card-image {
@@ -116,12 +116,12 @@
 }
 
 /* Overlay for blur effect - REMOVED to prevent dark effect on images */
-/* .work-card-overlay {
+.work-card-overlay {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0);
   transition: background 0.5s ease;
-} */
+}
 
 /* Card Content - Hidden by default, shown on hover */
 .work-card-content {
@@ -140,23 +140,23 @@
 }
 
 .work-card-title {
-  font-size: 0.75rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 0.5rem;
-  mix-blend-mode: normal;
-}
-
-.work-card-tagline {
   font-family: var(--font-headline);
   font-size: clamp(1.25rem, 2vw, 1.75rem);
   font-weight: 400;
   color: #ffffff;
   line-height: 1.3;
   margin: 0;
-  mix-blend-mode: normal;
+  margin-bottom: 0.5rem;
+  mix-blend-mode: normal !important; /* Override */
+}
+
+.work-card-tagline {
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.8);
+  mix-blend-mode: normal !important; /* Override */
 }
 
 /* Hover State - Blur effect */
@@ -166,11 +166,10 @@
   transform: scale(1.05);
 }
 
-/* Removed overlay hover effect */
-/* .work-card:hover .work-card-overlay,
+.work-card:hover .work-card-overlay,
 .work-card.is-hovered .work-card-overlay {
-  background: rgba(0, 0, 0, 0.3);
-} */
+  background: rgba(0, 0, 0, 0.4);
+}
 
 .work-card:hover .work-card-content,
 .work-card.is-hovered .work-card-content {
@@ -275,11 +274,11 @@
     padding: 1rem;
   }
 
-  .work-card-tagline {
+  .work-card-title {
     font-size: 1.125rem;
   }
 
-  .work-card-title {
+  .work-card-tagline {
     font-size: 0.6875rem;
   }
 }

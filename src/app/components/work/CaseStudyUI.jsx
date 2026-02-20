@@ -118,9 +118,9 @@ export default function CaseStudyUI({ project }) {
       }
 
       // If the item content is taller than the remaining sidebar space...
-      // effectively, if navItemHeight > (sidebarHeight - 200), we might need internal scrolling
+      // effectively, if navItemHeight > (sidebarHeight - 350), we might need internal scrolling
 
-      const availableSpace = sidebarHeight - 200; // rough space available
+      const availableSpace = sidebarHeight - 350; // Account for sticky credit block
 
       if (navItemHeight > availableSpace) {
         // Map the section progress (0-1) to the item's overflow scroll

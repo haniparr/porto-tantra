@@ -14,9 +14,12 @@ export default function CursorBlur() {
     gsap.set(cursor, { xPercent: -50, yPercent: -50 });
 
     const moveCursor = (e) => {
+      const isHoveringLogo = e.target.closest(".footer-logo-img");
+
       gsap.to(cursor, {
         x: e.clientX,
         y: e.clientY,
+        opacity: isHoveringLogo ? 1 : 0,
         duration: 0.5,
         ease: "power2.out",
       });
@@ -47,6 +50,7 @@ export default function CursorBlur() {
         maskImage: "radial-gradient(circle, black 30%, transparent 70%)", // Soft edges
         WebkitMaskImage: "radial-gradient(circle, black 30%, transparent 70%)",
         transform: "translate(-50%, -50%)",
+        opacity: 0, // Start hidden
       }}
     />
   );
