@@ -2,45 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-const timelineData = [
-  {
-    year: 2018,
-    company: "TechStart Inc.",
-    role: "Junior Designer",
-    achievements:
-      "Spearheaded the redesign of internal tools, reducing user error rates by 40%. Collaborated with engineering to implement a new design system.",
-  },
-  {
-    year: 2019,
-    company: "Creative Agency X",
-    role: "UI Designer",
-    achievements:
-      "Delivered award-winning websites for 5 top-tier clients. Optimization of asset pipelines improved page load speeds by 25%.",
-  },
-  {
-    year: 2020,
-    company: "Global Corp",
-    role: "Senior Designer",
-    achievements:
-      "Led a cross-functional team of 10 in a complete brand refresh. Establish visually consistent guidelines adopted globally.",
-  },
-  {
-    year: 2021,
-    company: "Freelance",
-    role: "Art Director",
-    achievements:
-      "Developed comprehensive visual identity strategies for startups, resulting in a collective $5M raised in seed funding.",
-  },
-  {
-    year: 2022,
-    company: "Design Studio Y",
-    role: "Lead Product Designer",
-    achievements:
-      "Orchestrated the end-to-end UX/UI for a SaaS platform serving 50k+ users. improved customer retention by 15%.",
-  },
-];
-
-export default function WorkExperience() {
+export default function WorkExperience({ experiences = [] }) {
   const sectionRef = useRef(null);
   const cardsRef = useRef([]);
 
@@ -126,9 +88,9 @@ export default function WorkExperience() {
           <span>[ WORK EXPERIENCE ]</span>
         </div>
         <div className="experience-entries">
-          {timelineData.map((item, index) => (
+          {experiences.map((item, index) => (
             <article
-              key={index}
+              key={item.id || index}
               className="experience-entry"
               data-index={index}
               ref={(el) => (cardsRef.current[index] = el)}

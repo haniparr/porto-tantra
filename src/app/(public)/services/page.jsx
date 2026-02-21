@@ -6,8 +6,9 @@ import WorkExperience from "@/app/components/sections/WorkExperience";
 import FAQ from "@/app/components/sections/FAQ";
 import TestimonialsSlider from "@/app/components/sections/TestimonialsSlider"; // Kita buat slider terpisah di bawah
 
-// Import API
-import { getTestimonials } from "@/app/lib/api"; // Pastikan Anda punya fungsi ini atau gunakan data dummy
+// Import API and DB
+import { getTestimonials } from "@/app/lib/api";
+import { prisma } from "@/app/lib/prisma";
 
 export const metadata = {
   title: "Services & Experience",
@@ -29,6 +30,28 @@ export default async function ServicesPage() {
   } catch (e) {
     console.warn("API Error (Services):", e.message);
     // Biarkan array kosong, TestimonialsSlider akan otomatis pakai placeholder
+  }
+
+  // Fetch work experiences data
+  let experiencesData = [];
+  try {
+    experiencesData = await prisma.workExperience.findMany({
+      where: { published: true },
+      orderBy: { order: "asc" },
+    });
+  } catch (e) {
+    console.warn("DB Error (Services/WorkExperience):", e.message);
+  }
+
+  // Fetch clients data
+  let clientsData = [];
+  try {
+    clientsData = await prisma.client.findMany({
+      where: { published: true },
+      orderBy: { order: "asc" },
+    });
+  } catch (e) {
+    console.warn("DB Error (Services/Clients):", e.message);
   }
 
   return (
@@ -106,55 +129,32 @@ export default async function ServicesPage() {
       </section>
 
       {/* Work Experience Section (Client Component) */}
-      <WorkExperience />
+      <WorkExperience experiences={experiencesData} />
 
-      {/* Clients Section (Static) */}
+      {/* Clients Section (Dynamic) */}
       <section className="clients-section">
         <div className="section-layout">
           <div className="section-label">
             <span>[ CLIENTS ]</span>
           </div>
           <div className="clients-grid">
-            {/* Ganti <img> dengan Image/SVG component jika memungkinkan, atau biarkan img untuk logo eksternal */}
-            <div className="client-logo-item">
-              <Image
-                src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Coca-Cola_logo.svg"
-                alt="Coca Cola"
-                width={100}
-                height={40}
-              />
-            </div>
-            <div className="client-logo-item">
-              <Image
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/USAID-Identity.svg/2560px-USAID-Identity.svg.png"
-                alt="USAID"
-                width={120}
-                height={40}
-              />
-            </div>
-            <div className="client-logo-item">
-              <span className="client-text">APLMA</span>
-            </div>
-            <div className="client-logo-item">
-              <span className="client-text">KIK</span>
-            </div>
-            <div className="client-logo-item">
-              <Image
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Ministry_of_Education%2C_Culture%2C_Research%2C_and_Technology.svg/1200px-Ministry_of_Education%2C_Culture%2C_Research%2C_and_Technology.svg.png"
-                alt="Kemendikbud"
-                width={120}
-                height={40}
-              />
-            </div>
-            <div className="client-logo-item">
-              <span className="client-text">Client 6</span>
-            </div>
-            <div className="client-logo-item">
-              <span className="client-text">Client 7</span>
-            </div>
-            <div className="client-logo-item">
-              <span className="client-text">Client 8</span>
-            </div>
+            {clientsData.map((client) => (
+              <div key={client.id} className="client-logo-item">
+                {client.logo ? (
+                  <Image
+                    src={client.logo}
+                    alt={client.name}
+                    width={120}
+                    height={60}
+                    className="client-logo grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300 object-contain"
+                  />
+                ) : (
+                  <span className="client-text font-bold text-gray-400">
+                    {client.name}
+                  </span>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </section>

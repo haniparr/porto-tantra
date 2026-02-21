@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { use } from "react";
 
-export default function EditUserPage() {
+export default function EditUserPage({ params }: { params: any }) {
+  const unwrappedParams = use(params) as any;
   const router = useRouter();
-  const params = useParams();
   const { data: session } = useSession();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -27,7 +28,7 @@ export default function EditUserPage() {
 
   const fetchUser = async () => {
     try {
-      const response = await fetch(`/api/users/${params.id}`);
+      const response = await fetch(`/api/users/${unwrappedParams.id}`);
       const user = await response.json();
 
       setFormData({
@@ -60,7 +61,7 @@ export default function EditUserPage() {
         updateData.password = formData.password;
       }
 
-      const response = await fetch(`/api/users/${params.id}`, {
+      const response = await fetch(`/api/users/${unwrappedParams.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updateData),

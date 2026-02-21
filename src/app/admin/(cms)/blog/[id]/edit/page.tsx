@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import TiptapEditor from "@/app/components/admin/TiptapEditor";
+import { use } from "react";
 
-export default function EditBlogPostPage() {
+export default function EditBlogPostPage({ params }: { params: any }) {
+  const unwrappedParams = use(params) as any;
   const router = useRouter();
-  const params = useParams();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [formData, setFormData] = useState({
@@ -29,7 +30,7 @@ export default function EditBlogPostPage() {
 
   const fetchPost = async () => {
     try {
-      const response = await fetch(`/api/blog/${params.id}`);
+      const response = await fetch(`/api/blog/${unwrappedParams.id}`);
       const post = await response.json();
 
       setFormData({
@@ -90,7 +91,7 @@ export default function EditBlogPostPage() {
         .map((tag) => tag.trim())
         .filter((tag) => tag);
 
-      const response = await fetch(`/api/blog/${params.id}`, {
+      const response = await fetch(`/api/blog/${unwrappedParams.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

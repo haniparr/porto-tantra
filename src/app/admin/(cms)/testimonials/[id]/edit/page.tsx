@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import TiptapEditor from "@/app/components/admin/TiptapEditor";
+import { use } from "react";
 
-export default function EditTestimonialPage() {
+export default function EditTestimonialPage({ params }: { params: any }) {
+  const unwrappedParams = use(params) as any;
   const router = useRouter();
-  const params = useParams();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [formData, setFormData] = useState({
@@ -26,7 +27,7 @@ export default function EditTestimonialPage() {
 
   const fetchTestimonial = async () => {
     try {
-      const response = await fetch(`/api/testimonials/${params.id}`);
+      const response = await fetch(`/api/testimonials/${unwrappedParams.id}`);
       const testimonial = await response.json();
 
       setFormData({
@@ -79,7 +80,7 @@ export default function EditTestimonialPage() {
     setSaving(true);
 
     try {
-      const response = await fetch(`/api/testimonials/${params.id}`, {
+      const response = await fetch(`/api/testimonials/${unwrappedParams.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

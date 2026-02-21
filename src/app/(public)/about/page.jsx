@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { getTestimonials } from "@/app/lib/api";
+import { prisma } from "@/app/lib/prisma";
 import "@/app/styles/services.css"; // Kita reuse style services karena layoutnya sama
 
 // Import Components
@@ -22,7 +23,29 @@ export default async function AboutPage() {
       testimonialsData = res.data;
     }
   } catch (e) {
-    console.warn("API Error (About/Services):", e.message);
+    console.warn("API Error (About/Testimonials):", e.message);
+  }
+
+  // Fetch work experiences data
+  let experiencesData = [];
+  try {
+    experiencesData = await prisma.workExperience.findMany({
+      where: { published: true },
+      orderBy: { order: "asc" },
+    });
+  } catch (e) {
+    console.warn("DB Error (About/WorkExperience):", e.message);
+  }
+
+  // Fetch clients data
+  let clientsData = [];
+  try {
+    clientsData = await prisma.client.findMany({
+      where: { published: true },
+      orderBy: { order: "asc" },
+    });
+  } catch (e) {
+    console.warn("DB Error (About/Clients):", e.message);
   }
 
   return (
@@ -98,7 +121,7 @@ export default async function AboutPage() {
         </section>
 
         {/* Work Experience Section (Interactive) */}
-        <WorkExperience />
+        <WorkExperience experiences={experiencesData} />
 
         {/* Clients Section */}
         <section className="clients-section">
@@ -107,31 +130,22 @@ export default async function AboutPage() {
               <span>[ CLIENTS ]</span>
             </div>
             <div className="clients-grid">
-              {/* Placeholder Logos - Ganti dengan logo asli jika ada */}
-              <div className="client-logo-item">
-                <span className="client-text font-bold">CocaCola</span>
-              </div>
-              <div className="client-logo-item">
-                <span className="client-text font-bold">USAID</span>
-              </div>
-              <div className="client-logo-item">
-                <span className="client-text font-bold">APLMA</span>
-              </div>
-              <div className="client-logo-item">
-                <span className="client-text font-bold">KIK</span>
-              </div>
-              <div className="client-logo-item">
-                <span className="client-text font-bold">Kemendikbud</span>
-              </div>
-              <div className="client-logo-item">
-                <span className="client-text font-bold">TechStart</span>
-              </div>
-              <div className="client-logo-item">
-                <span className="client-text font-bold">GlobalCorp</span>
-              </div>
-              <div className="client-logo-item">
-                <span className="client-text font-bold">Studio Y</span>
-              </div>
+              {clientsData.map((client) => (
+                <div key={client.id} className="client-logo-item relative">
+                  {client.logo ? (
+                    <Image
+                      src={client.logo}
+                      alt={client.name}
+                      fill
+                      className="client-logo grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300 object-contain p-8"
+                    />
+                  ) : (
+                    <span className="client-text font-bold text-gray-400">
+                      {client.name}
+                    </span>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         </section>
