@@ -28,6 +28,7 @@ export async function POST(req) {
         role: data.role,
         year: data.year,
         achievements: data.achievements,
+        logo: data.logo || null,
         order: data.order || 0,
         published: data.published ?? true,
       },

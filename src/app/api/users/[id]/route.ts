@@ -8,6 +8,51 @@ import {
 } from "@/app/lib/auth-helpers";
 import { prisma } from "@/app/lib/prisma";
 
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  try {
+    await requireRole(["ADMIN"]);
+
+    // We don't strictly need to await params in older versions but in latest it's a good idea,
+    // although I'll just check if it's already an object. In recent Next.js 15, params is a Promise.
+    // I'll be safe and mirror the PUT method.
+    const unwrappedParams = await params;
+    const { id } = unwrappedParams;
+
+    if (!id) {
+      return errorResponse("User ID is required", 400);
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        createdAt: true,
+      },
+    });
+
+    if (!user) {
+      return errorResponse("User not found", 404);
+    }
+
+    return NextResponse.json(user);
+  } catch (error: any) {
+    if (error.message === "Unauthorized") {
+      return unauthorizedResponse();
+    }
+    if (error.message === "Forbidden") {
+      return forbiddenResponse();
+    }
+    console.error("Error fetching user:", error);
+    return errorResponse("Failed to fetch user");
+  }
+}
+
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },

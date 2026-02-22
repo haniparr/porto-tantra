@@ -247,12 +247,16 @@ body {
 .stat-card.purple::before {
   background: #8b5cf6;
 }
+.stat-card.orange::before {
+  background: #f97316;
+}
 
 /* Remove old gradient backgrounds */
 .stat-card.blue,
 .stat-card.green,
 .stat-card.yellow,
-.stat-card.purple {
+.stat-card.purple,
+.stat-card.orange {
   background: white;
 }
 

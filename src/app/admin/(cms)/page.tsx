@@ -6,7 +6,8 @@ interface DashboardStats {
   blogPosts: { total: number; published: number; draft: number };
   projects: { total: number; published: number; draft: number };
   testimonials: { total: number };
-  users: { total: number };
+  clients: { total: number; published: number; draft: number };
+  workExperiences: { total: number; published: number; draft: number };
 }
 
 export default function AdminDashboard() {
@@ -75,9 +76,21 @@ export default function AdminDashboard() {
         </div>
 
         <div className="stat-card purple">
-          <h3>Users</h3>
-          <div className="stat-value">{stats?.users?.total || 0}</div>
-          <div className="stat-label">Total users</div>
+          <h3>Clients</h3>
+          <div className="stat-value">{stats?.clients?.total || 0}</div>
+          <div className="stat-label">
+            {stats?.clients?.published || 0} published,{" "}
+            {stats?.clients?.draft || 0} drafts
+          </div>
+        </div>
+
+        <div className="stat-card orange">
+          <h3>Work Experience</h3>
+          <div className="stat-value">{stats?.workExperiences?.total || 0}</div>
+          <div className="stat-label">
+            {stats?.workExperiences?.published || 0} published,{" "}
+            {stats?.workExperiences?.draft || 0} drafts
+          </div>
         </div>
       </div>
 

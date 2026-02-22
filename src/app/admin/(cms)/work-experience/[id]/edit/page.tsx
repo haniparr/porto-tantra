@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import ImageUploader from "@/app/components/admin/ImageUploader";
 
 import { use } from "react";
 
@@ -20,6 +21,7 @@ export default function WorkExperienceEditForm({ params }: { params: any }) {
     role: "",
     year: "",
     achievements: "",
+    logo: "",
     order: 0,
     published: true,
   });
@@ -47,6 +49,7 @@ export default function WorkExperienceEditForm({ params }: { params: any }) {
           role: exp.role || "",
           year: exp.year || "",
           achievements: exp.achievements || "",
+          logo: exp.logo || "",
           order: exp.order || 0,
           published: exp.published ?? true,
         });
@@ -71,6 +74,10 @@ export default function WorkExperienceEditForm({ params }: { params: any }) {
             ? Number(value)
             : value,
     }));
+  };
+
+  const handleImageRemove = () => {
+    setFormData((prev) => ({ ...prev, logo: "" }));
   };
 
   const handleSubmit = async (e) => {
@@ -132,6 +139,86 @@ export default function WorkExperienceEditForm({ params }: { params: any }) {
             required
             placeholder="e.g. Google, Freelance, Studio Y"
           />
+        </div>
+
+        <div className="form-group">
+          <label>Company Logo</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+
+              try {
+                const formDataUpload = new FormData();
+                formDataUpload.append("file", file);
+
+                const response = await fetch("/api/upload", {
+                  method: "POST",
+                  body: formDataUpload,
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                  setFormData((prev) => ({ ...prev, logo: data.url }));
+                } else {
+                  alert("Failed to upload image");
+                }
+              } catch (error) {
+                console.error("Upload error:", error);
+                alert("Failed to upload image");
+              }
+            }}
+          />
+          {formData.logo && (
+            <div
+              style={{
+                marginTop: "10px",
+                position: "relative",
+                display: "inline-block",
+              }}
+            >
+              <img
+                src={formData.logo}
+                alt="Logo"
+                style={{
+                  maxWidth: "200px",
+                  background: "#f0f0f0",
+                  padding: "10px",
+                  display: "block",
+                }}
+              />
+              <button
+                type="button"
+                onClick={handleImageRemove}
+                style={{
+                  position: "absolute",
+                  top: "4px",
+                  right: "4px",
+                  background: "rgba(239, 68, 68, 0.9)",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "4px",
+                  padding: "4px 8px",
+                  fontSize: "11px",
+                  cursor: "pointer",
+                }}
+              >
+                ×
+              </button>
+            </div>
+          )}
+          <small
+            style={{
+              color: "#6b7280",
+              fontSize: "13px",
+              display: "block",
+              marginTop: "4px",
+            }}
+          >
+            Recommended: Square image / SVG with transparent background
+          </small>
         </div>
 
         <div className="form-group">

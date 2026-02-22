@@ -29,14 +29,32 @@ export async function GET(request: NextRequest) {
     // Testimonials Stats
     const testimonialsCount = await prisma.testimonial.count();
 
-    // Users Stats
-    const usersCount = await prisma.user.count();
+    // Clients Stats
+    const clients = await prisma.client.findMany({
+      select: { published: true },
+    });
+    const clientStats = {
+      total: clients.length,
+      published: clients.filter((c) => c.published === true).length,
+      draft: clients.filter((c) => c.published === false).length,
+    };
+
+    // Work Experience Stats
+    const workExperiences = await prisma.workExperience.findMany({
+      select: { published: true },
+    });
+    const workExperienceStats = {
+      total: workExperiences.length,
+      published: workExperiences.filter((w) => w.published === true).length,
+      draft: workExperiences.filter((w) => w.published === false).length,
+    };
 
     return NextResponse.json({
       blogPosts: blogStats,
       projects: projectStats,
       testimonials: { total: testimonialsCount },
-      users: { total: usersCount },
+      clients: clientStats,
+      workExperiences: workExperienceStats,
     });
   } catch (error: any) {
     console.error("Dashboard stats error:", error);

@@ -97,17 +97,29 @@ export default function WorkExperience({ experiences = [] }) {
             >
               <div className="entry-header">
                 <div className="entry-logo-box">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  >
-                    <rect x="2" y="2" width="20" height="20" rx="2"></rect>
-                    <path d="M7 7h10v10H7z"></path>
-                  </svg>
+                  {item.logo ? (
+                    <img
+                      src={item.logo}
+                      alt={`${item.company} logo`}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "contain",
+                      }}
+                    />
+                  ) : (
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    >
+                      <rect x="2" y="2" width="20" height="20" rx="2"></rect>
+                      <path d="M7 7h10v10H7z"></path>
+                    </svg>
+                  )}
                 </div>
                 <h3 className="entry-title">{item.company}</h3>
               </div>

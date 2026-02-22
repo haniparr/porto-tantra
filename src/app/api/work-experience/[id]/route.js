@@ -13,6 +13,7 @@ export async function PUT(req, { params }) {
         role: data.role,
         year: data.year,
         achievements: data.achievements,
+        logo: data.logo,
         order: data.order,
         published: data.published,
       },

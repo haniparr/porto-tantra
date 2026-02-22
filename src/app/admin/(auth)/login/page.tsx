@@ -216,27 +216,6 @@ function LoginForm() {
           {loading ? "Signing in..." : "Sign in"}
         </button>
       </form>
-
-      <p
-        style={{
-          marginTop: "24px",
-          fontSize: "14px",
-          color: "#6b7280",
-          textAlign: "center",
-        }}
-      >
-        Don't have an account?{" "}
-        <Link
-          href="/admin/register"
-          style={{
-            color: "#111827",
-            fontWeight: "600",
-            textDecoration: "none",
-          }}
-        >
-          Sign up
-        </Link>
-      </p>
     </div>
   );
 }
