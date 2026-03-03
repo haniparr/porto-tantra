@@ -1,5 +1,14 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
+import { requireRole } from "@/app/lib/auth-helpers";
+import { z } from "zod";
+
+const createClientSchema = z.object({
+  name: z.string().min(1).max(255),
+  logo: z.string().url().nullable().optional(),
+  order: z.number().int().min(0).optional(),
+  published: z.boolean().optional(),
+});
 
 export const dynamic = "force-dynamic";
 
@@ -10,7 +19,6 @@ export async function GET() {
     });
     return NextResponse.json(clients);
   } catch (error) {
-    console.error("Error fetching clients:", error);
     return NextResponse.json(
       { error: "Failed to fetch clients" },
       { status: 500 },
@@ -20,7 +28,10 @@ export async function GET() {
 
 export async function POST(req) {
   try {
-    const data = await req.json();
+    await requireRole(["ADMIN", "EDITOR"]);
+
+    const body = await req.json();
+    const data = createClientSchema.parse(body);
 
     const client = await prisma.client.create({
       data: {
@@ -33,7 +44,18 @@ export async function POST(req) {
 
     return NextResponse.json(client, { status: 201 });
   } catch (error) {
-    console.error("Error creating client:", error);
+    if (error.message === "Unauthorized") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    if (error.message === "Forbidden") {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: "Validation failed", details: error.errors },
+        { status: 400 },
+      );
+    }
     return NextResponse.json(
       { error: "Failed to create client" },
       { status: 500 },
