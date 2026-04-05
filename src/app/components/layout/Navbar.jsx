@@ -124,32 +124,12 @@ export default function Navbar() {
             <ul className="sm-socials-list">
               <li>
                 <a
-                  href="https://linkedin.com"
+                  href="https://www.linkedin.com/in/witantra-hariastama-544843118/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="sm-socials-link"
                 >
                   LinkedIn
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://instagram.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="sm-socials-link"
-                >
-                  Instagram
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://twitter.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="sm-socials-link"
-                >
-                  Twitter
                 </a>
               </li>
             </ul>

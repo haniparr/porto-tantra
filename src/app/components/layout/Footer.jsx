@@ -129,7 +129,7 @@ export default function Footer() {
               </ul>
             </div>
 
-            <div className="footer-col">
+            {/* <div className="footer-col">
               <h4>Follow Us</h4>
               <ul>
                 <li>
@@ -153,7 +153,7 @@ export default function Footer() {
                   </a>
                 </li>
               </ul>
-            </div>
+            </div> */}
           </div>
         </div>
 
