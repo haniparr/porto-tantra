@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import DOMPurify from "isomorphic-dompurify";
 import { getBlogPost, getBlogPosts } from "@/app/lib/api";
 import { getStrapiMedia } from "@/app/lib/utils";
 import "@/app/styles/blog.css";
@@ -246,8 +247,8 @@ export default async function BlogDetailsPage({ params }) {
           {/* ✅ Render content - handle both HTML and plain text */}
           <div className="markdown-content">
             {content && content.includes("<") && content.includes(">") ? (
-              // If content contains HTML tags, render as HTML
-              <div dangerouslySetInnerHTML={{ __html: content }} />
+              // If content contains HTML tags, render as sanitized HTML
+              <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content) }} />
             ) : (
               // Otherwise, render as plain text paragraphs
               content.split("\n\n").map(

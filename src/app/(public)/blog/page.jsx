@@ -88,9 +88,9 @@ export default function BlogPage() {
     const attrs = post.attributes || post;
     const url =
       attrs.featuredImage?.data?.attributes?.url || attrs.featuredImage?.url;
-    if (!url) return "https://placehold.co/800x600?text=No+Image";
-    if (url.startsWith("http")) return url;
-    return `http://localhost:1337${url}`;
+    if (!url || !url.startsWith("http"))
+      return "https://placehold.co/800x600?text=No+Image";
+    return url;
   };
 
   return (
