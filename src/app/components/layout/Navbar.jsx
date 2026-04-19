@@ -22,7 +22,7 @@ export default function Navbar() {
     { label: "Home", href: "/", type: "internal" },
     { label: "Work", href: "/work", type: "internal" }, // Asumsi route /work
     { label: "About", href: "/about", type: "internal" }, // Asumsi route /about
-    { label: "Blog", href: "/blog", type: "internal" },
+    // { label: "Blog", href: "/blog", type: "internal" },
     { label: "Contact", href: "/contact", type: "internal" }, // Asumsi route /contact
     {
       label: "Resume",

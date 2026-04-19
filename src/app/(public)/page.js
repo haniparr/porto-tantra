@@ -35,7 +35,7 @@ export default function Home() {
         <FeaturedWork />
 
         {/* 6. Latest Thoughts (Blog) - Server Component fetching data */}
-        <BlogSection />
+        {/* <BlogSection /> */}
       </GradientWrapper>
     </div>
   );
