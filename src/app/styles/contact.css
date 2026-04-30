@@ -154,7 +154,7 @@
 
   .cta-text,
   .cta-email {
-    font-size: clamp(1.5rem, 6vw, 2rem);
+    font-size: clamp(0.875rem, 4vw, 1.375rem);
   }
 
   .contact-footer-cta {
@@ -174,7 +174,7 @@
 
   .cta-text,
   .cta-email {
-    font-size: clamp(1.25rem, 5vw, 1.75rem);
+    font-size: clamp(0.625rem, 3.5vw, 1.125rem);
   }
 }
 
@@ -198,6 +198,8 @@
   font-family: var(--font-headline);
   display: block;
   transition: opacity 0.3s ease;
+  word-break: break-all;
+  overflow-wrap: break-word;
 }
 
 .cta-email:hover {
